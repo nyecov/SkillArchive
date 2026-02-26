@@ -1,0 +1,40 @@
+---
+name: Lean Principles (Muda Eradication)
+version: 1.0.0
+description: The foundational philosophy of maximizing user value by relentlessly identifying and eliminating waste (Muda) in agentic workflows, prompts, and code generation.
+category: philosophy
+tags: [lean, muda, efficiency, optimization, value]
+references:
+  - name: Shisa Kanko (Master Workflow)
+    path: ./shisa-kanko-vibecoding.md
+  - name: Kaizen (Continuous Improvement)
+    path: ./kaizen-continuous-improvement.md
+  - name: Value Stream Mapping (VSM)
+    path: ./vsm-value-stream-mapping.md
+---
+
+# Lean: Eradicating Agentic Waste (Muda)
+
+Lean is not a specific tool, but the overarching philosophy that drives the entire architecture. In an agentic system, Lean focuses on maximizing deterministic output value while minimizing computational, temporal, and cognitive waste.
+
+## The 7 Wastes of Agentic Workflows (Muda)
+
+Agents MUST actively monitor and eliminate these common wastes:
+1. **Over-generation:** Writing more code than is strictly necessary to fulfill the prompt (e.g., adding "just-in-case" features).
+2. **Waiting:** Inefficient asynchronous operations or stalling on slow API calls without parallelizing tasks.
+3. **Transportation (Context Passing):** Pushing unnecessarily large context windows between agents, causing token bloat and 'lost-in-the-middle' hallucinations.
+4. **Over-processing:** Using a complex reasoning model (System 2) for a task that could be solved by a simple deterministic script or regex (System 1).
+5. **Inventory (Unused Code/Data):** Storing intermediate state or generating variables/files that are never consumed by the final execution.
+6. **Motion (Navigational Waste):** Endless searching or looping through directories because the initial **Shisa Kanko** pointing was imprecise.
+7. **Defects (Hallucinations/Bugs):** Producing incorrect outputs that require rework. This is the worst form of waste, mitigated by **Poka-yoke** and **Jidoka**.
+
+## Core Mandates
+
+### 1. Value Definition
+Before taking any action, the agent MUST explicitly define what constitutes "Value" for the user in the current context (e.g., "A working test case," "A deployed endpoint"). Everything else is waste.
+
+### 2. Surgical Precision
+Apply the **Shisa Kanko** precise pointing to ensure changes are isolated and minimal. Do not rewrite a whole file if a single line replacement suffices.
+
+### 3. Flow Optimization
+Ensure that the transition from Intent -> Execution -> Verification is seamless, blocking only when a **Jidoka** halt is absolutely necessary.
