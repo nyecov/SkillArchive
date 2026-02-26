@@ -1,34 +1,46 @@
-﻿---
+---
 name: Hō-Ren-Sō (Report, Contact, Consult)
-version: 1.0.0
-description: The fundamental communication protocol for multi-agent systems and human-in-the-loop (HITL) synchronization.
+version: 1.1.0
+description: The fundamental communication protocol for multi-agent systems and human-in-the-loop (HITL) synchronization. Structures escalations triggered by Jidoka and routine reporting for Shisa Kanko.
 category: communication
-tags: [ho-ren-so, collaboration, hitl, reporting, coordination]
+tags: [ho-ren-so, collaboration, hitl, reporting, coordination, lean]
+references:
+  - name: Shisa Kanko (Master Workflow)
+    path: ./shisa-kanko-vibecoding.md
+  - name: Jidoka (Autonomation)
+    path: ./jidoka-autonomation.md
+  - name: Poka-yoke (Mistake-proofing)
+    path: ./poka-yoke-mistake-proofing.md
+  - name: Hansei (Self-reflection)
+    path: ./hansei-self-reflection.md
+  - name: KYT (Hazard Prediction)
+    path: ./kyt-hazard-prediction.md
 ---
 
 # Hō-Ren-Sō: Communication Standard for Agents
 
-Hō-Ren-Sō ensures that information flows smoothly across the system, preventing silos and ambiguity.
+Hō-Ren-Sō ensures that information flows smoothly across the system, preventing silos and ambiguity. In an agentic architecture, it provides the structured formats for routine operational updates and critical safety escalations.
 
 ## The Three Pillars
 
 ### 1. Hōkoku (Report)
-- **What:** Reporting progress and results to the supervisor/human.
+- **What:** Reporting progress, results, and successful verifications to the supervisor or human operator.
 - **Format:** Brief, factual, and chronological.
-- **Timing:** When a milestone is reached or a task is completed.
+- **Integration (Shisa Kanko):** Triggered at the successful completion of Phase D (Multi-Sensory Verification) in the **Shisa Kanko** master workflow. Summarizes what was changed and how it was verified.
 
 ### 2. Renraku (Contact)
-- **What:** Informing peers or stakeholders of facts without personal opinion or bias.
+- **What:** Informing peers, sub-agents, or stakeholders of facts without personal opinion or bias.
 - **Format:** "Fact X has occurred. System State Y is now active."
-- **Timing:** Immediately upon a change in the environment (e.g., "The API is currently returning 500 errors").
+- **Integration (Poka-yoke & KYT):** Used to broadcast environmental changes or when a **Poka-yoke** interlock is engaged. For example, broadcasting that a **KYT** countermeasure (like a database snapshot) has been successfully applied before execution.
 
-### 3. Sōdan (Consult)
-- **What:** Seeking advice or a decision when encountering an ambiguous or high-risk situation.
-- **Format:** Present the problem, the context, and proposed options for the human to choose from.
-- **Timing:** *Before* taking a non-deterministic or high-impact action.
+### 3. Sōdan (Consult) - The Escalation Protocol
+- **What:** Seeking advice, authorization, or a decision when encountering an ambiguous, blocked, or high-risk situation.
+- **Format:** Must include Context, Root Cause, and Options.
+- **Integration (Jidoka & Hansei):** This is the mandatory communication vehicle when a **Jidoka** halt occurs. The agent MUST NOT silently fail. The Sōdan request must include the results of a **Hansei (Self-reflection)** analysis so the human operator understands *why* the halt occurred and what paths are available to resolve it.
 
 ## Implementation Workflow
 
-1. **State Tracking:** Maintain a clear log of what has been reported (Hōkoku) and shared (Renraku).
-2. **Ambiguity Trigger:** If a decision branch has >1 viable path, trigger a Sōdan (Consultation).
-3. **Feedback Integration:** Incorporate human advice into the current state.
+1. **State Tracking:** Maintain a clear log of what has been reported (Hōkoku) and shared (Renraku) to prevent spamming the operator.
+2. **Ambiguity & Block Trigger:** If a decision branch has >1 viable path, or if a Jidoka halt is triggered, immediately switch to the Sōdan (Consultation) protocol.
+3. **Structured Escalation:** When consulting, always present the problem (the Poka-yoke violation or KYT hazard), the Hansei reflection, and proposed options for the human to choose from.
+4. **Feedback Integration:** Incorporate human advice into the current state and resume the workflow.
