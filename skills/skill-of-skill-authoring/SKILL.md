@@ -1,6 +1,6 @@
 ---
 name: Skill of Skills (Meta-Skill Authoring)
-version: 1.1.0
+version: 1.2.0
 description: Use when creating, reviewing, or refining agent skills. Provides the authoritative checklist and workflow for writing high-efficiency, token-optimal skill files that activate reliably, follow progressive disclosure, and avoid common anti-patterns.
 category: meta
 tags: [meta-skill, skill-authoring, progressive-disclosure, token-efficiency, agent-skills]
@@ -14,13 +14,13 @@ references:
   - name: Agent Skills Open Specification
     url: https://agentskills.io
   - name: Shisa Kanko (Master Workflow)
-    path: ./shisa-kanko-vibecoding.md
+    path: ../shisa-kanko-vibecoding/SKILL.md
   - name: Lean Principles (Muda Eradication)
-    path: ./lean-principles-muda.md
+    path: ../lean-principles-muda/SKILL.md
   - name: Kaizen (Continuous Improvement)
-    path: ./kaizen-continuous-improvement.md
+    path: ../kaizen-continuous-improvement/SKILL.md
   - name: Poka-yoke (Mistake-proofing)
-    path: ./poka-yoke-mistake-proofing.md
+    path: ../poka-yoke-mistake-proofing/SKILL.md
 ---
 
 # Skill of Skills: Meta-Skill Authoring Guide
@@ -95,7 +95,28 @@ with SQLite. Migrations are important for keeping the schema in sync.
 - Include **verification steps** after every phase — do not assume the agent checks its own work.
 - Put **critical constraints at the top** of the body, not buried in the middle (agents may skim long documents).
 
-### 3. Token Efficiency Through Layered Design
+### 3. One Directory Per Skill
+
+Every skill lives in its own named directory. The directory name IS the skill identifier.
+
+```
+skills/
+  my-skill-name/          ← directory named after skill
+    SKILL.md              ← required: metadata + instructions
+    scripts/              ← optional: deterministic operations
+    references/           ← optional: large knowledge (loaded on demand)
+    assets/               ← optional: templates, static files
+```
+
+**Rules:**
+- The entry point is always `SKILL.md` — never a custom filename.
+- Cross-reference other skills via relative paths: `../other-skill/SKILL.md`.
+- Never inline large reference material — move it to `references/`.
+- Keep referenced files one level deep (avoid deep nesting).
+- Add a Table of Contents to long reference files to help the agent navigate.
+- For operations requiring high precision, provide a **script** in `scripts/` rather than prose instructions — code is deterministic, language interpretation is not.
+
+### 4. Token Efficiency Through Layered Design
 
 | Skill Type | Body Size Target |
 |-----------|-----------------|
@@ -103,13 +124,7 @@ with SQLite. Migrations are important for keeping the schema in sync.
 | Standard workflow | Under **500 lines** (~2,000–3,000 tokens) |
 | Complex multi-phase | Split into body + `references/` files loaded on demand |
 
-**Rules:**
-- Never inline large reference material — move it to `references/`.
-- Keep referenced files one level deep (avoid deep nesting).
-- Add a Table of Contents to long reference files to help the agent navigate.
-- For operations requiring high precision, provide a **script** in `scripts/` rather than prose instructions — code is deterministic, language interpretation is not.
-
-### 4. Deterministic over Probabilistic
+### 5. Deterministic over Probabilistic
 
 Where possible, replace prose instructions with scripts, schemas, or templates.
 
@@ -117,14 +132,14 @@ Where possible, replace prose instructions with scripts, schemas, or templates.
 - Scripts should return **specific error messages** (e.g., "Field 'date' not found. Available fields: X, Y"), not vague ones ("An error occurred").
 - Use `assets/` for templates that provide structural consistency.
 
-### 5. Portability
+### 6. Portability
 
 Skills should work across platforms and operating systems.
 - Use forward slashes (`/`) for paths — never backslashes.
 - Do not reference tool-specific commands (e.g., "Use Claude's Read tool"). Use generic instructions (e.g., "Read the file at `path/to/file`").
 - Skills should be **self-contained** — do not require network requests or `git clone` operations to function.
 
-### 6. Cross-Functional Design
+### 7. Cross-Functional Design
 
 Skills are not limited to engineering workflows. Any team that has repeatable processes — marketing, operations, compliance, product — can author skills that encode institutional knowledge into executable capabilities.
 
@@ -149,22 +164,32 @@ When reviewing a skill, check for these failure modes:
 
 ## Implementation Workflow: Creating a New Skill
 
-1. **Identify the procedure.** What task do you explain repeatedly? That is your first skill.
-2. **Define success criteria.** What does a correct execution look like? Quantitative: trigger accuracy (80–90% target), workflow efficiency, error rate. Qualitative: self-sufficiency, consistency across runs, first-try success.
-3. **Write the description** as a trigger — when to activate, what capabilities exist, what NOT to use it for.
-4. **Write the body** as a procedure — numbered workflow, rules, conditional logic, verification steps.
-5. **Extract large references** to `references/`. Provide scripts for deterministic operations in `scripts/`.
-6. **Test with a single challenging task.** Iterate on that one task until the agent succeeds, then expand.
-7. **Run the three tests:**
+1. **Create the skill directory.** Name it with lowercase, hyphens: `skills/my-new-skill/`.
+2. **Create `SKILL.md`** inside the directory with YAML frontmatter (`name`, `description`).
+3. **Identify the procedure.** What task do you explain repeatedly? That is your first skill.
+4. **Define success criteria.** What does a correct execution look like? Quantitative: trigger accuracy (80–90% target), workflow efficiency, error rate. Qualitative: self-sufficiency, consistency across runs, first-try success.
+5. **Write the description** as a trigger — when to activate, what capabilities exist, what NOT to use it for.
+6. **Write the body** as a procedure — numbered workflow, rules, conditional logic, verification steps.
+7. **Extract large references** to `references/`. Provide scripts for deterministic operations in `scripts/`.
+8. **Test with a single challenging task.** Iterate on that one task until the agent succeeds, then expand.
+9. **Run the three tests:**
    - **Triggering test:** 10–20 queries across should-trigger, paraphrased, and should-NOT-trigger groups.
    - **Functional test:** Run the same request 3–5 times, compare for structural consistency.
    - **Performance test:** Compare the task with and without the skill — if no improvement, simplify or reconsider.
-8. **Iterate via Kaizen.** Capture failures, tighten ambiguous instructions, and evolve the skill over time.
+10. **Iterate via Kaizen.** Capture failures, tighten ambiguous instructions, and evolve the skill over time.
 
 ## Quick Reference: Specification Constraints
 
 ```
-FRONTMATTER (required):
+STRUCTURE:
+  skills/
+    my-skill-name/           ← one directory per skill
+      SKILL.md               Required — metadata + instructions (entry point)
+      scripts/               Optional — deterministic operations
+      references/            Optional — large knowledge bases (loaded on demand)
+      assets/                Optional — templates, static files
+
+FRONTMATTER (required in SKILL.md):
   name:        1-64 chars, lowercase, digits, hyphens only
   description: 1-1,024 chars, third person, trigger-oriented
 
@@ -173,11 +198,8 @@ BODY:
   Structure: Workflow → Rules → Edge Cases → Verification
   Critical constraints at the TOP, not the middle
 
-DIRECTORY:
-  SKILL.md       Required — metadata + instructions
-  scripts/       Optional — deterministic operations
-  references/    Optional — large knowledge bases (loaded on demand)
-  assets/        Optional — templates, static files
+CROSS-REFERENCES:
+  Use relative paths from skill directory: ../other-skill/SKILL.md
 
 DESCRIPTION DESIGN:
   ✅ "Use when…" / "Handles…" / "Generates…"

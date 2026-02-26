@@ -8,21 +8,21 @@ category: engineering-standards
 tags: [poka-yoke, guardrails, validation, deterministic, reliability, lean]
 references:
   - name: Shisa Kanko (Master Workflow)
-    path: ./shisa-kanko-vibecoding.md
+    path: ../shisa-kanko-vibecoding/SKILL.md
   - name: Jidoka (Autonomation)
-    path: ./jidoka-autonomation.md
+    path: ../jidoka-autonomation/SKILL.md
   - name: Hansei (Self-reflection)
-    path: ./hansei-self-reflection.md
+    path: ../hansei-self-reflection/SKILL.md
   - name: KYT (Hazard Prediction)
-    path: ./kyt-hazard-prediction.md
+    path: ../kyt-hazard-prediction/SKILL.md
   - name: Hō-Ren-Sō (Communication)
-    path: ./ho-ren-so-communication.md
+    path: ../ho-ren-so-communication/SKILL.md
   - name: Kaizen (Continuous Improvement)
-    path: ./kaizen-continuous-improvement.md
+    path: ../kaizen-continuous-improvement/SKILL.md
   - name: Lean Principles (Muda Eradication)
-    path: ./lean-principles-muda.md
+    path: ../lean-principles-muda/SKILL.md
   - name: Value Stream Mapping (VSM)
-    path: ./vsm-value-stream-mapping.md
+    path: ../vsm-value-stream-mapping/SKILL.md
 ---
 
 # Poka-yoke: Mistake-proofing AI Workflows

@@ -10,21 +10,21 @@ references:
   - name: Crowd Control (Source Repo)
     url: https://github.com/newsbubbles/crowd_control
   - name: CC — Deglaze (Anti-Sycophancy)
-    path: ./cc-deglaze-anti-sycophancy.md
+    path: ../cc-deglaze-anti-sycophancy/SKILL.md
   - name: CC — Comprehend (Understanding Gate)
-    path: ./cc-comprehend-understanding.md
+    path: ../cc-comprehend-understanding/SKILL.md
   - name: CC — Anchor (Architectural Coherence)
-    path: ./cc-anchor-coherence.md
+    path: ../cc-anchor-coherence/SKILL.md
   - name: CC — Circuit (Iteration Breaker)
-    path: ./cc-circuit-iteration-breaker.md
+    path: ../cc-circuit-iteration-breaker/SKILL.md
   - name: CC — Secure (Security)
-    path: ./cc-secure-security.md
+    path: ../cc-secure-security/SKILL.md
   - name: CC — Ship (Production Readiness)
-    path: ./cc-ship-production.md
+    path: ../cc-ship-production/SKILL.md
   - name: Poka-yoke (Mistake-proofing)
-    path: ./poka-yoke-mistake-proofing.md
+    path: ../poka-yoke-mistake-proofing/SKILL.md
   - name: KYT (Hazard Prediction)
-    path: ./kyt-hazard-prediction.md
+    path: ../kyt-hazard-prediction/SKILL.md
 ---
 
 # Isolate: Systematic Debugging

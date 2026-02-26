@@ -8,21 +8,21 @@ category: communication
 tags: [ho-ren-so, collaboration, hitl, reporting, coordination, lean]
 references:
   - name: Shisa Kanko (Master Workflow)
-    path: ./shisa-kanko-vibecoding.md
+    path: ../shisa-kanko-vibecoding/SKILL.md
   - name: Jidoka (Autonomation)
-    path: ./jidoka-autonomation.md
+    path: ../jidoka-autonomation/SKILL.md
   - name: Poka-yoke (Mistake-proofing)
-    path: ./poka-yoke-mistake-proofing.md
+    path: ../poka-yoke-mistake-proofing/SKILL.md
   - name: Hansei (Self-reflection)
-    path: ./hansei-self-reflection.md
+    path: ../hansei-self-reflection/SKILL.md
   - name: KYT (Hazard Prediction)
-    path: ./kyt-hazard-prediction.md
+    path: ../kyt-hazard-prediction/SKILL.md
   - name: Kaizen (Continuous Improvement)
-    path: ./kaizen-continuous-improvement.md
+    path: ../kaizen-continuous-improvement/SKILL.md
   - name: Lean Principles (Muda Eradication)
-    path: ./lean-principles-muda.md
+    path: ../lean-principles-muda/SKILL.md
   - name: Value Stream Mapping (VSM)
-    path: ./vsm-value-stream-mapping.md
+    path: ../vsm-value-stream-mapping/SKILL.md
 ---
 
 # Hō-Ren-Sō: Communication Standard for Agents

@@ -8,21 +8,21 @@ category: software-engineering
 tags: [vibecoding, ai-safety, lean, shisa-kanko, jidoka, poka-yoke, hansei, kyt, ho-ren-so, agentic-workflows]
 references:
   - name: Jidoka (Autonomation)
-    path: ./jidoka-autonomation.md
+    path: ../jidoka-autonomation/SKILL.md
   - name: Poka-yoke (Mistake-proofing)
-    path: ./poka-yoke-mistake-proofing.md
+    path: ../poka-yoke-mistake-proofing/SKILL.md
   - name: Hansei (Self-reflection)
-    path: ./hansei-self-reflection.md
+    path: ../hansei-self-reflection/SKILL.md
   - name: KYT (Hazard Prediction)
-    path: ./kyt-hazard-prediction.md
+    path: ../kyt-hazard-prediction/SKILL.md
   - name: Hō-Ren-Sō (Communication)
-    path: ./ho-ren-so-communication.md
+    path: ../ho-ren-so-communication/SKILL.md
   - name: Kaizen (Continuous Improvement)
-    path: ./kaizen-continuous-improvement.md
+    path: ../kaizen-continuous-improvement/SKILL.md
   - name: Lean Principles (Muda Eradication)
-    path: ./lean-principles-muda.md
+    path: ../lean-principles-muda/SKILL.md
   - name: Value Stream Mapping (VSM)
-    path: ./vsm-value-stream-mapping.md
+    path: ../vsm-value-stream-mapping/SKILL.md
 ---
 
 # Shisa Kanko Engineering Master Workflow

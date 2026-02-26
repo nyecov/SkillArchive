@@ -10,21 +10,21 @@ references:
   - name: Crowd Control (Source Repo)
     url: https://github.com/newsbubbles/crowd_control
   - name: CC — Deglaze (Anti-Sycophancy)
-    path: ./cc-deglaze-anti-sycophancy.md
+    path: ../cc-deglaze-anti-sycophancy/SKILL.md
   - name: CC — Comprehend (Understanding Gate)
-    path: ./cc-comprehend-understanding.md
+    path: ../cc-comprehend-understanding/SKILL.md
   - name: CC — Anchor (Architectural Coherence)
-    path: ./cc-anchor-coherence.md
+    path: ../cc-anchor-coherence/SKILL.md
   - name: CC — Circuit (Iteration Breaker)
-    path: ./cc-circuit-iteration-breaker.md
+    path: ../cc-circuit-iteration-breaker/SKILL.md
   - name: CC — Isolate (Systematic Debugging)
-    path: ./cc-isolate-debugging.md
+    path: ../cc-isolate-debugging/SKILL.md
   - name: CC — Secure (Security)
-    path: ./cc-secure-security.md
+    path: ../cc-secure-security/SKILL.md
   - name: Lean Principles (Muda Eradication)
-    path: ./lean-principles-muda.md
+    path: ../lean-principles-muda/SKILL.md
   - name: Value Stream Mapping (VSM)
-    path: ./vsm-value-stream-mapping.md
+    path: ../vsm-value-stream-mapping/SKILL.md
 ---
 
 # Ship: Production Readiness

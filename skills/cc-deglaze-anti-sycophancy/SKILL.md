@@ -10,19 +10,19 @@ references:
   - name: Crowd Control (Source Repo)
     url: https://github.com/newsbubbles/crowd_control
   - name: CC — Comprehend (Understanding Gate)
-    path: ./cc-comprehend-understanding.md
+    path: ../cc-comprehend-understanding/SKILL.md
   - name: CC — Anchor (Architectural Coherence)
-    path: ./cc-anchor-coherence.md
+    path: ../cc-anchor-coherence/SKILL.md
   - name: CC — Circuit (Iteration Breaker)
-    path: ./cc-circuit-iteration-breaker.md
+    path: ../cc-circuit-iteration-breaker/SKILL.md
   - name: CC — Isolate (Systematic Debugging)
-    path: ./cc-isolate-debugging.md
+    path: ../cc-isolate-debugging/SKILL.md
   - name: CC — Secure (Security)
-    path: ./cc-secure-security.md
+    path: ../cc-secure-security/SKILL.md
   - name: CC — Ship (Production Readiness)
-    path: ./cc-ship-production.md
+    path: ../cc-ship-production/SKILL.md
   - name: Hansei (Self-reflection)
-    path: ./hansei-self-reflection.md
+    path: ../hansei-self-reflection/SKILL.md
 ---
 
 # Deglaze: Anti-Sycophancy Protocol
