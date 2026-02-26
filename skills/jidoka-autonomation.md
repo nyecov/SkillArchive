@@ -1,7 +1,9 @@
 ---
 name: Jidoka (Autonomation)
 version: 1.1.0
-description: Automation with a human touch. Enables AI agents to autonomously detect abnormalities, halt operations, perform root-cause Hansei, and escalate via Hō-Ren-Sō to prevent cascading errors.
+description: >
+  Use when an abnormality, unexpected API response, or validation failure occurs during execution.
+  Handles autonomous halt, root-cause analysis, and structured human escalation.
 category: agent-safety
 tags: [jidoka, lean, ai-safety, escalation, monitoring]
 references:

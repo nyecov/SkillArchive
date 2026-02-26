@@ -1,7 +1,9 @@
 ---
 name: Hō-Ren-Sō (Report, Contact, Consult)
 version: 1.1.0
-description: The fundamental communication protocol for multi-agent systems and human-in-the-loop (HITL) synchronization. Structures escalations triggered by Jidoka and routine reporting for Shisa Kanko.
+description: >
+  Use when reporting progress, broadcasting state changes, or escalating ambiguous or blocked decisions to a human operator.
+  Handles structured reporting, factual notifications, and consultation-with-options formats.
 category: communication
 tags: [ho-ren-so, collaboration, hitl, reporting, coordination, lean]
 references:

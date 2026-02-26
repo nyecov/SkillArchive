@@ -1,7 +1,9 @@
 ---
 name: Shisa Kanko Software Engineering & Vibecoding
 version: 2.0.0
-description: A high-integrity master workflow unifying 'Pointing and Calling' with Lean principles (Jidoka, Poka-yoke, Hansei, KYT, Hō-Ren-Sō) to eliminate hallucinations, enforce safety, and systematize AI-assisted coding.
+description: >
+  Use when executing code changes, tool calls, or multi-step engineering tasks.
+  Handles context isolation, intent declaration, deterministic verification, and risk-gated execution through a phased lifecycle.
 category: software-engineering
 tags: [vibecoding, ai-safety, lean, shisa-kanko, jidoka, poka-yoke, hansei, kyt, ho-ren-so, agentic-workflows]
 references:

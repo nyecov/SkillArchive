@@ -1,7 +1,9 @@
 ---
 name: Kaizen (Continuous Improvement)
 version: 1.1.0
-description: The practice of continuous, incremental improvement. Enables agents to learn from past executions, Jidoka halts, and Hansei reflections to permanently optimize their own workflows.
+description: >
+  Use when a recurring error, structural bottleneck, or workflow inefficiency is identified.
+  Handles PDCA-based experiment design, controlled rollout, measurement, and permanent standard updates.
 category: continuous-improvement
 tags: [kaizen, optimization, learning, evolution, pdca, lean]
 references:

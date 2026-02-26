@@ -1,7 +1,9 @@
 ---
 name: Secure (Security for the Uninitiated)
 version: 1.0.0
-description: Practical security guardrails for vibe-coded applications — teaches the trust boundary model, provides concrete checklists for secrets, auth, authorization, input validation, and data exposure, and documents common real-world security fails.
+description: >
+  Use when implementing authentication, handling user input, storing secrets, or exposing API endpoints.
+  Handles trust boundary analysis, 5-domain security checklists (secrets, auth, authorization, input, data exposure), and common vulnerability patterns.
 category: agent-safety
 tags: [secure, security, trust-boundary, secrets, authentication, authorization, crowd-control]
 references:

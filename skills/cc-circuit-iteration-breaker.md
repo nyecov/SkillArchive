@@ -1,7 +1,9 @@
 ---
 name: Circuit (The Iteration Breaker)
 version: 1.0.0
-description: A circuit breaker protocol that detects iteration spirals — repeated failed fixes, scope explosion, and sunk-cost traps — and forces a Stop, Revert, or Restart decision before the codebase becomes unsalvageable.
+description: >
+  Use when the same bug persists after 3+ attempts, regressions match fixes, or time spent exceeds the iteration budget.
+  Handles circuit breaker triggers, Stop/Revert/Restart decisions, and iteration budgets.
 category: agent-safety
 tags: [circuit, iteration-breaker, halt, budget, sunk-cost, crowd-control]
 references:

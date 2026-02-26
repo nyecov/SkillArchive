@@ -1,7 +1,9 @@
 ---
 name: Lean Principles (Muda Eradication)
 version: 1.1.0
-description: The foundational philosophy of maximizing user value by relentlessly identifying and eliminating waste (Muda) in agentic workflows, prompts, and code generation.
+description: >
+  Use when a workflow feels slow, bloated, or produces unnecessary output.
+  Handles classification of 7 waste types (Muda), value definition, surgical elimination, and standardization of improvements.
 category: philosophy
 tags: [lean, muda, efficiency, optimization, value]
 references:

@@ -1,7 +1,9 @@
 ---
 name: Poka-yoke (Mistake-proofing)
 version: 1.1.0
-description: Design-level error prevention. Uses deterministic guardrails, schema enforcement, and state machines to make agentic errors impossible to execute, acting as the trigger for Jidoka and Hansei.
+description: >
+  Use when designing validation gates, enforcing schemas, or preventing invalid tool calls.
+  Handles deterministic guardrails, prerequisite interlocks, and state machine constraints.
 category: engineering-standards
 tags: [poka-yoke, guardrails, validation, deterministic, reliability, lean]
 references:

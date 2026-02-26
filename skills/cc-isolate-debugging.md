@@ -1,7 +1,9 @@
 ---
 name: Isolate (Systematic Debugging)
 version: 1.0.0
-description: A disciplined debugging protocol that replaces "debugging by vibes" with the scientific method — define symptoms precisely, locate boundaries, form single hypotheses, test with minimal changes, and interpret with evidence.
+description: >
+  Use when a bug is reported, unexpected behavior occurs, or a fix attempt has failed.
+  Handles 5-step hypothesis-driven debugging, binary search isolation, minimal reproduction, and single-variable testing.
 category: engineering-standards
 tags: [isolate, debugging, systematic, hypothesis, single-variable, crowd-control]
 references:

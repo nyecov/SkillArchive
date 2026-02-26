@@ -1,7 +1,9 @@
 ---
 name: Deglaze (Anti-Sycophancy Protocol)
 version: 1.0.0
-description: Strips false confidence and surface-level polish from AI-generated solutions by applying constraint pressure — five structured techniques that force ideas into hard edges and reveal comprehension gaps.
+description: >
+  Use when reviewing AI-generated solutions, validating user comprehension, or stress-testing proposals.
+  Handles 5 constraint-pressure techniques: Compression, Deletion, Adversary, Explain-to-Junior, and Rollback tests.
 category: cognition
 tags: [deglaze, anti-sycophancy, constraint-pressure, critical-thinking, crowd-control]
 references:

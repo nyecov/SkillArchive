@@ -1,7 +1,9 @@
 ---
 name: Comprehend (The Understanding Gate)
 version: 1.0.0
-description: A 4-level comprehension gate that prevents users from extending, debugging, or shipping code they cannot explain. Enforces understanding as a prerequisite to action.
+description: >
+  Use before debugging, extending, or shipping code the user cannot explain.
+  Handles 4-level comprehension gates, rubber duck escalation, and hard/soft enforcement modes.
 category: cognition
 tags: [comprehend, understanding, explanation, comprehension-debt, crowd-control]
 references:

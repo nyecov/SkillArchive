@@ -1,7 +1,9 @@
 ---
 name: Ship (Production Readiness)
 version: 1.0.0
-description: A production readiness protocol covering environment configuration, database setup, error handling, monitoring, deployment, and production security — ensuring "code is done" becomes "code is running reliably for users."
+description: >
+  Use when code is "feature complete" and approaching deployment, or when verifying production readiness.
+  Handles staging gates, 6-domain ship checklists, minimum viable production floor, and rollback planning.
 category: engineering-standards
 tags: [ship, production, deployment, monitoring, staging, crowd-control]
 references:

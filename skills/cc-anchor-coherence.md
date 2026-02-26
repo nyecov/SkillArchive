@@ -1,7 +1,9 @@
 ---
 name: Anchor (Architectural Coherence)
 version: 1.0.0
-description: Prevents architectural drift by establishing, enforcing, and evolving explicit design anchors that resist prompt pressure and context window amnesia.
+description: >
+  Use when starting a project, making architectural decisions, or when AI-suggested changes conflict with established patterns.
+  Handles anchor document creation, drift detection, anchor audits, and deliberate evolution of design decisions.
 category: engineering-standards
 tags: [anchor, architecture, coherence, drift-prevention, crowd-control]
 references:

@@ -1,7 +1,9 @@
 ---
 name: Value Stream Mapping (VSM)
 version: 1.1.0
-description: A diagnostic visualization tool to map the flow of logic, tokens, and data through an agentic system, used to identify bottlenecks and structural waste.
+description: >
+  Use when diagnosing slow workflows, high token consumption, or unexplained latency in multi-step tasks.
+  Handles current-state mapping, bottleneck identification, and future-state design for optimized flow.
 category: diagnostics
 tags: [vsm, mapping, architecture, bottlenecks, flow, lean]
 references:

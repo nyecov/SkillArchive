@@ -1,7 +1,9 @@
 ---
 name: KYT (Hazard Prediction)
 version: 1.1.0
-description: A 4-round proactive risk management protocol used by Critic Agents to identify hidden dangers and establish Poka-yoke interlocks before execution.
+description: >
+  Use before executing high-risk operations, destructive commands, or irreversible changes.
+  Handles 4-round hazard identification, countermeasure design, and Go/No-Go gating.
 category: risk-management
 tags: [kyt, hazard-prediction, safety, critic-agent, pre-mortem, lean]
 references:

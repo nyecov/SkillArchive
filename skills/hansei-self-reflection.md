@@ -1,7 +1,9 @@
 ---
 name: Hansei (Self-reflection)
 version: 1.1.0
-description: Deep, honest self-reflection for root-cause analysis and iterative refinement. Used during planning and post-Jidoka halts to ensure continuous improvement and accurate escalations.
+description: >
+  Use when a plan needs critical review, an execution has failed, or a recurring error pattern emerges.
+  Handles proactive plan critique, reactive root-cause analysis, and improvement proposals.
 category: cognition
 tags: [hansei, reflection, iterative-refinement, cognitive-bias, lean]
 references:
