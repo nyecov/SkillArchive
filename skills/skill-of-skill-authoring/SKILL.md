@@ -21,6 +21,8 @@ references:
     path: ../kaizen-continuous-improvement/SKILL.md
   - name: Poka-yoke (Mistake-proofing)
     path: ../poka-yoke-mistake-proofing/SKILL.md
+  - name: Tools Management Strategy
+    path: ../tools-management/SKILL.md
 ---
 
 # Skill of Skills: Meta-Skill Authoring Guide
@@ -177,6 +179,7 @@ When reviewing a skill, check for these failure modes:
    - **Functional test:** Run the same request 3–5 times, compare for structural consistency.
    - **Performance test:** Compare the task with and without the skill — if no improvement, simplify or reconsider.
 10. **Iterate via Kaizen.** Capture failures, tighten ambiguous instructions, and evolve the skill over time.
+11. **Update the Index.** Run `python generate_readme.py` in the archive root to rebuild the global directory and categorize your new skill.
 
 ## Quick Reference: Specification Constraints
 
@@ -192,6 +195,8 @@ STRUCTURE:
 FRONTMATTER (required in SKILL.md):
   name:        1-64 chars, lowercase, digits, hyphens only
   description: 1-1,024 chars, third person, trigger-oriented
+  category:    Primary grouping for the README index (e.g., architecture, diagnostics)
+  tags:        List of keywords for searchability (e.g., [memory, ontology])
 
 BODY:
   Target: <500 lines for standard skills, <200 words for frequently-loaded
