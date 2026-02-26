@@ -5,8 +5,6 @@ description: A high-integrity master workflow unifying 'Pointing and Calling' wi
 category: software-engineering
 tags: [vibecoding, ai-safety, lean, shisa-kanko, jidoka, poka-yoke, hansei, kyt, ho-ren-so, agentic-workflows]
 references:
-  - name: Shisa Kanko Architecture Report
-    url: https://docs.google.com/document/d/1TdP7WJTRgWYJJ5157Ug3vussKCUM9bU5frnkeQFeWYI/edit?usp=sharing
   - name: Jidoka (Autonomation)
     path: ./jidoka-autonomation.md
   - name: Poka-yoke (Mistake-proofing)
