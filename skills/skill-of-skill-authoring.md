@@ -1,6 +1,6 @@
 ---
 name: Skill of Skills (Meta-Skill Authoring)
-version: 1.0.0
+version: 1.1.0
 description: Use when creating, reviewing, or refining agent skills. Provides the authoritative checklist and workflow for writing high-efficiency, token-optimal skill files that activate reliably, follow progressive disclosure, and avoid common anti-patterns.
 category: meta
 tags: [meta-skill, skill-authoring, progressive-disclosure, token-efficiency, agent-skills]
@@ -9,6 +9,8 @@ references:
     url: https://blog.serghei.pl/posts/agent-skills-101/
   - name: 10 Practical Techniques (Shibui Yusuke)
     url: https://shibuiyusuke.medium.com/10-practical-techniques-for-mastering-agent-skills-in-ai-coding-agents-6070e4038cf1
+  - name: AI Agent Skills — What, Why, How (Somnio Software)
+    url: https://somniosoftware.com/blog/ai-agent-skills-what-they-are-why-they-matter-and-how-they-work
   - name: Agent Skills Open Specification
     url: https://agentskills.io
   - name: Shisa Kanko (Master Workflow)
@@ -23,7 +25,7 @@ references:
 
 # Skill of Skills: Meta-Skill Authoring Guide
 
-A skill is not a configuration file, not a prompt template, and not documentation. It is a **procedure** — a set of instructions that tells an agent how to accomplish a specific task the way your team does it. This meta-skill codifies the principles of writing skills that activate correctly, execute reliably, and use tokens efficiently.
+A skill is not a configuration file, not a prompt template, and not documentation. It is a **procedure** — a set of instructions that tells an agent how to accomplish a specific task the way your team does it. Skills represent a paradigm shift: from transient prompt instructions to **persistent capability modules**, from ad-hoc task handling to **repeatable, tested workflows**, from one-off interactions to **scalable agent infrastructure**. This meta-skill codifies the principles of writing skills that activate correctly, execute reliably, and use tokens efficiently.
 
 ## The Three-Stage Loading Model
 
@@ -122,6 +124,14 @@ Skills should work across platforms and operating systems.
 - Do not reference tool-specific commands (e.g., "Use Claude's Read tool"). Use generic instructions (e.g., "Read the file at `path/to/file`").
 - Skills should be **self-contained** — do not require network requests or `git clone` operations to function.
 
+### 6. Cross-Functional Design
+
+Skills are not limited to engineering workflows. Any team that has repeatable processes — marketing, operations, compliance, product — can author skills that encode institutional knowledge into executable capabilities.
+
+- Write skills for **any repeatable process**, not just code tasks: SEO checklists, campaign reviews, compliance procedures, user story validation.
+- Use **domain-specific trigger keywords** that match how each team describes their work (e.g., "content audit" not "text analysis").
+- Skills democratize structured intelligence — they bridge the gap between static documentation and executable action.
+
 ## Anti-Patterns Checklist
 
 When reviewing a skill, check for these failure modes:
@@ -176,3 +186,11 @@ DESCRIPTION DESIGN:
   ✅ Concrete keywords: "pytest" not "Python testing"
   ✅ Negative triggers: "Do NOT use for…"
 ```
+
+## Ecosystem & Discovery
+
+Skills are an **open standard** — not locked to any one agent platform. Browse and share skills:
+
+- **Specification:** [agentskills.io](https://agentskills.io)
+- **Marketplace:** [skillsmp.com](https://skillsmp.com/search)
+- **Directory:** [skills.sh](https://skills.sh/)
