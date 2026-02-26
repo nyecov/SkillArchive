@@ -1,66 +1,81 @@
 ---
 name: Shisa Kanko Software Engineering & Vibecoding
-version: 1.2.0
-description: A high-integrity development workflow applying the 'Pointing and Calling' principle to AI-assisted coding. Eliminates hallucinations via intentional friction, context isolation, and pre-mortem validation.
+version: 2.0.0
+description: A high-integrity master workflow unifying 'Pointing and Calling' with Lean principles (Jidoka, Poka-yoke, Hansei, KYT, Hō-Ren-Sō) to eliminate hallucinations, enforce safety, and systematize AI-assisted coding.
 category: software-engineering
-tags: [vibecoding, ai-safety, testing, shisa-kanko, agentic-workflows]
+tags: [vibecoding, ai-safety, lean, shisa-kanko, jidoka, poka-yoke, hansei, kyt, ho-ren-so, agentic-workflows]
 references:
   - name: Shisa Kanko Architecture Report
     url: https://docs.google.com/document/d/1TdP7WJTRgWYJJ5157Ug3vussKCUM9bU5frnkeQFeWYI/edit?usp=sharing
+  - name: Jidoka (Autonomation)
+    path: ./jidoka-autonomation.md
+  - name: Poka-yoke (Mistake-proofing)
+    path: ./poka-yoke-mistake-proofing.md
+  - name: Hansei (Self-reflection)
+    path: ./hansei-self-reflection.md
+  - name: KYT (Hazard Prediction)
+    path: ./kyt-hazard-prediction.md
+  - name: Hō-Ren-Sō (Communication)
+    path: ./ho-ren-so-communication.md
 ---
 
-# Shisa Kanko Software Engineering & Vibecoding
+# Shisa Kanko Engineering Master Workflow
 
-This skill implements the **Shisa Kanko (Pointing and Calling)** architecture. It transforms 'vibecoding' from intuitive execution into a deterministic engineering discipline by replacing automaticity with intentional friction.
+This master skill synthesizes the **Shisa Kanko (Pointing and Calling)** architecture with core Lean manufacturing principles. It transforms 'vibecoding' from intuitive execution into a rigorously safe, deterministic engineering discipline.
 
-## Core Mandates
+## Core Mandates & Constraints
 
-### 1. Precise Pointing (Isolation)
-Before any modification, you MUST 'point' to the target with high precision to lock the context.
-- **Action:** Output a `[TARGET_ISOLATION]` block.
-  - **Contents:** File path, line ranges, and the **Exact Code Snippet** being replaced.
-  - **Constraint:** Use the `read_file` tool immediately before this to ensure zero drift.
-- **Why:** Prevents 'lost-in-context' hallucinations and ensures the target hasn't moved or changed.
+### 1. Precise Pointing (Context Isolation)
+Before any modification, 'point' to the target with absolute precision.
+- **Action:** Output a `[TARGET_ISOLATION]` block containing the file path, line ranges, and the **Exact Code Snippet**.
+- **Poka-yoke Interlock:** If the snippet cannot be perfectly matched via a `read_file` check, you MUST NOT proceed to execution.
 
-### 2. Explicit Calling (Intent & Success Criteria)
-Never execute a tool call without 'calling out' the expected outcome and verification method.
-- **Action:** Output a `[LOGIC_DECLARATION]` block.
-  - **Intent:** What is the specific code change?
-  - **Success Criteria:** What *exactly* must happen for this to be considered successful?
-  - **Validation Method:** What command or visual check will verify the success? (e.g., `npm test`, `ls -l`).
-- **Why:** Forces 'System 2' reasoning and defines the finish line before the race starts.
+### 2. Explicit Calling (Intent & Success)
+Never execute a tool call without 'calling out' the expected outcome.
+- **Action:** Output a strictly formatted `[LOGIC_DECLARATION]` block:
+  - **Intent:** Specific code change.
+  - **Success Criteria:** What defines success.
+  - **Validation Method:** The exact command to verify success.
 
-### 3. Pre-Mortem (The Swiss Cheese Layer)
-Emulate a multi-agent workflow by performing a risk assessment.
-- **Action:** In the `[LOGIC_DECLARATION]`, include a `[RISK_ASSESSMENT]` line.
-  - **Question:** "If this change causes a regression, where is the most likely failure point?"
-  - **Mitigation:** What is the immediate recovery step?
+### 3. Jidoka (Autonomation & Self-Monitoring)
+Continuously monitor internal confidence and API responses.
+- **Action:** If an abnormality (e.g., mismatched schema, unexpected test output) occurs, trigger an immediate **Autonomous Halt** and freeze execution. Do not attempt blind guesses to fix it.
 
-## The High-Integrity Vibecoding Workflow
+## The High-Integrity Vibecoding Lifecycle
 
-### Phase A: Vibe Alignment (Intent)
-1. **Define the Vibe:** State the architectural goal (e.g., "Modular, typed, side-effect free").
-2. **Point:** Identify existing patterns that support this vibe.
-3. **Call:** Declare how the new feature preserves this vibe.
+### Phase A: Alignment & Reflection (Hansei)
+1. **Define the Vibe:** State the architectural goal.
+2. **Draft Plan:** Outline the technical implementation.
+3. **Hansei (Self-reflection):** Critically review the draft. "Identify three ways this plan could fail or introduce architectural rot."
+4. **Refine:** Incorporate countermeasures into the final plan.
 
-### Phase B: Deterministic Execution
-1. **Point:** Isolate the target (Phase 1).
-2. **Call:** Declare the logic and risk (Phase 2 & 3).
+### Phase B: Pre-Mortem Risk Assessment (KYT)
+Before executing Phase C, run the 4-round KYT protocol:
+1. **Hazard:** Identify the primary danger of the change.
+2. **Critical Point:** Identify the 'Point of No Return'.
+3. **Countermeasure:** Establish a mitigation step.
+4. **Action Target:** Create a binary Go/No-Go checklist.
+
+### Phase C: Deterministic Execution
+1. **Point:** Isolate the target (Mandate 1).
+2. **Call:** Declare logic and validation (Mandate 2).
 3. **Act:** Execute the surgical update.
-4. **Point (Re-verify):** Read the file back to ensure the replacement was perfect.
+4. **Point (Re-verify):** Read the file back to ensure perfect application.
 
-### Phase C: Multi-Sensory Verification
-1. **Reproduction:** Point to a failing test or broken state.
-2. **Execution:** Apply the fix.
-3. **Validation:** Run the validation command defined in 'Calling'.
-4. **Vibe Audit:** Confirm the output (logs, UI, or structure) *feels* correct and aligns with the Vibe Check.
+### Phase D: Multi-Sensory Verification
+1. **Validation:** Run the validation command defined in Phase C.
+2. **Vibe Audit:** Confirm the output (logs/UI) aligns with Phase A.
 
-## The "Red Stop" Protocol (HITL Trigger)
-You MUST stop and ask the user for confirmation if:
-1. **Discrepancy:** 'Pointing' reveals the codebase differs from your internal model.
-2. **High Risk:** The `[RISK_ASSESSMENT]` identifies a failure mode that is unrecoverable or affects core authentication/security.
-3. **Vibe Decay:** The only way to implement the feature requires "hacking" around the established architectural vibe.
+## Escalation & Communication (Hō-Ren-Sō)
+Replace silent failure or assumption-making with standardized communication.
+
+- **Hōkoku (Report):** Summarize successful completion of Phase D to the user.
+- **Renraku (Contact):** Broadcast any unexpected environmental changes (e.g., "Tests are failing locally").
+- **Sōdan (Consult) - The Red Stop Trigger:** You MUST halt and consult the user if:
+  - Jidoka detects an abnormality (e.g., missing dependencies).
+  - The KYT Pre-Mortem identifies unrecoverable risk.
+  - 'Pointing' reveals severe drift from your mental model.
 
 ## Path Rules
-- Internal references MUST use relative paths (e.g., `./templates/skill-template.md`).
+- Internal references MUST use relative paths.
 - External resources MUST use absolute URLs.
