@@ -101,6 +101,10 @@ Management and storage for AI agent skills.
 
 ### Meta
 
+- **[Skill External Synthesis](skills/skill-external-synthesis/SKILL.md)**
+  > Use when researching, designing, or authoring new agent skills. Guides the agent to search external repositories like the Claude Cookbook and Clawh...
+  > *Tags:* `#skill-authoring` `#synthesis` `#research` `#external-resources` `#clawhub`
+
 - **[Skill of Skills: Meta-Skill Authoring Guide](skills/skill-of-skill-authoring/SKILL.md)**
   > Use when creating, reviewing, or refining agent skills. Provides the authoritative checklist and workflow for writing high-efficiency, token-optima...
   > *Tags:* `#meta-skill` `#skill-authoring` `#progressive-disclosure` `#token-efficiency` `#agent-skills`
