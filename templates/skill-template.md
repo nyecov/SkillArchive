@@ -1,19 +1,16 @@
 ﻿---
-name: Skill Name
+name: skill-name-id
 version: 1.0.0
 description: A brief description of the skill's purpose and how it integrates with the broader agentic architecture.
 category: general
 tags: [tag1, tag2]
 references:
   - name: Shisa Kanko (Master Workflow)
-    path: ./shisa-kanko-vibecoding.md
-  - name: External Resource
-    url: https://github.com/example/repo
-  - name: Related Skill
-    path: ./related-skill.md
+    path: ../shisa-kanko-vibecoding/SKILL.md
 ---
 
 # Skill Name
+
 
 A concise paragraph explaining the skill's role in the agentic system and how it relates to other Lean principles.
 

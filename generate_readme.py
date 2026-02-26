@@ -6,19 +6,27 @@ from pathlib import Path
 SKILLS_DIR = Path("skills")
 README_PATH = Path("README.md")
 
-def parse_frontmatter(file_path):
+def parse_skill_file(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
     
     # Extract frontmatter between ---
-    match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
-    if match:
+    meta = {}
+    fm_match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
+    if fm_match:
         try:
-            frontmatter = yaml.safe_load(match.group(1))
-            return frontmatter
+            meta = yaml.safe_load(fm_match.group(1))
         except yaml.YAMLError as e:
             print(f"Error parsing YAML in {file_path}: {e}")
-    return {}
+
+    # Extract H1 title
+    title_match = re.search(r'^#\s+(.*)', content, re.MULTILINE)
+    if title_match:
+        meta['display_name'] = title_match.group(1).strip()
+    else:
+        meta['display_name'] = meta.get('name', 'Unknown Skill')
+        
+    return meta
 
 def main():
     if not SKILLS_DIR.exists():
@@ -31,7 +39,7 @@ def main():
     for skill_folder in sorted(os.listdir(SKILLS_DIR)):
         skill_file = SKILLS_DIR / skill_folder / "SKILL.md"
         if skill_file.is_file():
-            meta = parse_frontmatter(skill_file)
+            meta = parse_skill_file(skill_file)
             if meta:
                 meta['folder'] = skill_folder
                 meta['path'] = f"skills/{skill_folder}/SKILL.md"
@@ -76,8 +84,8 @@ def main():
     for category in sorted(grouped_skills.keys()):
         md_lines.append(f"### {category}")
         md_lines.append("")
-        for skill in sorted(grouped_skills[category], key=lambda x: x.get('name', '')):
-            name = skill.get('name', 'Unknown Skill')
+        for skill in sorted(grouped_skills[category], key=lambda x: x.get('display_name', '')):
+            name = skill.get('display_name', 'Unknown Skill')
             path = skill['path']
             desc = str(skill.get('description', '')).strip().replace('\n', ' ')
             # Truncate long descriptions slightly for readability
