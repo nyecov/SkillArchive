@@ -23,6 +23,8 @@ references:
     path: ../poka-yoke-mistake-proofing/SKILL.md
   - name: Tools Management Strategy
     path: ../tools-management/SKILL.md
+  - name: External Resource Synthesis
+    path: ../skill-external-synthesis/SKILL.md
 ---
 
 # Skill of Skills: Meta-Skill Authoring Guide

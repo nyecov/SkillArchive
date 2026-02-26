@@ -94,9 +94,17 @@ Management and storage for AI agent skills.
   > Use when starting a project, making architectural decisions, or when AI-suggested changes conflict with established patterns. Handles anchor docume...
   > *Tags:* `#anchor` `#architecture` `#coherence` `#drift-prevention` `#crowd-control`
 
+- **[Docker Engineering Standards](skills/cc-docker-engineering/SKILL.md)**
+  > Comprehensive Docker engineering standards.  Covers multi-stage builds, layer caching, BuildKit optimization, security (non-root), and production-g...
+  > *Tags:* `#docker` `#devops` `#multi-stage` `#BuildKit` `#security` `#optimization` `#production`
+
 - **[Isolate: Systematic Debugging](skills/cc-isolate-debugging/SKILL.md)**
   > Use when a bug is reported, unexpected behavior occurs, or a fix attempt has failed. Handles 5-step hypothesis-driven debugging, binary search isol...
   > *Tags:* `#isolate` `#debugging` `#systematic` `#hypothesis` `#single-variable` `#crowd-control`
+
+- **[Kubernetes Engineering Standards](skills/cc-kubernetes-engineering/SKILL.md)**
+  > Production-grade Kubernetes engineering standards.  Covers resource management, resilience (probes), security (PodSecurityContext), and manifest op...
+  > *Tags:* `#kubernetes` `#k8s` `#devops` `#orchestration` `#security` `#resilience` `#production`
 
 - **[Ship: Production Readiness](skills/cc-ship-production/SKILL.md)**
   > Use when code is "feature complete" and approaching deployment, or when verifying production readiness. Handles staging gates, 6-domain ship checkl...
