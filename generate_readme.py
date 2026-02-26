@@ -58,9 +58,15 @@ def main():
     # We will group by category, then list tags.
     from collections import defaultdict
     grouped_skills = defaultdict(list)
+    lean_skills = []
+
     for skill in skills:
-        cat = str(skill.get('category', 'Uncategorized')).title()
-        grouped_skills[cat].append(skill)
+        tags = [t.lower() for t in skill.get('tags', [])]
+        if 'lean' in tags:
+            lean_skills.append(skill)
+        else:
+            cat = str(skill.get('category', 'Uncategorized')).title()
+            grouped_skills[cat].append(skill)
 
     # Generate Markdown Content
     md_lines = [
@@ -80,6 +86,28 @@ def main():
         "## 📚 Skill Directory",
         ""
     ]
+
+    # Add Lean System Section first if it exists
+    if lean_skills:
+        md_lines.append("### ⛩️ Lean System")
+        md_lines.append("> Core methodologies based on Lean, Jidoka, and Kaizen principles.")
+        md_lines.append("")
+        for skill in sorted(lean_skills, key=lambda x: x.get('display_name', '')):
+            name = skill.get('display_name', 'Unknown Skill')
+            path = skill['path']
+            desc = str(skill.get('description', '')).strip().replace('\n', ' ')
+            if len(desc) > 150:
+                desc = desc[:147] + "..."
+            
+            tags = skill.get('tags', [])
+            tag_str = " ".join([f"`#{t}`" for t in tags])
+            
+            md_lines.append(f"- **[{name}]({path})**")
+            if desc:
+                md_lines.append(f"  > {desc}")
+            if tag_str:
+                md_lines.append(f"  > *Tags:* {tag_str}")
+            md_lines.append("")
 
     for category in sorted(grouped_skills.keys()):
         md_lines.append(f"### {category}")
