@@ -17,6 +17,12 @@ references:
     path: ./kyt-hazard-prediction.md
   - name: Hō-Ren-Sō (Communication)
     path: ./ho-ren-so-communication.md
+  - name: Kaizen (Continuous Improvement)
+    path: ./kaizen-continuous-improvement.md
+  - name: Lean Principles (Muda Eradication)
+    path: ./lean-principles-muda.md
+  - name: Value Stream Mapping (VSM)
+    path: ./vsm-value-stream-mapping.md
 ---
 
 # Shisa Kanko Engineering Master Workflow

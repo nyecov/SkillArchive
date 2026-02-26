@@ -15,6 +15,12 @@ references:
     path: ./hansei-self-reflection.md
   - name: KYT (Hazard Prediction)
     path: ./kyt-hazard-prediction.md
+  - name: Kaizen (Continuous Improvement)
+    path: ./kaizen-continuous-improvement.md
+  - name: Lean Principles (Muda Eradication)
+    path: ./lean-principles-muda.md
+  - name: Value Stream Mapping (VSM)
+    path: ./vsm-value-stream-mapping.md
 ---
 
 # Hō-Ren-Sō: Communication Standard for Agents

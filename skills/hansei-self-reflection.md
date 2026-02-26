@@ -15,6 +15,12 @@ references:
     path: ./kyt-hazard-prediction.md
   - name: Hō-Ren-Sō (Communication)
     path: ./ho-ren-so-communication.md
+  - name: Kaizen (Continuous Improvement)
+    path: ./kaizen-continuous-improvement.md
+  - name: Lean Principles (Muda Eradication)
+    path: ./lean-principles-muda.md
+  - name: Value Stream Mapping (VSM)
+    path: ./vsm-value-stream-mapping.md
 ---
 
 # Hansei: Agentic Self-Reflection
@@ -37,7 +43,8 @@ When a **Jidoka** halt is triggered (e.g., due to a failed **Poka-yoke** interlo
 ### 3. Improvement Planning & Escalation
 Hansei is only complete when an actionable improvement is proposed.
 - **Action:** Generate a revised plan or a set of options to resolve the root cause.
-- **Integration:** This analysis forms the core payload of the **Sōdan (Consult)** message sent via the **Hō-Ren-Sō** protocol, providing the human operator with the context needed to make an informed decision.
+- **Integration (Hō-Ren-Sō):** This analysis forms the core payload of the **Sōdan (Consult)** message sent via the **Hō-Ren-Sō** protocol, providing the human operator with the context needed to make an informed decision.
+- **Integration (Kaizen):** If the reflection reveals a *recurring* root cause — the same class of error appearing across multiple executions — escalate it to a **Kaizen** event to permanently update the workflow standard, rather than applying ad-hoc fixes each time.
 
 ## Implementation Workflow
 
