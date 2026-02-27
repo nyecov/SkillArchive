@@ -4,25 +4,25 @@ version: 1.0.0
 description: >
   Use to ensure situational awareness by observing the "Real Place" (the codebase). 
   Prioritizes empirical data over assumptions or model-cached knowledge.
-category: lean-principles
+category: cognition
 tags: [gemba, observation, facts, reality, lean]
 references:
   - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko-vibecoding/SKILL.md
+    path: ../shisa-kanko/SKILL.md
   - name: Genchi Genbutsu (Go and See)
     path: ../genchi-genbutsu/SKILL.md
 ---
 
-# Gemba (The Real Place)
+# Gemba (Static Observation)
 
-Gemba is the principle of going to the actual place where value is created. For an AI agent, the "Gemba" is the filesystem and the runtime environment. This skill prevents "Hallucination-by-Assumpton" by mandating direct observation of the source code.
+Gemba is the principle of going to the actual place where value is created. For an AI agent, the "Gemba" is the filesystem. This skill mandates **Static Observation** of the source code to prevent "Hallucination-by-Assumption."
 
 ## Core Mandates
 
-### 1. Direct Observation
-- **Action:** The agent MUST read the actual content of a file or directory before making any statement about its state or contents.
-- **Constraint:** NEVER rely on "memory" of a file from a previous turn or guess its structure based on its name.
-- **Integration:** Acts as a prerequisite for **Nemawashi** and **Poka-Yoke**.
+### 1. Static Observation
+- **Action:** The agent MUST read the actual bytes of a file or directory before making any statement about its state or contents.
+- **Constraint:** NEVER rely on "memory" of a file from a previous turn. Use `read_file`, `list_directory`, and `grep_search` to gather the facts.
+- **Integration:** Provides the factual baseline for **Nemawashi** and **Poka-Yoke**. Use **Genchi Genbutsu** for verifying the dynamic behavior of this code.
 
 ### 2. Situational Awareness
 - **Action:** When entering a new directory or module, perform a "Walk the Floor" (listing files, reading READMEs, checking `package.json` or equivalent) to understand the local context.

@@ -1,10 +1,11 @@
 ---
 name: toon-token-oriented-notation
 version: 1.1.0
+level: technical
 description: >
   Use when serializing structured data for LLM prompts, agent tool outputs, or AI pipeline payloads.
   Handles JSON-to-TOON conversion, format selection (TOON vs JSON vs CSV), tabular schema syntax, and token-cost optimization for uniform datasets.
-category: data-serialization
+category: architecture
 tags: [toon, token-optimization, data-format, json-alternative, llm-efficiency]
 references:
   - name: TOON Official Repository
@@ -16,9 +17,9 @@ references:
   - name: TOON Explained (freeCodeCamp)
     url: https://www.freecodecamp.org/news/what-is-toon-how-token-oriented-object-notation-could-change-how-ai-sees-data/
   - name: Lean Principles (Muda Eradication)
-    path: ../lean-principles-muda/SKILL.md
+    path: ../muda/SKILL.md
   - name: VSM (Value Stream Mapping)
-    path: ../vsm-value-stream-mapping/SKILL.md
+    path: ../vsm/SKILL.md
 ---
 
 # TOON Data Serialization

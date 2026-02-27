@@ -4,13 +4,13 @@ version: 1.0.0
 description: >
   Use to level the workload and prevent token/context spikes (Muri). 
   Handles the decomposition of massive tasks into manageable, consistent batches.
-category: lean-principles
+category: methodology
 tags: [heijunka, leveling, context-management, optimization, lean]
 references:
   - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko-vibecoding/SKILL.md
+    path: ../shisa-kanko/SKILL.md
   - name: VSM (Value Stream Mapping)
-    path: ../vsm-value-stream-mapping/SKILL.md
+    path: ../vsm/SKILL.md
 ---
 
 # Heijunka (Production Leveling)

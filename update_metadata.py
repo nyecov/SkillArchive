@@ -10,6 +10,7 @@ CONFIG_FILE = os.path.join(ROOT_DIR, "skills-config.json")
 def main():
     all_categories = set()
     all_tags = set()
+    all_levels = set()
 
     print("Scanning skills for metadata...")
     # Iterate through source skills
@@ -34,6 +35,10 @@ def main():
                         if category:
                             all_categories.add(category)
                         
+                        level = metadata.get('level')
+                        if level:
+                            all_levels.add(level)
+                        
                         tags = metadata.get('tags', [])
                         if isinstance(tags, list):
                             for tag in tags:
@@ -55,7 +60,8 @@ def main():
     config["_discovery_reference"] = {
         "HELP": "This section is auto-generated and serves as a reference for available options.",
         "available_categories": sorted(list(all_categories)),
-        "available_tags": sorted(list(all_tags))
+        "available_tags": sorted(list(all_tags)),
+        "available_levels": sorted(list(all_levels))
     }
 
     # Save back to config file
@@ -63,7 +69,7 @@ def main():
         json.dump(config, f, indent=2)
     
     print(f"Updated {CONFIG_FILE} with discovery metadata.")
-    print(f"Found {len(all_categories)} categories and {len(all_tags)} unique tags.")
+    print(f"Found {len(all_categories)} categories, {len(all_levels)} levels, and {len(all_tags)} unique tags.")
 
 if __name__ == "__main__":
     main()

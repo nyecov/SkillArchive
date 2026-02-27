@@ -4,13 +4,13 @@ version: 1.0.0
 description: >
   Use to lay the groundwork for changes through impact analysis and consensus building. 
   Ensures all dependencies are identified and stakeholders are aligned before a "Directive" is executed.
-category: lean-principles
+category: methodology
 tags: [nemawashi, consensus, alignment, impact-analysis, lean]
 references:
   - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko-vibecoding/SKILL.md
+    path: ../shisa-kanko/SKILL.md
   - name: Ho-Ren-So (Communication)
-    path: ../ho-ren-so-communication/SKILL.md
+    path: ../ho-ren-so/SKILL.md
 ---
 
 # Nemawashi (Foundation Building)

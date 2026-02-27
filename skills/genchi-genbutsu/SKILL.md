@@ -4,25 +4,25 @@ version: 1.0.0
 description: >
   Use to "Go and See for Yourself." Mandates empirical verification of all hypotheses 
   and findings through direct execution and testing.
-category: lean-principles
+category: methodology
 tags: [genchi-genbutsu, verification, facts, testing, lean]
 references:
   - name: Gemba (The Real Place)
     path: ../gemba/SKILL.md
   - name: Poka-Yoke (Mistake Proofing)
-    path: ../poka-yoke-mistake-proofing/SKILL.md
+    path: ../poka-yoke/SKILL.md
 ---
 
-# Genchi Genbutsu (Go and See)
+# Genchi Genbutsu (Dynamic Verification)
 
-Genchi Genbutsu means going to the source to find the facts to make correct decisions. For an AI agent, this means **empirical validation**. Don't just "think" the code works or "think" a bug exists—run the code and see for yourself.
+Genchi Genbutsu means going to the source to find the facts. For an AI agent, this means **Dynamic Verification**. Don't just "think" the code works — run the code and see for yourself.
 
 ## Core Mandates
 
-### 1. Empirical Validation
-- **Action:** Before claiming a bug is fixed, the agent MUST run a reproduction script or an automated test that specifically targeted the failure.
+### 1. Dynamic Verification
+- **Action:** Before claiming a bug is fixed or a feature is complete, the agent MUST run the code or a test that specifically targets the behavior.
 - **Constraint:** NEVER say "the code should now work" without having observed a successful execution or test run.
-- **Integration:** Directly supports **Poka-Yoke** by providing the proof of "Proofing."
+- **Integration:** Directly supports **Poka-Yoke** by providing the proof of "Proofing." Use **Gemba** to observe the static state of the codebase before and after execution.
 
 ### 2. Fact-Based Decision Making
 - **Action:** If a tool output is ambiguous, the agent MUST "Go and See" by adding logging, running a debugger, or using more specific search patterns to gather the *facts*.

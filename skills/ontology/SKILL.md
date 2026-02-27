@@ -8,7 +8,7 @@ category: architecture
 tags: [memory, ontology, knowledge-graph, dependencies, architecture, state]
 references:
   - name: MCP Integration Governance
-    path: ../mcp-integration-governance/SKILL.md
+    path: ../mcp-governance/SKILL.md
 ---
 
 # Ontology (Structured Agent Memory)

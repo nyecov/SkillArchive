@@ -4,11 +4,11 @@ version: 1.0.0
 description: >
   Use when deciding whether to implement an abstraction as a cognitive Skill, an MCP Server, or a low-level Tool (script).
   Handles the boundary between high-level reasoning methodologies and low-level task automation, framework patterns, and API wrappers.
-category: architecture
+category: meta
 tags: [tools, automation, scripts, mcp, delegation, architecture]
 references:
   - name: MCP Integration Governance
-    path: ../mcp-integration-governance/SKILL.md
+    path: ../mcp-governance/SKILL.md
   - name: Skill of Skills (Meta-Skill)
     path: ../skill-of-skill-authoring/SKILL.md
 ---

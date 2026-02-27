@@ -1,12 +1,13 @@
 ﻿---
 name: skill-name-id
 version: 1.0.0
+level: methodology | tactical | technical
 description: A brief description of the skill's purpose and how it integrates with the broader agentic architecture.
 category: general
 tags: [tag1, tag2]
 references:
   - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko-vibecoding/SKILL.md
+    path: ../shisa-kanko/SKILL.md
 ---
 
 # Skill Name

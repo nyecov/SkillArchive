@@ -10,17 +10,17 @@ references:
   - name: Skill Template
     path: ./templates/skill-template.md
   - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko-vibecoding/SKILL.md
+    path: ../shisa-kanko/SKILL.md
   - name: Lean Principles (Muda Eradication)
-    path: ../lean-principles-muda/SKILL.md
+    path: ../muda/SKILL.md
   - name: Kaizen (Continuous Improvement)
-    path: ../kaizen-continuous-improvement/SKILL.md
+    path: ../kaizen/SKILL.md
   - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke-mistake-proofing/SKILL.md
+    path: ../poka-yoke/SKILL.md
   - name: Tools Management Strategy
     path: ../tools-management/SKILL.md
   - name: External Resource Synthesis
-    path: ../skill-external-synthesis/SKILL.md
+    path: ../external-synthesis/SKILL.md
 ---
 
 # Skill Authoring & Management (SAM)
@@ -36,6 +36,10 @@ Every skill in the library MUST adhere to these structural and qualitative requi
 - **version**: Semantic versioning (e.g., `1.0.0`), incremented with every change.
 - **description**: Trigger-oriented. NOT a summary. States *when* to activate.
 - **category**: Functional grouping for the library index.
+- **level**: Cognitive depth of the skill:
+  - `methodology`: High-level cognitive frameworks (e.g., Lean, Shisa Kanko).
+  - `tactical`: Engineering procedures and task-level workflows (e.g., Debugging, Security).
+  - `technical`: Standardized specifications or data formats (e.g., TOON, Docker).
 - **references**: Use relative paths (`../other-skill/SKILL.md`) for internal links.
 
 ### 2. Standard Markdown Sections
