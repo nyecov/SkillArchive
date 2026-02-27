@@ -15,7 +15,7 @@ references:
   url: https://platform.claude.com/cookbook/
 - name: Clawhub (Skills)
   url: https://clawhub.ai/skills?sort=downloads
-level: meta
+level: methodology
 ---
 
 # Skill External Synthesis

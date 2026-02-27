@@ -1,7 +1,7 @@
 ---
 name: gemba
 version: 1.1.0
-level: cognition
+level: methodology
 description: Use to establish a factual baseline of the codebase. Mandates direct
   observation before reasoning.
 category: cognition

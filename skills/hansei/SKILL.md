@@ -24,7 +24,7 @@ references:
   path: ../lean-foundations/SKILL.md
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
-level: cognition
+level: methodology
 ---
 
 # Hansei: Agentic Self-Reflection

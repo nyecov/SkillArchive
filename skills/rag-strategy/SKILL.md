@@ -1,7 +1,7 @@
 ---
 name: rag-strategy
 version: 1.0.0
-level: cognition
+level: tactical
 description: 'Optimization of Retrieval-Augmented Generation.  Focuses on minimizing
   "Search Waste" (Motion Muda) by ensuring high-signal context retrieval and efficient
   chunking.\'

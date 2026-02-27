@@ -1,7 +1,7 @@
 ---
 name: jidoka
 version: 1.2.0
-level: safety
+level: methodology
 description: Use when an abnormality, error, validation failure, or workflow loop occurs. Mandates an autonomous halt and root-cause analysis.
 category: safety
 tags:

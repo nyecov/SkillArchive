@@ -23,7 +23,7 @@ references:
   path: ../ship-production/SKILL.md
 - name: Hansei (Self-reflection)
   path: ../hansei/SKILL.md
-level: cognition
+level: tactical
 ---
 
 # Deglaze: Anti-Sycophancy (Tactical Toolkit)

@@ -24,7 +24,7 @@ references:
   path: ../lean-foundations/SKILL.md
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
-level: safety
+level: methodology
 requires:
 - poka-yoke
 ---

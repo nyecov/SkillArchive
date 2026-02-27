@@ -52,6 +52,10 @@ Management and storage for AI agent skills.
   > Use when a plan fails, a bug is found, or a post-mortem is needed. Mandates 5-Whys root-cause analysis.
   > *Tags:* `#cognition` `#methodology`
 
+- **[Plan with Files](skills/plan-with-files/SKILL.md)**
+  > Implements file-based planning to organize and track progress on complex tasks using persistent markdown files as working memory on disk.
+  > *Tags:* `#methodology` `#context` `#cognition`
+
 - **[RAG Strategy: Context Optimization](skills/rag-strategy/SKILL.md)**
   > Optimization of Retrieval-Augmented Generation.  Focuses on minimizing "Search Waste" (Motion Muda) by ensuring high-signal context retrieval and e...
   > *Tags:* `#context` `#optimization`
@@ -68,6 +72,14 @@ Management and storage for AI agent skills.
 
 - **[Ship: Production Readiness](skills/ship-production/SKILL.md)**
   > Use when code is "feature complete" and approaching deployment, or when verifying production readiness. Handles staging gates, 6-domain ship checkl...
+
+- **[Test-Driven Development (TDD)](skills/test-driven-development/SKILL.md)**
+  > Use when implementing any feature or bugfix, before writing implementation code. Enforces the strict Red-Green-Refactor loop.
+  > *Tags:* `#engineering` `#testing` `#methodology`
+
+- **[Verification Before Completion](skills/verification-before-completion/SKILL.md)**
+  > Use when about to claim work is complete, fixed, or passing, before committing or creating PRs. Requires running verification commands and confirmi...
+  > *Tags:* `#safety` `#engineering` `#debugging`
 
 ### Meta
 
@@ -86,11 +98,11 @@ Management and storage for AI agent skills.
 ### Methodology
 
 - **[Genchi Genbutsu (Dynamic Verification)](skills/genchi-genbutsu/SKILL.md)**
-  > Use to "Go and See for Yourself." Mandates empirical verification of all hypotheses  and findings through direct execution and testing.
+  > Use to "Go and See for Yourself." Mandates empirical verification of all hypotheses  and findings through direct execution and testing.\
   > *Tags:* `#methodology` `#research` `#testing`
 
 - **[Heijunka (Production Leveling)](skills/heijunka/SKILL.md)**
-  > Use to level the workload and prevent token/context spikes (Muri).  Handles the decomposition of massive tasks into manageable, consistent batches.
+  > Use to level the workload and prevent token/context spikes (Muri).  Handles the decomposition of massive tasks into manageable, consistent batches.\
   > *Tags:* `#methodology` `#optimization`
 
 - **[Hō-Ren-Sō: Communication Standard for Agents](skills/ho-ren-so/SKILL.md)**
@@ -136,7 +148,7 @@ Management and storage for AI agent skills.
   > *Tags:* `#methodology` `#safety`
 
 - **[Red-Teaming Tactics](skills/red-teaming-tactics/SKILL.md)**
-  > Adversarial stress-testing for security and logic.  Use to identify bypasses, edge-case failures, and "happy-path" biases in proposed implementations.
+  > Adversarial stress-testing for security and logic.  Use to identify bypasses, edge-case failures, and "happy-path" biases in proposed implementatio...
   > *Tags:* `#safety` `#security`
 
 - **[Secure: Security for the Uninitiated](skills/secure-security/SKILL.md)**
@@ -145,6 +157,9 @@ Management and storage for AI agent skills.
 
 ## 🛠️ Tools Directory
 > Standalone, low-level execution scripts. See [Tools Management Strategy](skills/tools-management/SKILL.md).
+
+- **[context-heijunka](tools/context-heijunka)**
+  > This tool implements the **Heijunka (Production Leveling)** and **Swarm Orchestration** principles to prevent LLM context overburden (Muri) when analyzing external repositories.
 
 - **[docx-tools](tools/docx-tools)**
   > A Python automation script using `python-docx` to read and generate Word documents programmatically.

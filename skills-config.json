@@ -43,6 +43,7 @@
       "context",
       "debugging",
       "design",
+      "engineering",
       "kubernetes",
       "leadership",
       "mcp",
@@ -55,10 +56,7 @@
       "testing"
     ],
     "available_levels": [
-      "cognition",
-      "meta",
       "methodology",
-      "safety",
       "tactical",
       "technical"
     ]

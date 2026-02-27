@@ -22,7 +22,7 @@ references:
   path: ../tools-management/SKILL.md
 - name: External Resource Synthesis
   path: ../external-synthesis/SKILL.md
-level: meta
+level: methodology
 ---
 
 # Skill Authoring & Management (SAM)

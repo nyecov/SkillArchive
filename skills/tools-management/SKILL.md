@@ -15,7 +15,7 @@ references:
   path: ../interface-governance/SKILL.md
 - name: Skill of Skills (Meta-Skill)
   path: ../skill-authoring-management/SKILL.md
-level: meta
+level: methodology
 ---
 
 # Tools Management Strategy
