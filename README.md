@@ -1,6 +1,6 @@
 # 📚 Skill Archive
 
-The authoritative index of methodologies, cognitive frameworks, and architectural protocols for agentic workflows.
+A comprehensive library of AI agent skills and cognitive frameworks, structurally organized around Lean manufacturing, Kaizen continuous improvement, and Toyota Production System (TPS) methodologies.
 
 ## 📂 Repository Structure
 
