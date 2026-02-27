@@ -63,7 +63,43 @@ Images MUST be self-describing and architecture-aware.
 - **Action:** Use OCI labels for traceability (e.g., `LABEL org.opencontainers.image.source=...`).
 - **Action:** Use `ARG` for platform-specific builds if the image will run on multiple architectures (AMD64/ARM64).
 
+### 7. Signal-Aware Entrypoints (Clean Exit)
+Entrypoints MUST handle termination signals (`SIGTERM`) correctly to avoid 10-second wait times and zombie processes.
+
+- **Action:** ALWAYS use the **Exec Form** (`["executable", "param"]`) for `CMD` and `ENTRYPOINT`.
+- **Constraint:** DO NOT use the "Shell Form" (raw string) as it wraps the process in `/bin/sh -c`, which does not forward signals.
+
+### 8. Immutable Executables & Reduced Capabilities
+The runtime environment MUST be hardened against runtime modification.
+
+- **Action:** Ensure executables and system files are owned by `root` and are NOT world-writable, even when running as a non-root user.
+- **Action:** Use `distroless` or `scratch` for compiled binaries to eliminate shell-based attack vectors.
+- **Constraint:** Drop all Linux capabilities (`--cap-drop=ALL`) at runtime unless specific ones are required.
+
+### 9. Stream-Based Observability
+Logging MUST follow the Twelve-Factor App methodology.
+
+- **Action:** Log everything to `stdout` and `stderr`.
+- **Constraint:** DO NOT log to files inside the container; this complicates log rotation and persistence.
+
 ## Implementation Patterns
+
+### Go (Distroless) Example
+```dockerfile
+# syntax=docker/dockerfile:1
+FROM golang:1.22-alpine AS builder
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+
+FROM gcr.io/distroless/static-debian12
+COPY --from=builder /app/main /main
+# Immutable: Owned by root, executed by non-root
+USER 65532:65532
+ENTRYPOINT ["/main"]
+```
 
 ### Python (Poetry) Example
 ```dockerfile
@@ -71,7 +107,8 @@ Images MUST be self-describing and architecture-aware.
 FROM python:3.12-slim AS builder
 WORKDIR /app
 RUN --mount=type=cache,target=/var/cache/apt \
-    apt-get update && apt-get install -y build-essential
+    apt-get update && \
+    apt-get install -y --no-install-recommends build-essential
 RUN pip install poetry
 COPY pyproject.toml poetry.lock ./
 RUN --mount=type=cache,target=/root/.cache/pypoetry \
@@ -80,10 +117,13 @@ RUN --mount=type=cache,target=/root/.cache/pypoetry \
 FROM python:3.12-slim
 WORKDIR /app
 COPY --from=builder /app/.venv /app/.venv
-ENV PATH="/app/.venv/bin:$PATH"
+ENV PATH="/app/.venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1
 COPY src/ src/
+# Non-root UID
 USER 1000
-CMD ["python", "-m", "src.main"]
+ENTRYPOINT ["python"]
+CMD ["-m", "src.main"]
 ```
 
 ## Escalation & Halting
