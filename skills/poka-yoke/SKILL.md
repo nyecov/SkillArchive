@@ -1,13 +1,15 @@
 ---
 name: poka-yoke
 version: 1.1.0
-description: 'Use when designing validation gates, enforcing schemas, or preventing
+description: Use when designing validation gates, enforcing schemas, or preventing
   invalid tool calls. Handles deterministic guardrails, prerequisite interlocks, and
-  state machine constraints.\'
+  state machine constraints.\
 category: safety
 tags:
 - methodology
 - safety
+- lean
+- TPS
 references:
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
@@ -27,8 +29,7 @@ references:
   path: ../vsm/SKILL.md
 level: methodology
 ---
-
-# Poka-yoke: Mistake-proofing AI Workflows
+# Poka-yoke
 
 Poka-yoke focuses on 'fail-safe' mechanisms that prevent errors from occurring rather than just detecting them after the fact. In an agentic system, Poka-yoke constraints act as the physical "interlocks" that enforce the rules established by other Lean protocols.
 

@@ -13,7 +13,10 @@
     "research",
     "context",
     "communication",
-    "optimization"
+    "optimization",
+    "TPS",
+    "kaizen",
+    "lean"
   ],
   "allowed_categories": [
     "methodology",
@@ -37,6 +40,7 @@
       "safety"
     ],
     "available_tags": [
+      "TPS",
       "architecture",
       "cognition",
       "communication",
@@ -44,8 +48,10 @@
       "debugging",
       "design",
       "engineering",
+      "kaizen",
       "kubernetes",
       "leadership",
+      "lean",
       "mcp",
       "meta",
       "methodology",

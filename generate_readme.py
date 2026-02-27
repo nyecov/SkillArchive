@@ -54,88 +54,75 @@ def main():
                     
                 skills.append(meta)
 
-    # Group by Category (or you could group by Primary Tag)
-    # We will group by category, then list tags.
+    # Group by Category
     from collections import defaultdict
     grouped_skills = defaultdict(list)
-    lean_skills = []
+
+    # Dictionary of emojis for categories
+    category_emojis = {
+        'Architecture': '🏗️',
+        'Cognition': '🧠',
+        'Engineering': '⚙️',
+        'Meta': '🔄',
+        'Methodology': '📐',
+        'Safety': '🛡️'
+    }
 
     for skill in skills:
-        tags = [t.lower() for t in skill.get('tags', [])]
-        if 'lean' in tags:
-            lean_skills.append(skill)
-        else:
-            cat = str(skill.get('category', 'Uncategorized')).title()
-            grouped_skills[cat].append(skill)
+        cat = str(skill.get('category', 'Uncategorized')).title()
+        grouped_skills[cat].append(skill)
 
     # Generate Markdown Content
     md_lines = [
-        "# Skill Archive",
+        "# 📚 Skill Archive",
         "",
-        "Management and storage for AI agent skills.",
+        "The authoritative index of methodologies, cognitive frameworks, and architectural protocols for agentic workflows.",
         "",
-        "## Structure",
-        "- `skills/`: Markdown skill files with YAML frontmatter. Contains high-level cognitive methodologies.",
-        "- `tools/`: Low-level standalone execution scripts (Bash/Python).",
-        "- `templates/`: Standard formats for new skills.",
+        "## 📂 Repository Structure",
         "",
-        "## Rules",
-        "- All paths within the project MUST be relative.",
-        "- Absolute paths are ONLY allowed if they point to external repositories.",
+        "| Directory | Purpose |",
+        "|-----------|---------|",
+        "| `skills/` | High-level cognitive methodologies and tactical frameworks (Markdown + YAML frontmatter). |",
+        "| `tools/` | Low-level, standalone execution scripts (Bash/Python). |",
+        "| `templates/`| Standardized formatting templates for new skills. |",
         "",
-        "## 📚 Skill Directory",
+        "## 📋 Skill Index",
         ""
     ]
 
-    # Add Lean System Section first if it exists
-    if lean_skills:
-        md_lines.append("### ⛩️ Lean System")
-        md_lines.append("> Core methodologies based on Lean, Jidoka, and Kaizen principles.")
-        md_lines.append("")
-        for skill in sorted(lean_skills, key=lambda x: x.get('display_name', '')):
-            name = skill.get('display_name', 'Unknown Skill')
-            path = skill['path']
-            desc = str(skill.get('description', '')).strip().replace('\n', ' ')
-            if len(desc) > 150:
-                desc = desc[:147] + "..."
-            
-            tags = skill.get('tags', [])
-            tag_str = " ".join([f"`#{t}`" for t in tags])
-            
-            md_lines.append(f"- **[{name}]({path})**")
-            if desc:
-                md_lines.append(f"  > {desc}")
-            if tag_str:
-                md_lines.append(f"  > *Tags:* {tag_str}")
-            md_lines.append("")
-
     for category in sorted(grouped_skills.keys()):
-        md_lines.append(f"### {category}")
+        emoji = category_emojis.get(category, '📌')
+        md_lines.append(f"### {emoji} {category}")
         md_lines.append("")
+        md_lines.append("| Skill | Description | Tags |")
+        md_lines.append("|-------|-------------|------|")
+        
         for skill in sorted(grouped_skills[category], key=lambda x: x.get('display_name', '')):
             name = skill.get('display_name', 'Unknown Skill')
             path = skill['path']
-            desc = str(skill.get('description', '')).strip().replace('\n', ' ')
-            # Truncate long descriptions slightly for readability
-            if len(desc) > 150:
-                desc = desc[:147] + "..."
+            # Clean up description (remove newlines, escape pipes if any)
+            desc = str(skill.get('description', '')).strip().replace('\n', ' ').replace('|', '\\|')
+            
+            # Truncate long descriptions for table readability
+            if len(desc) > 120:
+                desc = desc[:117] + "..."
             
             tags = skill.get('tags', [])
-            tag_str = " ".join([f"`#{t}`" for t in tags])
+            tag_str = " ".join([f"`{t}`" for t in tags])
             
-            md_lines.append(f"- **[{name}]({path})**")
-            if desc:
-                md_lines.append(f"  > {desc}")
-            if tag_str:
-                md_lines.append(f"  > *Tags:* {tag_str}")
-            md_lines.append("")
+            md_lines.append(f"| **[{name}]({path})** | {desc} | {tag_str} |")
+        md_lines.append("")
 
     # Add Tools Section
     tools_dir = Path("tools")
     if tools_dir.exists():
-        md_lines.append("## 🛠️ Tools Directory")
-        md_lines.append("> Standalone, low-level execution scripts. See [Tools Management Strategy](skills/tools-management/SKILL.md).")
+        md_lines.append("## 🛠️ Tools Index")
         md_lines.append("")
+        md_lines.append("> Standalone, low-level execution scripts. See the [Tools Management Strategy](skills/tools-management/SKILL.md).")
+        md_lines.append("")
+        md_lines.append("| Tool | Description |")
+        md_lines.append("|------|-------------|")
+        
         for tool_folder in sorted(os.listdir(tools_dir)):
             tool_path = tools_dir / tool_folder
             if tool_path.is_dir():
@@ -148,13 +135,11 @@ def main():
                         for line in lines:
                             line = line.strip()
                             if line and not line.startswith('#') and not line.startswith('**'):
-                                desc_text = line
+                                desc_text = line.replace('|', '\\|')
                                 break
                 
-                md_lines.append(f"- **[{tool_folder}](tools/{tool_folder})**")
-                if desc_text:
-                    md_lines.append(f"  > {desc_text}")
-                md_lines.append("")
+                md_lines.append(f"| **[{tool_folder}](tools/{tool_folder})** | {desc_text} |")
+        md_lines.append("")
 
     new_readme_content = "\n".join(md_lines)
     

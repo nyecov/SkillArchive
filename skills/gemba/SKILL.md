@@ -9,6 +9,8 @@ tags:
 - context
 - methodology
 - research
+- lean
+- TPS
 references:
 - name: RAG Strategy
   path: ../rag-strategy/SKILL.md
@@ -20,8 +22,7 @@ requires:
 - rag-strategy
 - ontology
 ---
-
-# Gemba: The Cognitive Context Engine
+# Gemba
 
 Gemba is the "Real Place." This skill mandates that the agent establish a verified factual baseline before any reasoning. It orchestrates three modes of discovery:
 

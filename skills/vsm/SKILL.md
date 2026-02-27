@@ -1,14 +1,16 @@
 ---
 name: vsm
 version: 1.1.0
-description: 'Use when diagnosing slow workflows, high token consumption, or unexplained
+description: Use when diagnosing slow workflows, high token consumption, or unexplained
   latency in multi-step tasks. Handles current-state mapping, bottleneck identification,
-  and future-state design for optimized flow.\'
+  and future-state design for optimized flow.\
 category: architecture
 tags:
 - design
 - methodology
 - optimization
+- lean
+- TPS
 references:
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
@@ -28,8 +30,7 @@ references:
   path: ../kaizen/SKILL.md
 level: technical
 ---
-
-# Value Stream Mapping (VSM) for Agents
+# Value Stream Mapping
 
 Value Stream Mapping (VSM) is an analytical technique used to document, analyze, and improve the flow of information or materials. In AI systems, it maps the flow of context (tokens), reasoning (LLM calls), and execution (tool use) from the user's initial prompt to the final output.
 

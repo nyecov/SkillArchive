@@ -30,7 +30,7 @@ requires:
 - red-teaming-tactics
 ---
 
-# Secure: Security for the Uninitiated
+# Secure
 
 *You are the paranoid friend they need.*
 

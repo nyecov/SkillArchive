@@ -18,7 +18,7 @@ references:
 level: methodology
 ---
 
-# Skill External Synthesis
+# External Synthesis
 
 A skill for extending the internal knowledge base by leveraging established patterns from the global agent ecosystem. This skill acts as a research phase for `skill-of-skill-authoring`, ensuring that new skills are not built in a vacuum but are synthesized from the best available community practices.
 

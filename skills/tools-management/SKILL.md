@@ -18,7 +18,7 @@ references:
 level: methodology
 ---
 
-# Tools Management Strategy
+# Tools Management
 
 The agent ecosystem is flooded with "skills" that are actually just low-level automation scripts, specific API wrappers, or framework-specific rules (e.g., "Playwright Tester", "Vercel React Guidelines", "PDF Generator"). 
 

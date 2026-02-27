@@ -30,7 +30,7 @@ references:
   path: ../genchi-genbutsu/SKILL.md
 ---
 
-# MCP & API-Design-First Governance
+# Interface Governance
 
 The Model Context Protocol (MCP) is the open standard for connecting AI agents to external tools, data sources, and services. In Vibe Coding and Agentic development, the MCP server is the **Sovereign Interface**—it is the only way the agent interacts with the world. This skill governs the design-first approach to building and verifying interfaces optimized for LLM discoverability, reasoning, and reliability.
 

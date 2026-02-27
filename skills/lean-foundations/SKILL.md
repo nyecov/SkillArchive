@@ -1,11 +1,15 @@
 ---
 name: lean-foundations
 version: 1.1.0
-description: Foundational Lean principles for stabilizing workflows through the 3 Ms (Mura, Muri, Muda) and the 5S framework. Focuses on maximizing value by surgically eliminating 7 types of agentic waste.
+description: Foundational Lean principles for stabilizing workflows through the 3
+  Ms (Mura, Muri, Muda) and the 5S framework. Focuses on maximizing value by surgically
+  eliminating 7 types of agentic waste.
 category: methodology
 tags:
 - methodology
 - optimization
+- lean
+- TPS
 references:
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
@@ -17,8 +21,7 @@ references:
   path: ../vsm/SKILL.md
 level: methodology
 ---
-
-# Lean Foundations: Stability through 3M & 5S
+# Lean Foundations
 
 Lean focuses on maximizing deterministic output value while minimizing computational, temporal, and cognitive waste. This is achieved through identifying the **3 Ms** (Mura, Muri, Muda) and maintaining a disciplined workspace with the **5S** framework.
 

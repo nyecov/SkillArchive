@@ -29,7 +29,7 @@ references:
 level: tactical
 ---
 
-# Deglaze: Anti-Sycophancy (Tactical Toolkit)
+# Deglaze
 
 *Strip the polish. Reveal the substrate.*
 

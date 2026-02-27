@@ -1,13 +1,15 @@
 ---
 name: ho-ren-so
 version: 1.1.0
-description: 'Use when reporting progress, broadcasting state changes, or escalating
+description: Use when reporting progress, broadcasting state changes, or escalating
   ambiguous or blocked decisions to a human operator. Handles structured reporting,
-  factual notifications, and consultation-with-options formats.\'
+  factual notifications, and consultation-with-options formats.\
 category: methodology
 tags:
 - communication
 - methodology
+- lean
+- TPS
 references:
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
@@ -27,8 +29,7 @@ references:
   path: ../vsm/SKILL.md
 level: methodology
 ---
-
-# Hō-Ren-Sō: Communication Standard for Agents
+# Hō-Ren-Sō
 
 Hō-Ren-Sō ensures that information flows smoothly across the system, preventing silos and ambiguity. In an agentic architecture, it provides the structured formats for routine operational updates and critical safety escalations.
 

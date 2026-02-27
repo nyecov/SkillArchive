@@ -2,11 +2,14 @@
 name: jidoka
 version: 1.2.0
 level: methodology
-description: Use when an abnormality, error, validation failure, or workflow loop occurs. Mandates an autonomous halt and root-cause analysis.
+description: Use when an abnormality, error, validation failure, or workflow loop
+  occurs. Mandates an autonomous halt and root-cause analysis.
 category: safety
 tags:
 - methodology
 - safety
+- lean
+- TPS
 references:
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
@@ -27,8 +30,7 @@ references:
 requires:
 - hansei
 ---
-
-# Jidoka: Autonomation for AI Agents (The Andon Cord)
+# Jidoka
 
 Jidoka ensures that AI agents do not produce 'defects' (hallucinations or incorrect actions) by empowering them to stop and alert a human when an abnormality is detected. It is the ultimate emergency brake in an agentic workflow, acting as the fail-safe when **Poka-yoke** constraints are breached or **KYT** protocols fail.
 

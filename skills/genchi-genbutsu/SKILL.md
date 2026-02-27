@@ -1,13 +1,15 @@
 ---
 name: genchi-genbutsu
 version: 1.0.0
-description: 'Use to "Go and See for Yourself." Mandates empirical verification of
-  all hypotheses  and findings through direct execution and testing.\'
+description: Use to "Go and See for Yourself." Mandates empirical verification of
+  all hypotheses  and findings through direct execution and testing.\
 category: methodology
 tags:
 - methodology
 - research
 - testing
+- lean
+- TPS
 references:
 - name: Gemba (The Real Place)
   path: ../gemba/SKILL.md
@@ -15,8 +17,7 @@ references:
   path: ../poka-yoke/SKILL.md
 level: methodology
 ---
-
-# Genchi Genbutsu (Dynamic Verification)
+# Genchi Genbutsu
 
 Genchi Genbutsu means going to the source to find the facts. For an AI agent, this means **Dynamic Verification**. Don't just "think" the code works — run the code and see for yourself.
 

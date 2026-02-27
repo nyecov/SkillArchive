@@ -7,6 +7,8 @@ category: safety
 tags:
 - methodology
 - safety
+- lean
+- TPS
 references:
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
@@ -28,8 +30,7 @@ level: methodology
 requires:
 - poka-yoke
 ---
-
-# KYT: Hazard Prediction Training for Agents
+# KYT
 
 KYT (Kiken Yochi Training) is a systematic, multi-round protocol for identifying dangers before they occur. In an agentic architecture, it serves as the pre-mortem analysis layer, bridging the gap between an Execution Agent's proposed plan and the actual execution of tools.
 

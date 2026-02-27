@@ -10,6 +10,8 @@ tags:
 - communication
 - methodology
 - safety
+- lean
+- TPS
 references:
 - name: Jidoka (Autonomation)
   path: ../jidoka/SKILL.md
@@ -32,8 +34,7 @@ requires:
 - genchi-genbutsu
 - jidoka
 ---
-
-# Shisa Kanko Engineering Master Workflow
+# Shisa Kanko
 
 This master skill synthesizes the **Shisa Kanko (Pointing and Calling)** architecture with core Lean manufacturing principles. It transforms 'vibecoding' from intuitive execution into a rigorously safe, deterministic engineering discipline.
 

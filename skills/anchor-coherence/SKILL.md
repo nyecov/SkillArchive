@@ -27,7 +27,7 @@ references:
 level: tactical
 ---
 
-# Anchor: Architectural Coherence
+# Anchor
 
 *Drift is the default. Coherence requires intention.*
 

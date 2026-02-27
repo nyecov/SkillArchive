@@ -2,13 +2,16 @@
 name: kaizen
 version: 1.1.0
 level: methodology
-description: 'Use when a recurring error, structural bottleneck, or workflow inefficiency
+description: Use when a recurring error, structural bottleneck, or workflow inefficiency
   is identified. Handles PDCA-based experiment design, controlled rollout, measurement,
-  and permanent standard updates.\'
+  and permanent standard updates.\
 category: methodology
 tags:
 - methodology
 - optimization
+- lean
+- TPS
+- kaizen
 references:
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
@@ -27,8 +30,7 @@ references:
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
 ---
-
-# Kaizen: Continuous Agentic Improvement
+# Kaizen
 
 Kaizen is the commitment to constant, incremental evolution. While **Hansei** is the act of reflecting on a specific mistake, Kaizen is the systemic application of that learning to permanently improve the standard operating procedure. It transforms isolated lessons into durable architectural upgrades.
 

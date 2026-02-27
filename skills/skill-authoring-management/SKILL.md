@@ -25,7 +25,7 @@ references:
 level: methodology
 ---
 
-# Skill Authoring & Management (SAM)
+# Skill Authoring Management
 
 A skill is not documentation; it is a **procedure**. This meta-skill codifies the "Gold Standard" for authoring and managing agentic capabilities. It ensures that skills are not just written, but are maintained as high-integrity, deterministic capability modules that scale with the system.
 

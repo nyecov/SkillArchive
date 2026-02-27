@@ -29,7 +29,7 @@ references:
   path: ../kyt/SKILL.md
 ---
 
-# Isolate: Systematic Debugging
+# Isolate
 
 *You are a scientist, not a gambler.*
 

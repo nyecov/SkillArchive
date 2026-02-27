@@ -1,12 +1,14 @@
 ---
 name: heijunka
 version: 1.0.0
-description: 'Use to level the workload and prevent token/context spikes (Muri).  Handles
-  the decomposition of massive tasks into manageable, consistent batches.\'
+description: Use to level the workload and prevent token/context spikes (Muri).  Handles
+  the decomposition of massive tasks into manageable, consistent batches.\
 category: methodology
 tags:
 - methodology
 - optimization
+- lean
+- TPS
 references:
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
@@ -14,8 +16,7 @@ references:
   path: ../vsm/SKILL.md
 level: methodology
 ---
-
-# Heijunka (Production Leveling)
+# Heijunka
 
 Heijunka ensures a stable flow of work by leveling the volume and variety of tasks. In an agentic context, it prevents "Context Exhaustion" and "Reasoning Drift" by breaking down large, complex directives into a series of uniform, high-signal iterations.
 

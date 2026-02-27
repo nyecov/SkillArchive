@@ -1,14 +1,16 @@
 ---
 name: shusa-leadership
 version: 1.0.0
-description: 'The Shusa (Chief Engineer) leadership model for technical ownership
-  and product vision. Ensures that a single individual (or agent) maintains total
-  technical authority and accountability for the system''s architecture and value.\'
+description: The Shusa (Chief Engineer) leadership model for technical ownership and
+  product vision. Ensures that a single individual (or agent) maintains total technical
+  authority and accountability for the system's architecture and value.\
 category: architecture
 tags:
 - design
 - leadership
 - methodology
+- lean
+- TPS
 references:
 - name: Kaizen (Continuous Improvement)
   path: ../kaizen/SKILL.md
@@ -16,8 +18,7 @@ references:
   path: ../jidoka/SKILL.md
 level: technical
 ---
-
-# Shusa: The Chief Engineer Model
+# Shusa
 
 The **Shusa** (Chief Engineer) is the linchpin of the Toyota Product Development System. Unlike a traditional project manager, the Shusa has total technical authority and is responsible for the overall success and architectural integrity of the product.
 

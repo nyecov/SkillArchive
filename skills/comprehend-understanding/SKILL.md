@@ -27,7 +27,7 @@ references:
 level: methodology
 ---
 
-# Comprehend: The Understanding Gate (Policy)
+# Comprehend
 
 *You can't fix what you can't explain. You can't extend what you don't understand.*
 

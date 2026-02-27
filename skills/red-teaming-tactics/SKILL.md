@@ -17,7 +17,7 @@ references:
   path: ../deglaze-tactics/SKILL.md
 ---
 
-# Red-Teaming Tactics
+# Red-Teaming
 
 Red-teaming is the practice of viewing a system from the perspective of an adversary. While **KYT** identifies hazards and **Secure Security** provides checks, **Red-Teaming** actively attempts to circumvent those very protections. It is the final gate for ensuring that "Safety" is not just "Compliance."
 

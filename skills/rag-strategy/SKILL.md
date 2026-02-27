@@ -18,7 +18,7 @@ references:
   path: ../lean-foundations/SKILL.md
 ---
 
-# RAG Strategy: Context Optimization
+# RAG Strategy
 
 RAG (Retrieval-Augmented Generation) is the bridge between the agent's internal weights and the project's external facts. This skill optimizes that bridge, ensuring the agent doesn't drown in "Context Noise" or starve from "Information Gaps."
 

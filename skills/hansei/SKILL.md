@@ -7,6 +7,9 @@ category: cognition
 tags:
 - cognition
 - methodology
+- lean
+- TPS
+- kaizen
 references:
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
@@ -26,8 +29,7 @@ references:
   path: ../vsm/SKILL.md
 level: methodology
 ---
-
-# Hansei: Agentic Self-Reflection
+# Hansei
 
 Hansei is the practice of looking back at a plan or action with a critical, objective eye to identify flaws, acknowledge mistakes, and develop improvement plans. In an agentic system, it serves as the cognitive engine for both proactive refinement and reactive debugging.
 

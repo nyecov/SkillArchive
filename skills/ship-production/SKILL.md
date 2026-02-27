@@ -31,7 +31,7 @@ references:
 level: tactical
 ---
 
-# Ship: Production Readiness
+# Ship
 
 *The app isn't shipped until it's running reliably for users.*
 

@@ -14,7 +14,7 @@ references:
 level: technical
 ---
 
-# Ontology (Structured Agent Memory)
+# Ontology
 
 Most AI agents suffer from "goldfish memory"—forgetting context as the context window rolls, or relying on messy, unstructured semantic search that fails to map exact dependencies between concepts. 
 

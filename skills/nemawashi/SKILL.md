@@ -6,6 +6,8 @@ description: Use before suggesting major refactors or architectural changes. Man
 category: methodology
 tags:
 - methodology
+- lean
+- TPS
 references:
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
@@ -15,8 +17,7 @@ level: methodology
 requires:
 - ho-ren-so
 ---
-
-# Nemawashi (Foundation Building)
+# Nemawashi
 
 Nemawashi is the practice of quietly laying the foundation for a change. In agentic engineering, this means performing deep dependency analysis and "socializing" a proposed strategy with the user before touching the codebase, ensuring no surprises or regressions.
 
