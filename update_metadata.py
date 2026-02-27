@@ -3,7 +3,7 @@ import json
 import yaml
 
 # Paths
-ROOT_DIR = r"G:\Skill Archive"
+ROOT_DIR = "."
 SOURCE_SKILLS_DIR = os.path.join(ROOT_DIR, "skills")
 CONFIG_FILE = os.path.join(ROOT_DIR, "skills-config.json")
 

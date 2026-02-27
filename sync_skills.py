@@ -6,7 +6,7 @@ import platform
 import subprocess
 
 # Paths
-ROOT_DIR = r"G:\Skill Archive"
+ROOT_DIR = "."
 SOURCE_SKILLS_DIR = os.path.join(ROOT_DIR, "skills")
 TARGET_SKILLS_DIR = os.path.join(ROOT_DIR, ".gemini", "skills")
 CONFIG_FILE = os.path.join(ROOT_DIR, "skills-config.json")
