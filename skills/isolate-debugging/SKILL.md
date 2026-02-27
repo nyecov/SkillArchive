@@ -20,7 +20,7 @@ references:
 - name: CC — Anchor (Architectural Coherence)
   path: ../anchor-coherence/SKILL.md
 - name: CC — Circuit (Iteration Breaker)
-  path: ../circuit-breaker/SKILL.md
+  path: ../jidoka/SKILL.md
 - name: CC — Secure (Security)
   path: ../secure-security/SKILL.md
 - name: CC — Ship (Production Readiness)

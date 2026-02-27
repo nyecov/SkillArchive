@@ -16,8 +16,8 @@ references:
   path: ../gemba/SKILL.md
 - name: Ontology (Structured Memory)
   path: ../ontology/SKILL.md
-- name: Muda (Waste Eradication)
-  path: ../muda/SKILL.md
+- name: Lean Foundations
+  path: ../lean-foundations/SKILL.md
 ---
 
 # RAG Strategy: Context Optimization

@@ -17,7 +17,7 @@ references:
 - name: CC — Comprehend (Understanding Gate)
   path: ../comprehend-understanding/SKILL.md
 - name: CC — Circuit (Iteration Breaker)
-  path: ../circuit-breaker/SKILL.md
+  path: ../jidoka/SKILL.md
 - name: CC — Isolate (Systematic Debugging)
   path: ../isolate-debugging/SKILL.md
 - name: CC — Secure (Security)

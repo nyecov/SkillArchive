@@ -11,8 +11,8 @@ category: architecture
 tags:
 - architecture
 references:
-- name: Muda (Waste Eradication)
-  path: ../muda/SKILL.md
+- name: Lean Foundations
+  path: ../lean-foundations/SKILL.md
 ---
 
 # TOON Serialization Procedure

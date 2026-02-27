@@ -24,8 +24,8 @@ references:
   path: ../kyt/SKILL.md
 - name: Hō-Ren-Sō (Communication)
   path: ../ho-ren-so/SKILL.md
-- name: Lean Principles (Muda Eradication)
-  path: ../muda/SKILL.md
+- name: Lean Foundations
+  path: ../lean-foundations/SKILL.md
 - name: Kaizen (Continuous Improvement)
   path: ../kaizen/SKILL.md
 level: technical
@@ -47,7 +47,7 @@ Document the actual flow of context (tokens), reasoning (LLM calls), and executi
 Analyze the Current State Map to locate structural waste, focusing on Transportation (Context Bloat) and Over-processing.
 - **Action:** Identify where the LLM spends the most tokens or where sequential calls could be parallelized.
 - **Constraint:** Do not ignore "silent waste"—processes that work but are inefficient.
-- **Integration:** Maps to the 7 Muda categories defined in **Lean Principles (Muda)**.
+- **Integration:** Maps to the 7 Muda categories defined in **Lean Foundations**.
 
 ### 3. Future State Design
 Design and propose an optimized architectural flow that maximizes deterministic output and minimizes waste.

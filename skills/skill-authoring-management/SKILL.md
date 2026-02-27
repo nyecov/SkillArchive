@@ -14,8 +14,8 @@ references:
   path: ./templates/skill-template.md
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
-- name: Lean Principles (Muda Eradication)
-  path: ../muda/SKILL.md
+- name: Lean Foundations
+  path: ../lean-foundations/SKILL.md
 - name: Kaizen (Continuous Improvement)
   path: ../kaizen/SKILL.md
 - name: Poka-yoke (Mistake-proofing)
@@ -71,7 +71,7 @@ Every skill MUST be audited and updated to maintain the highest formatting and c
 Optimize token costs by layering instructions and offloading large data.
 - **Action:** Move large knowledge bases to `references/` and deterministic logic to `scripts/`.
 - **Constraint:** Keep the frequently-loaded `SKILL.md` body under 5,000 tokens (target < 3,000).
-- **Integration:** Supports **Lean Principles (Muda)** by reducing context transportation waste.
+- **Integration:** Supports **Lean Foundations** by reducing context transportation waste.
 
 ## Escalation & Halting
 

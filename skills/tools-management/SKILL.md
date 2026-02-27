@@ -51,7 +51,7 @@ Before adopting an abstraction, classify it as a Skill (Cognitive), Tool (Mechan
 Store mechanized scripts within the skill's folder if they are specific to a methodology, or in the global `tools/` directory if they are generally useful.
 - **Action:** Nest methodology-specific scripts (e.g., binary search test runners) inside `skills/{skill-name}/scripts/`.
 - **Constraint:** Global tools MUST include a `description.md` to be discoverable by the agent.
-- **Integration:** Supports **Lean Principles (Muda)** by reducing "Motion" (Navigational) waste.
+- **Integration:** Supports **Lean Foundations** by reducing "Motion" (Navigational) waste.
 
 ### 3. Delegation to MCP
 Delegate complex state management, external API access, or proprietary data handling to MCP Servers.

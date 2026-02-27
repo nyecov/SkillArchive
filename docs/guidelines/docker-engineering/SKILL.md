@@ -16,8 +16,8 @@ tags:
 references:
 - name: Ship Production
   path: ../ship-production/SKILL.md
-- name: Muda (Waste Eradication)
-  path: ../muda/SKILL.md
+- name: Lean Foundations
+  path: ../lean-foundations/SKILL.md
 ---
 
 # Docker Optimization Procedure

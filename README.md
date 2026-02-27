@@ -24,7 +24,7 @@ Importing skills from this library into your agent's environment is straightforw
 **Dependency Note:** While skills are designed to be standalone methodologies, many work best in tandem. For example:
 - Importing **[Kaizen](skills/kaizen/SKILL.md)** works best if **[Hansei](skills/hansei/SKILL.md)** is also imported for root-cause analysis.
 - **[Shisa Kanko](skills/shisa-kanko/SKILL.md)** is greatly enhanced when paired with **[Genchi Genbutsu](skills/genchi-genbutsu/SKILL.md)** for execution verification.
-- **[Lean Foundations](skills/lean-foundations/SKILL.md)** pairs naturally with **[Muda](skills/muda/SKILL.md)** for comprehensive waste elimination.
+- **[Lean Foundations](skills/lean-foundations/SKILL.md)** establishes stability through 3M & 5S for comprehensive waste elimination.
 
 Review the skill's description to understand if related cognitive patterns might benefit your workflow.
 
@@ -41,11 +41,6 @@ These skills dictate how an AI agent thinks, plans, and acts, ensuring that ever
   - **What it does:** Establishes a baseline for workflow stability by addressing variation (Mura), overburden (Muri), and waste (Muda), alongside 5S organization.
   - **Impact:** Creates a predictable, consistent environment where specialized AI agents can operate without structural friction.
   - **Usage:** Apply when setting up a new environment, stabilizing an erratic workflow, or establishing foundational rules.
-
-- **[Lean: Eradicating Agentic Waste (Muda)](skills/muda/SKILL.md)**
-  - **What it does:** Identifies and eliminates the 7 types of waste in AI workflows (e.g., over-generation, unnecessary context fetching).
-  - **Impact:** Drastically reduces token consumption, latency, and noise, focusing the agent purely on value-adding activities.
-  - **Usage:** Invoke when tasks take too long, generate excessive logs, or consume too many tokens for the value delivered.
 
 - **[Value Stream Mapping (VSM) for Agents](skills/vsm/SKILL.md)**
   - **What it does:** Maps the end-to-end flow of information and actions to identify bottlenecks and non-value-added steps.
@@ -79,11 +74,6 @@ These skills dictate how an AI agent thinks, plans, and acts, ensuring that ever
   - **What it does:** Provides a rigorous, scientific method for isolating the root cause of a bug rather than guessing.
   - **Impact:** Reduces time spent "thrashing" during debugging and guarantees the identification of the true underlying issue.
   - **Usage:** Invoke whenever a bug is non-trivial, or after an initial fix attempt fails.
-
-- **[Circuit: The Iteration Breaker](skills/circuit-breaker/SKILL.md)**
-  - **What it does:** Halts execution if the agent enters an infinite loop of failed fixes or exceeds a time/attempt budget.
-  - **Impact:** Prevents "runaway" AI behavior, saving tokens, time, and preventing further codebase degradation.
-  - **Usage:** Activate as a safety net during complex debugging or refactoring loops.
 
 - **[KYT: Hazard Prediction Training for Agents](skills/kyt/SKILL.md)**
   - **What it does:** Forces a "Hazard Prediction Training" pause to identify potential catastrophic outcomes before taking action.

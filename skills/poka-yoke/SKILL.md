@@ -23,8 +23,8 @@ references:
   path: ../ho-ren-so/SKILL.md
 - name: Kaizen (Continuous Improvement)
   path: ../kaizen/SKILL.md
-- name: Lean Principles (Muda Eradication)
-  path: ../muda/SKILL.md
+- name: Lean Foundations
+  path: ../lean-foundations/SKILL.md
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
 level: safety

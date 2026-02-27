@@ -24,8 +24,8 @@ references:
   path: ../kyt/SKILL.md
 - name: Hō-Ren-Sō (Communication)
   path: ../ho-ren-so/SKILL.md
-- name: Lean Principles (Muda Eradication)
-  path: ../muda/SKILL.md
+- name: Lean Foundations
+  path: ../lean-foundations/SKILL.md
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
 ---

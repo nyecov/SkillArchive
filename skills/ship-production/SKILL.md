@@ -18,13 +18,13 @@ references:
 - name: CC — Anchor (Architectural Coherence)
   path: ../anchor-coherence/SKILL.md
 - name: CC — Circuit (Iteration Breaker)
-  path: ../circuit-breaker/SKILL.md
+  path: ../jidoka/SKILL.md
 - name: CC — Isolate (Systematic Debugging)
   path: ../isolate-debugging/SKILL.md
 - name: CC — Secure (Security)
   path: ../secure-security/SKILL.md
-- name: Lean Principles (Muda Eradication)
-  path: ../muda/SKILL.md
+- name: Lean Foundations
+  path: ../lean-foundations/SKILL.md
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
 level: tactical

@@ -17,7 +17,7 @@ references:
 - name: CC — Anchor (Architectural Coherence)
   path: ../anchor-coherence/SKILL.md
 - name: CC — Circuit (Iteration Breaker)
-  path: ../circuit-breaker/SKILL.md
+  path: ../jidoka/SKILL.md
 - name: CC — Isolate (Systematic Debugging)
   path: ../isolate-debugging/SKILL.md
 - name: CC — Ship (Production Readiness)
@@ -54,7 +54,7 @@ Ensure all sensitive credentials (API keys, passwords) are stored in environment
 Minimize the risk of data leakage by filtering API responses and genericizing error messages.
 - **Action:** Return only the minimum required fields to the client and redact sensitive data from logs.
 - **Constraint:** NEVER show stack traces or internal system details in user-facing error messages.
-- **Integration:** Uses **Lean Principles (Muda)** to eliminate "Over-generation" of sensitive data.
+- **Integration:** Uses **Lean Foundations** to eliminate "Over-generation" of sensitive data.
 
 ## Escalation & Halting
 

@@ -23,8 +23,8 @@ references:
   path: ../kyt/SKILL.md
 - name: Kaizen (Continuous Improvement)
   path: ../kaizen/SKILL.md
-- name: Lean Principles (Muda Eradication)
-  path: ../muda/SKILL.md
+- name: Lean Foundations
+  path: ../lean-foundations/SKILL.md
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
 level: methodology
@@ -52,7 +52,7 @@ Inform the user and sub-agents of environmental changes or system state facts wi
 Seek authorization or a decision when encountering an ambiguous, blocked, or high-risk situation.
 - **Action:** Present the problem, the **Hansei** root-cause analysis, and a set of actionable options for the user.
 - **Constraint:** NEVER silently fail. Every **Jidoka** halt MUST be accompanied by a Sōdan request.
-- **Integration:** Acts as the communication vehicle for **Jidoka** halts and **Circuit Breaker** trips.
+- **Integration:** Acts as the communication vehicle for **Jidoka** halts and **Jidoka** trips.
 
 ## Escalation & Halting
 
