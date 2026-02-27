@@ -36,6 +36,10 @@ Management and storage for AI agent skills.
   > Use when a recurring error, structural bottleneck, or workflow inefficiency is identified. Handles PDCA-based experiment design, controlled rollout...
   > *Tags:* `#kaizen` `#optimization` `#learning` `#evolution` `#pdca` `#lean`
 
+- **[Lean Foundations: Stability through 3M & 5S](skills/lean-foundations-3m-5s/SKILL.md)**
+  > Foundational Lean principles for stabilizing workflows through the 3 Ms (Mura, Muri, Muda)  and the 5S workplace organization framework. Focuses on...
+  > *Tags:* `#lean` `#3m` `#5s` `#mura` `#muri` `#stability` `#organization`
+
 - **[Lean: Eradicating Agentic Waste (Muda)](skills/lean-principles-muda/SKILL.md)**
   > Use when a workflow feels slow, bloated, or produces unnecessary output. Handles classification of 7 waste types (Muda), value definition, surgical...
   > *Tags:* `#lean` `#muda` `#efficiency` `#optimization` `#value`
@@ -63,6 +67,10 @@ Management and storage for AI agent skills.
   > *Tags:* `#secure` `#security` `#trust-boundary` `#secrets` `#authentication` `#authorization` `#crowd-control`
 
 ### Architecture
+
+- **[Modern Japanese Software Engineering: The 2025 Cliff & Beyond](skills/modern-japan-software-modernization/SKILL.md)**
+  > Strategies for navigating the '2025 Cliff' (Legacy Modernization) through the  Shusa (Chief Engineer) leadership model and Kodawari (Devoted Crafts...
+  > *Tags:* `#modernization` `#legacy` `#shusa` `#kodawari` `#agile` `#architecture` `#2025-cliff`
 
 - **[Ontology (Structured Agent Memory)](skills/ontology/SKILL.md)**
   > Typed knowledge graph methodology for structured agent memory and composable actions.  Use to create, query, and enforce constraints across interco...
