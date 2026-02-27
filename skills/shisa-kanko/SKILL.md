@@ -2,28 +2,35 @@
 name: shisa-kanko
 version: 2.0.0
 level: methodology
-description: >
-  Use when executing code changes, tool calls, or multi-step engineering tasks.
-  Handles context isolation, intent declaration, deterministic verification, and risk-gated execution through a phased lifecycle.
+description: Use when executing code changes, tool calls, or multi-step tasks. Mandates
+  pointing, calling, and verification.
 category: methodology
-tags: [vibecoding, ai-safety, lean, shisa-kanko, jidoka, poka-yoke, hansei, kyt, ho-ren-so, agentic-workflows]
+tags:
+- cognition
+- communication
+- methodology
+- safety
 references:
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
-  - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke/SKILL.md
-  - name: Hansei (Self-reflection)
-    path: ../hansei/SKILL.md
-  - name: KYT (Hazard Prediction)
-    path: ../kyt/SKILL.md
-  - name: Hō-Ren-Sō (Communication)
-    path: ../ho-ren-so/SKILL.md
-  - name: Kaizen (Continuous Improvement)
-    path: ../kaizen/SKILL.md
-  - name: Lean Principles (Muda Eradication)
-    path: ../muda/SKILL.md
-  - name: Value Stream Mapping (VSM)
-    path: ../vsm/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+- name: Poka-yoke (Mistake-proofing)
+  path: ../poka-yoke/SKILL.md
+- name: Hansei (Self-reflection)
+  path: ../hansei/SKILL.md
+- name: KYT (Hazard Prediction)
+  path: ../kyt/SKILL.md
+- name: Hō-Ren-Sō (Communication)
+  path: ../ho-ren-so/SKILL.md
+- name: Kaizen (Continuous Improvement)
+  path: ../kaizen/SKILL.md
+- name: Lean Principles (Muda Eradication)
+  path: ../muda/SKILL.md
+- name: Value Stream Mapping (VSM)
+  path: ../vsm/SKILL.md
+requires:
+- kyt
+- genchi-genbutsu
+- jidoka
 ---
 
 # Shisa Kanko Engineering Master Workflow
@@ -44,13 +51,13 @@ Every plan involving high-risk or irreversible changes MUST be gated by a formal
 - **Constraint:** NEVER execute a plan identified as "High Risk" without a verified Action Target from the KYT pass.
 - **Integration:** Delegates the "Risk Assessment" phase of the workflow to the **KYT** protocol.
 
-### 3. Explicit Calling (Intent & Success)
-Never execute a tool call without 'calling out' the expected outcome.
+### 3. Explicit Calling (Logic & TDD)
+Never execute a tool call without 'calling out' the expected outcome and the TDD verification path.
 - **Action:** Output a strictly formatted `[LOGIC_DECLARATION]` block:
   - **Intent:** Specific code change.
   - **Success Criteria:** What defines success.
-  - **Validation Method:** The exact command to verify success.
-- **Constraint:** All execution MUST be preceded by this declaration.
+  - **Verification Method (TDD):** The exact command/test that MUST pass.
+- **Constraint:** All execution MUST be preceded by this declaration. **Prefer writing the test or verification script BEFORE the implementation (TDD).**
 
 ### 4. Empirical Validation (Delegate to Genchi Genbutsu)
 Confirm that the results of the execution match the logic declaration through direct observation.

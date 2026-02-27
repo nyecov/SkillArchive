@@ -1,16 +1,19 @@
 ---
 name: nemawashi
 version: 1.0.0
-description: >
-  Use to lay the groundwork for changes through impact analysis and consensus building. 
-  Ensures all dependencies are identified and stakeholders are aligned before a "Directive" is executed.
+description: Use before suggesting major refactors or architectural changes. Mandates
+  impact analysis and A3 proposals.
 category: methodology
-tags: [nemawashi, consensus, alignment, impact-analysis, lean]
+tags:
+- methodology
 references:
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
-  - name: Ho-Ren-So (Communication)
-    path: ../ho-ren-so/SKILL.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+- name: Ho-Ren-So (Communication)
+  path: ../ho-ren-so/SKILL.md
+level: methodology
+requires:
+- ho-ren-so
 ---
 
 # Nemawashi (Foundation Building)
@@ -24,10 +27,18 @@ Nemawashi is the practice of quietly laying the foundation for a change. In agen
 - **Constraint:** NEVER propose a change based solely on the local file context without checking for global usage of the affected symbols.
 - **Integration:** Uses **Grep** and **Glob** tools to perform "Digital Nemawashi" (gathering data) before the "Strategy" phase.
 
-### 2. Strategic Consensus
-- **Action:** Explicitly state the *impact* of a proposed change and wait for user acknowledgment or directive.
-- **Constraint:** Do not proceed with high-risk refactors or deletions until the "Foundation" (user alignment) is solid.
-- **Integration:** Feeds directly into **Ho-Ren-So** to provide structured options and observations.
+### 2. Strategic Consensus (The A3 Proposal)
+- **Action:** Present findings to the user using the **A3 Proposal format** to secure alignment.
+- **A3 Structure:**
+  1. **Background:** Context of the proposed change.
+  2. **Current Condition:** What is the state of the code now (Gemba facts).
+  3. **Goal:** The desired outcome.
+  4. **Analysis:** Why the change is necessary (Hansei/5-Whys).
+  5. **Countermeasures:** The specific implementation steps (Shisa Kanko intent).
+  6. **Plan:** Sequence of execution.
+  7. **Follow-up:** How we will verify success (Genchi Genbutsu).
+- **Constraint:** Do not proceed with high-risk refactors until the A3 "Foundation" is acknowledged by the user.
+- **Integration:** Feeds directly into **Ho-Ren-So** (Sōdan) for structured decision-making.
 
 ## Escalation & Halting
 

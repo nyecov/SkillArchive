@@ -1,14 +1,19 @@
 ---
 name: ontology
 version: 1.0.0
-description: >
-  Typed knowledge graph methodology for structured agent memory and composable actions. 
-  Use to create, query, and enforce constraints across interconnected entities (Person, Project, Task, Event, Document).
+description: 'Typed knowledge graph methodology for structured agent memory and composable
+  actions.  Use to create, query, and enforce constraints across interconnected entities
+  (Person, Project, Task, Event, Document).
+
+  '
 category: architecture
-tags: [memory, ontology, knowledge-graph, dependencies, architecture, state]
+tags:
+- context
+- design
 references:
-  - name: MCP Integration Governance
-    path: ../mcp-governance/SKILL.md
+- name: MCP Integration Governance
+  path: ../interface-governance/SKILL.md
+level: technical
 ---
 
 # Ontology (Structured Agent Memory)

@@ -1,16 +1,20 @@
 ---
 name: kodawari-craftsmanship
 version: 1.0.0
-description: >
-  Kodawari (Devoted Craftsmanship) for high-quality, self-documenting code.
-  Mandates the relentless pursuit of perfection in the details, ensuring architectural harmony (Wa) and readability.
+description: 'Kodawari (Devoted Craftsmanship) for high-quality, self-documenting
+  code. Mandates the relentless pursuit of perfection in the details, ensuring architectural
+  harmony (Wa) and readability.
+
+  '
 category: methodology
-tags: [kodawari, craftsmanship, quality, readability, wa, lean]
+tags:
+- design
+- methodology
 references:
-  - name: Lean Foundations
-    path: ../lean-foundations/SKILL.md
-  - name: Poka-yoke
-    path: ../poka-yoke/SKILL.md
+- name: Lean Foundations
+  path: ../lean-foundations/SKILL.md
+- name: Poka-yoke
+  path: ../poka-yoke/SKILL.md
 ---
 
 # Kodawari: Devoted Craftsmanship

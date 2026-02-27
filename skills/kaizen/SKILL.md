@@ -2,28 +2,32 @@
 name: kaizen
 version: 1.1.0
 level: methodology
-description: >
-  Use when a recurring error, structural bottleneck, or workflow inefficiency is identified.
-  Handles PDCA-based experiment design, controlled rollout, measurement, and permanent standard updates.
+description: 'Use when a recurring error, structural bottleneck, or workflow inefficiency
+  is identified. Handles PDCA-based experiment design, controlled rollout, measurement,
+  and permanent standard updates.
+
+  '
 category: methodology
-tags: [kaizen, optimization, learning, evolution, pdca, lean]
+tags:
+- methodology
+- optimization
 references:
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
-  - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke/SKILL.md
-  - name: Hansei (Self-reflection)
-    path: ../hansei/SKILL.md
-  - name: KYT (Hazard Prediction)
-    path: ../kyt/SKILL.md
-  - name: Hō-Ren-Sō (Communication)
-    path: ../ho-ren-so/SKILL.md
-  - name: Lean Principles (Muda Eradication)
-    path: ../muda/SKILL.md
-  - name: Value Stream Mapping (VSM)
-    path: ../vsm/SKILL.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+- name: Poka-yoke (Mistake-proofing)
+  path: ../poka-yoke/SKILL.md
+- name: Hansei (Self-reflection)
+  path: ../hansei/SKILL.md
+- name: KYT (Hazard Prediction)
+  path: ../kyt/SKILL.md
+- name: Hō-Ren-Sō (Communication)
+  path: ../ho-ren-so/SKILL.md
+- name: Lean Principles (Muda Eradication)
+  path: ../muda/SKILL.md
+- name: Value Stream Mapping (VSM)
+  path: ../vsm/SKILL.md
 ---
 
 # Kaizen: Continuous Agentic Improvement

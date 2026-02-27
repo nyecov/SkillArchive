@@ -1,28 +1,33 @@
 ---
 name: ho-ren-so
 version: 1.1.0
-description: >
-  Use when reporting progress, broadcasting state changes, or escalating ambiguous or blocked decisions to a human operator.
-  Handles structured reporting, factual notifications, and consultation-with-options formats.
+description: 'Use when reporting progress, broadcasting state changes, or escalating
+  ambiguous or blocked decisions to a human operator. Handles structured reporting,
+  factual notifications, and consultation-with-options formats.
+
+  '
 category: methodology
-tags: [ho-ren-so, collaboration, hitl, reporting, coordination, lean]
+tags:
+- communication
+- methodology
 references:
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
-  - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke/SKILL.md
-  - name: Hansei (Self-reflection)
-    path: ../hansei/SKILL.md
-  - name: KYT (Hazard Prediction)
-    path: ../kyt/SKILL.md
-  - name: Kaizen (Continuous Improvement)
-    path: ../kaizen/SKILL.md
-  - name: Lean Principles (Muda Eradication)
-    path: ../muda/SKILL.md
-  - name: Value Stream Mapping (VSM)
-    path: ../vsm/SKILL.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+- name: Poka-yoke (Mistake-proofing)
+  path: ../poka-yoke/SKILL.md
+- name: Hansei (Self-reflection)
+  path: ../hansei/SKILL.md
+- name: KYT (Hazard Prediction)
+  path: ../kyt/SKILL.md
+- name: Kaizen (Continuous Improvement)
+  path: ../kaizen/SKILL.md
+- name: Lean Principles (Muda Eradication)
+  path: ../muda/SKILL.md
+- name: Value Stream Mapping (VSM)
+  path: ../vsm/SKILL.md
+level: methodology
 ---
 
 # Hō-Ren-Sō: Communication Standard for Agents

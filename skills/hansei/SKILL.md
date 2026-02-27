@@ -1,28 +1,30 @@
 ---
 name: hansei
 version: 1.1.0
-description: >
-  Use when a plan needs critical review, an execution has failed, or a recurring error pattern emerges.
-  Handles proactive plan critique, reactive root-cause analysis, and improvement proposals.
+description: Use when a plan fails, a bug is found, or a post-mortem is needed. Mandates
+  5-Whys root-cause analysis.
 category: cognition
-tags: [hansei, reflection, iterative-refinement, cognitive-bias, lean]
+tags:
+- cognition
+- methodology
 references:
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
-  - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke/SKILL.md
-  - name: KYT (Hazard Prediction)
-    path: ../kyt/SKILL.md
-  - name: Hō-Ren-Sō (Communication)
-    path: ../ho-ren-so/SKILL.md
-  - name: Kaizen (Continuous Improvement)
-    path: ../kaizen/SKILL.md
-  - name: Lean Principles (Muda Eradication)
-    path: ../muda/SKILL.md
-  - name: Value Stream Mapping (VSM)
-    path: ../vsm/SKILL.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+- name: Poka-yoke (Mistake-proofing)
+  path: ../poka-yoke/SKILL.md
+- name: KYT (Hazard Prediction)
+  path: ../kyt/SKILL.md
+- name: Hō-Ren-Sō (Communication)
+  path: ../ho-ren-so/SKILL.md
+- name: Kaizen (Continuous Improvement)
+  path: ../kaizen/SKILL.md
+- name: Lean Principles (Muda Eradication)
+  path: ../muda/SKILL.md
+- name: Value Stream Mapping (VSM)
+  path: ../vsm/SKILL.md
+level: cognition
 ---
 
 # Hansei: Agentic Self-Reflection
@@ -37,10 +39,16 @@ Before finalizing a plan, perform a critical review of the proposed reasoning to
 - **Constraint:** NEVER accept the first draft of a complex plan without a formal Hansei pass.
 - **Integration:** The findings feed directly into **KYT (Hazard Prediction)** to establish countermeasures.
 
-### 2. Reactive Root Cause Analysis (RCA)
-When an execution fails or a Jidoka halt occurs, analyze the failure rather than just reporting the error.
-- **Action:** Trace the error back to its origin (Hallucination, Missing Context, Logic Flaw).
-- **Constraint:** Do not attempt to "hide" or "gloss over" logical leaps. State the failure plainly.
+### 2. Reactive Root Cause Analysis (The 5-Whys)
+When an execution fails or a Jidoka halt occurs, the agent MUST use the **5-Whys Protocol** to drill down to the fundamental cause.
+- **Action:** Ask "Why?" sequentially at least 5 times (or until the bedrock cause is reached).
+- **Format:**
+  1. Why did X happen? (Direct cause)
+  2. Why did [1] happen? (Indirect cause)
+  3. Why did [2] happen? (Systemic cause)
+  4. Why did [3] happen? (Architectural cause)
+  5. Why did [4] happen? (Root cause)
+- **Constraint:** DO NOT settle for "User error" or "AI hallucination" as a root cause. Find the missing context, ambiguous prompt, or structural flaw that allowed the error.
 - **Integration:** Directly supports the **Jidoka** halt protocol.
 
 ### 3. Improvement Synthesis

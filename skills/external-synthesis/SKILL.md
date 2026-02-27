@@ -1,19 +1,23 @@
 ---
 name: external-synthesis
 version: 1.0.0
-description: >
-  Use when researching, designing, or authoring new agent skills.
-  Guides the agent to search external repositories like the Claude Cookbook and Clawhub
-  to identify existing patterns and synthesize them into high-quality local skills.
+description: 'Use when researching, designing, or authoring new agent skills. Guides
+  the agent to search external repositories like the Claude Cookbook and Clawhub to
+  identify existing patterns and synthesize them into high-quality local skills.
+
+  '
 category: meta
-tags: [skill-authoring, synthesis, research, external-resources, clawhub]
+tags:
+- meta
+- research
 references:
-  - name: Skill of Skill Authoring
-    path: ../skill-of-skill-authoring/SKILL.md
-  - name: Claude Cookbook
-    url: https://platform.claude.com/cookbook/
-  - name: Clawhub (Skills)
-    url: https://clawhub.ai/skills?sort=downloads
+- name: Skill of Skill Authoring
+  path: ../skill-authoring-management/SKILL.md
+- name: Claude Cookbook
+  url: https://platform.claude.com/cookbook/
+- name: Clawhub (Skills)
+  url: https://clawhub.ai/skills?sort=downloads
+level: meta
 ---
 
 # Skill External Synthesis

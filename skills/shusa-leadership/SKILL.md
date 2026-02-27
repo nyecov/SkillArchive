@@ -1,16 +1,22 @@
 ---
 name: shusa-leadership
 version: 1.0.0
-description: >
-  The Shusa (Chief Engineer) leadership model for technical ownership and product vision.
-  Ensures that a single individual (or agent) maintains total technical authority and accountability for the system's architecture and value.
+description: 'The Shusa (Chief Engineer) leadership model for technical ownership
+  and product vision. Ensures that a single individual (or agent) maintains total
+  technical authority and accountability for the system''s architecture and value.
+
+  '
 category: architecture
-tags: [shusa, leadership, ownership, architecture, lean]
+tags:
+- design
+- leadership
+- methodology
 references:
-  - name: Kaizen (Continuous Improvement)
-    path: ../kaizen/SKILL.md
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
+- name: Kaizen (Continuous Improvement)
+  path: ../kaizen/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+level: technical
 ---
 
 # Shusa: The Chief Engineer Model

@@ -54,7 +54,12 @@ def main():
             except json.JSONDecodeError:
                 config = {}
     else:
-        config = {"allowed_tags": [], "allowed_categories": []}
+        config = {"allowed_tags": [], "allowed_categories": [], "allowed_skills": []}
+
+    # Ensure keys exist
+    for key in ["allowed_tags", "allowed_categories", "allowed_skills"]:
+        if key not in config:
+            config[key] = []
 
     # Add the "comment" metadata section
     config["_discovery_reference"] = {

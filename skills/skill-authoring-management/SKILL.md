@@ -1,26 +1,30 @@
 ---
 name: skill-authoring-management
 version: 1.3.0
-description: >
-  Use when creating, reviewing, or managing agent skills. 
-  Provides the authoritative "Gold Standard" for content and formatting, management of skill lifecycles, and template usage for persistent capability modules.
+description: 'Use when creating, reviewing, or managing agent skills.  Provides the
+  authoritative "Gold Standard" for content and formatting, management of skill lifecycles,
+  and template usage for persistent capability modules.
+
+  '
 category: meta
-tags: [meta-skill, skill-management, gold-standard, skill-authoring, progressive-disclosure, token-efficiency]
+tags:
+- meta
 references:
-  - name: Skill Template
-    path: ./templates/skill-template.md
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
-  - name: Lean Principles (Muda Eradication)
-    path: ../muda/SKILL.md
-  - name: Kaizen (Continuous Improvement)
-    path: ../kaizen/SKILL.md
-  - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke/SKILL.md
-  - name: Tools Management Strategy
-    path: ../tools-management/SKILL.md
-  - name: External Resource Synthesis
-    path: ../external-synthesis/SKILL.md
+- name: Skill Template
+  path: ./templates/skill-template.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+- name: Lean Principles (Muda Eradication)
+  path: ../muda/SKILL.md
+- name: Kaizen (Continuous Improvement)
+  path: ../kaizen/SKILL.md
+- name: Poka-yoke (Mistake-proofing)
+  path: ../poka-yoke/SKILL.md
+- name: Tools Management Strategy
+  path: ../tools-management/SKILL.md
+- name: External Resource Synthesis
+  path: ../external-synthesis/SKILL.md
+level: meta
 ---
 
 # Skill Authoring & Management (SAM)

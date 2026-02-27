@@ -1,45 +1,51 @@
 ---
-name: mcp-governance
-version: 1.0.0
-description: >
-  Use when designing, building, auditing, or consuming MCP servers and clients.
-  Handles tool design, resource exposure, transport selection, security hardening, and lifecycle management for Model Context Protocol integrations.
+name: interface-governance
+version: 1.1.0
+level: technical
+description: 'Use when designing, building, auditing, or consuming MCP servers and
+  clients. Integrates API-Design-First principles to ensure interfaces are optimized
+  for LLM discoverability and reliability.
+
+  '
 category: architecture
-tags: [mcp, model-context-protocol, tools, resources, json-rpc, agent-integration]
+tags:
+- architecture
+- meta
+- methodology
 references:
-  - name: MCP Specification (Official)
-    url: https://modelcontextprotocol.io/specification/latest
-  - name: MCP Architecture Overview
-    url: https://modelcontextprotocol.io/docs/concepts/architecture
-  - name: MCP SDKs
-    url: https://modelcontextprotocol.io/docs/sdk
-  - name: MCP Inspector (Dev Tool)
-    url: https://github.com/modelcontextprotocol/inspector
-  - name: Reference Server Implementations
-    url: https://github.com/modelcontextprotocol/servers
-  - name: CC Secure (Security Guardrails)
-    path: ../secure-security/SKILL.md
-  - name: Poka-yoke (Validation Gates)
-    path: ../poka-yoke/SKILL.md
-  - name: Jidoka (Halt on Anomaly)
-    path: ../jidoka/SKILL.md
+- name: MCP Specification (Official)
+  url: https://modelcontextprotocol.io/specification/latest
+- name: MCP Architecture Overview
+  url: https://modelcontextprotocol.io/docs/concepts/architecture
+- name: MCP SDKs
+  url: https://modelcontextprotocol.io/docs/sdk
+- name: MCP Inspector (Dev Tool)
+  url: https://github.com/modelcontextprotocol/inspector
+- name: Reference Server Implementations
+  url: https://github.com/modelcontextprotocol/servers
+- name: CC Secure (Security Guardrails)
+  path: ../secure-security/SKILL.md
+- name: Poka-yoke (Validation Gates)
+  path: ../poka-yoke/SKILL.md
+- name: Jidoka (Halt on Anomaly)
+  path: ../jidoka/SKILL.md
 ---
 
-# MCP Integration Governance
+# MCP & API-Design-First Governance
 
-The Model Context Protocol (MCP) is the open standard for connecting AI agents to external tools, data sources, and services. It replaces ad-hoc API integrations with a structured, discoverable, and secure client-server protocol. This skill governs how to design, build, and consume MCP integrations correctly.
+The Model Context Protocol (MCP) is the open standard for connecting AI agents to external tools, data sources, and services. In Vibe Coding and Agentic development, the MCP server is the **Sovereign Interface**—it is the only way the agent interacts with the world. This skill governs the design-first approach to building interfaces that are optimized for LLM discoverability, reasoning, and reliability.
 
 ## Core Mandates
 
-### 1. Architectural Primitive Selection
-Strictly classify every integration as a Tool (Mutation/Computation), Resource (Read-only Context), or Prompt (Interaction Template).
-- **Action:** If it mutates state or computes → Tool. If it provides context → Resource.
-- **Constraint:** DO NOT create "God Tools" that handle multiple unrelated operations; keep them single-purpose and focused.
-- **Integration:** Directly impacts the **Tools Management Strategy** classification.
+### 1. API-Design-First (Discoverability)
+Before implementing an MCP server, design the interface for the *consumer* (the LLM), not the *provider* (the underlying API).
+- **Action:** Define tool names and descriptions as "Triggers." Use semantic, verb-noun naming (e.g., `search_code_base` instead of `execute_grep`).
+- **Constraint:** NEVER expose raw, low-level system calls directly. Wrap them in "Agent-Friendly" abstractions that match the agent's reasoning flow.
+- **Integration:** Directly reduces **Motion Muda** by making the right tool obvious to the agent.
 
-### 2. Rigorous Schema Enforcement
+### 2. Rigorous Schema Enforcement (The Poka-yoke)
 Every tool input and resource URI MUST follow a strict, documented JSON Schema to ensure deterministic interaction.
-- **Action:** Define every parameter with `type`, `description`, and `required` status. 
+- **Action:** Define every parameter with `type`, `description`, and `required` status. Use enums and pattern constraints to restrict the LLM's "Hallucination Space."
 - **Constraint:** Untyped pass-throughs (e.g., `type: object` with no properties) are strictly prohibited.
 - **Integration:** Acts as an integration-level **Poka-yoke** for the agent.
 

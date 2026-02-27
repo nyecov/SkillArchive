@@ -1,28 +1,32 @@
 ---
 name: kyt
 version: 1.1.0
-description: >
-  Use before executing high-risk operations, destructive commands, or irreversible changes.
-  Handles 4-round hazard identification, countermeasure design, and Go/No-Go gating.
+description: Use before executing high-risk, destructive, or irreversible commands
+  (rm, drop, reset). Mandates hazard prediction.
 category: safety
-tags: [kyt, hazard-prediction, safety, critic-agent, pre-mortem, lean]
+tags:
+- methodology
+- safety
 references:
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
-  - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke/SKILL.md
-  - name: Hansei (Self-reflection)
-    path: ../hansei/SKILL.md
-  - name: Hō-Ren-Sō (Communication)
-    path: ../ho-ren-so/SKILL.md
-  - name: Kaizen (Continuous Improvement)
-    path: ../kaizen/SKILL.md
-  - name: Lean Principles (Muda Eradication)
-    path: ../muda/SKILL.md
-  - name: Value Stream Mapping (VSM)
-    path: ../vsm/SKILL.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+- name: Poka-yoke (Mistake-proofing)
+  path: ../poka-yoke/SKILL.md
+- name: Hansei (Self-reflection)
+  path: ../hansei/SKILL.md
+- name: Hō-Ren-Sō (Communication)
+  path: ../ho-ren-so/SKILL.md
+- name: Kaizen (Continuous Improvement)
+  path: ../kaizen/SKILL.md
+- name: Lean Principles (Muda Eradication)
+  path: ../muda/SKILL.md
+- name: Value Stream Mapping (VSM)
+  path: ../vsm/SKILL.md
+level: safety
+requires:
+- poka-yoke
 ---
 
 # KYT: Hazard Prediction Training for Agents

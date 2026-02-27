@@ -1,28 +1,32 @@
 ---
 name: circuit-breaker
 version: 1.0.0
-description: >
-  Use when the same bug persists after 3+ attempts, regressions match fixes, or time spent exceeds the iteration budget.
-  Handles circuit breaker triggers, Stop/Revert/Restart decisions, and iteration budgets.
+description: 'Use when the same bug persists after 3+ attempts, regressions match
+  fixes, or time spent exceeds the iteration budget. Handles circuit breaker triggers,
+  Stop/Revert/Restart decisions, and iteration budgets.
+
+  '
 category: safety
-tags: [circuit, iteration-breaker, halt, budget, sunk-cost, crowd-control]
+tags:
+- safety
 references:
-  - name: Crowd Control (Source Repo)
-    url: https://github.com/newsbubbles/crowd_control
-  - name: CC — Deglaze (Anti-Sycophancy)
-    path: ../deglaze-tactics/SKILL.md
-  - name: CC — Comprehend (Understanding Gate)
-    path: ../comprehend-understanding/SKILL.md
-  - name: CC — Anchor (Architectural Coherence)
-    path: ../anchor-coherence/SKILL.md
-  - name: CC — Isolate (Systematic Debugging)
-    path: ../isolate-debugging/SKILL.md
-  - name: CC — Secure (Security)
-    path: ../secure-security/SKILL.md
-  - name: CC — Ship (Production Readiness)
-    path: ../ship-production/SKILL.md
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
+- name: Crowd Control (Source Repo)
+  url: https://github.com/newsbubbles/crowd_control
+- name: CC — Deglaze (Anti-Sycophancy)
+  path: ../deglaze-tactics/SKILL.md
+- name: CC — Comprehend (Understanding Gate)
+  path: ../comprehend-understanding/SKILL.md
+- name: CC — Anchor (Architectural Coherence)
+  path: ../anchor-coherence/SKILL.md
+- name: CC — Isolate (Systematic Debugging)
+  path: ../isolate-debugging/SKILL.md
+- name: CC — Secure (Security)
+  path: ../secure-security/SKILL.md
+- name: CC — Ship (Production Readiness)
+  path: ../ship-production/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+level: safety
 ---
 
 # Circuit: The Iteration Breaker

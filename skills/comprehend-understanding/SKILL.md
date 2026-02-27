@@ -1,28 +1,32 @@
 ---
 name: comprehend-understanding
 version: 1.0.0
-description: >
-  Use before debugging, extending, or shipping code the user cannot explain.
-  Handles 4-level comprehension gates, rubber duck escalation, and hard/soft enforcement modes.
+description: 'Use before debugging, extending, or shipping code the user cannot explain.
+  Handles 4-level comprehension gates, rubber duck escalation, and hard/soft enforcement
+  modes.
+
+  '
 category: cognition
-tags: [comprehend, understanding, explanation, comprehension-debt, crowd-control]
+tags:
+- cognition
 references:
-  - name: Crowd Control (Source Repo)
-    url: https://github.com/newsbubbles/crowd_control
-  - name: CC — Deglaze (Anti-Sycophancy)
-    path: ../deglaze-tactics/SKILL.md
-  - name: CC — Anchor (Architectural Coherence)
-    path: ../anchor-coherence/SKILL.md
-  - name: CC — Circuit (Iteration Breaker)
-    path: ../circuit-breaker/SKILL.md
-  - name: CC — Isolate (Systematic Debugging)
-    path: ../isolate-debugging/SKILL.md
-  - name: CC — Secure (Security)
-    path: ../secure-security/SKILL.md
-  - name: CC — Ship (Production Readiness)
-    path: ../ship-production/SKILL.md
-  - name: Hansei (Self-reflection)
-    path: ../hansei/SKILL.md
+- name: Crowd Control (Source Repo)
+  url: https://github.com/newsbubbles/crowd_control
+- name: CC — Deglaze (Anti-Sycophancy)
+  path: ../deglaze-tactics/SKILL.md
+- name: CC — Anchor (Architectural Coherence)
+  path: ../anchor-coherence/SKILL.md
+- name: CC — Circuit (Iteration Breaker)
+  path: ../circuit-breaker/SKILL.md
+- name: CC — Isolate (Systematic Debugging)
+  path: ../isolate-debugging/SKILL.md
+- name: CC — Secure (Security)
+  path: ../secure-security/SKILL.md
+- name: CC — Ship (Production Readiness)
+  path: ../ship-production/SKILL.md
+- name: Hansei (Self-reflection)
+  path: ../hansei/SKILL.md
+level: cognition
 ---
 
 # Comprehend: The Understanding Gate (Policy)

@@ -1,21 +1,24 @@
 ---
 name: lean-foundations
 version: 1.0.0
-description: >
-  Foundational Lean principles for stabilizing workflows through the 3 Ms (Mura, Muri, Muda) 
-  and the 5S workplace organization framework. Focuses on eliminating inconsistency and 
-  overburden while maintaining a disciplined agentic environment.
+description: 'Foundational Lean principles for stabilizing workflows through the 3
+  Ms (Mura, Muri, Muda)  and the 5S workplace organization framework. Focuses on eliminating
+  inconsistency and  overburden while maintaining a disciplined agentic environment.
+
+  '
 category: methodology
-tags: [lean, 3m, 5s, mura, muri, stability, organization]
+tags:
+- methodology
 references:
-  - name: Lean Principles (Muda)
-    path: ../muda/SKILL.md
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
-  - name: Kaizen (Continuous Improvement)
-    path: ../kaizen/SKILL.md
+- name: Lean Principles (Muda)
+  path: ../muda/SKILL.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+- name: Kaizen (Continuous Improvement)
+  path: ../kaizen/SKILL.md
+level: methodology
 ---
 
 # Lean Foundations: Stability through 3M & 5S

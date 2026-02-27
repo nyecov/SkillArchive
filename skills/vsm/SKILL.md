@@ -1,28 +1,34 @@
 ---
 name: vsm
 version: 1.1.0
-description: >
-  Use when diagnosing slow workflows, high token consumption, or unexplained latency in multi-step tasks.
-  Handles current-state mapping, bottleneck identification, and future-state design for optimized flow.
+description: 'Use when diagnosing slow workflows, high token consumption, or unexplained
+  latency in multi-step tasks. Handles current-state mapping, bottleneck identification,
+  and future-state design for optimized flow.
+
+  '
 category: architecture
-tags: [vsm, mapping, architecture, bottlenecks, flow, lean]
+tags:
+- design
+- methodology
+- optimization
 references:
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
-  - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke/SKILL.md
-  - name: Hansei (Self-reflection)
-    path: ../hansei/SKILL.md
-  - name: KYT (Hazard Prediction)
-    path: ../kyt/SKILL.md
-  - name: Hō-Ren-Sō (Communication)
-    path: ../ho-ren-so/SKILL.md
-  - name: Lean Principles (Muda Eradication)
-    path: ../muda/SKILL.md
-  - name: Kaizen (Continuous Improvement)
-    path: ../kaizen/SKILL.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+- name: Poka-yoke (Mistake-proofing)
+  path: ../poka-yoke/SKILL.md
+- name: Hansei (Self-reflection)
+  path: ../hansei/SKILL.md
+- name: KYT (Hazard Prediction)
+  path: ../kyt/SKILL.md
+- name: Hō-Ren-Sō (Communication)
+  path: ../ho-ren-so/SKILL.md
+- name: Lean Principles (Muda Eradication)
+  path: ../muda/SKILL.md
+- name: Kaizen (Continuous Improvement)
+  path: ../kaizen/SKILL.md
+level: technical
 ---
 
 # Value Stream Mapping (VSM) for Agents

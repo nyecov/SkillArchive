@@ -1,28 +1,33 @@
 ---
 name: muda
 version: 1.1.0
-description: >
-  Use when a workflow feels slow, bloated, or produces unnecessary output.
-  Handles classification of 7 waste types (Muda), value definition, surgical elimination, and standardization of improvements.
+description: 'Use when a workflow feels slow, bloated, or produces unnecessary output.
+  Handles classification of 7 waste types (Muda), value definition, surgical elimination,
+  and standardization of improvements.
+
+  '
 category: methodology
-tags: [lean, muda, efficiency, optimization, value]
+tags:
+- methodology
+- optimization
 references:
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
-  - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke/SKILL.md
-  - name: Hansei (Self-reflection)
-    path: ../hansei/SKILL.md
-  - name: KYT (Hazard Prediction)
-    path: ../kyt/SKILL.md
-  - name: Hō-Ren-Sō (Communication)
-    path: ../ho-ren-so/SKILL.md
-  - name: Kaizen (Continuous Improvement)
-    path: ../kaizen/SKILL.md
-  - name: Value Stream Mapping (VSM)
-    path: ../vsm/SKILL.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+- name: Poka-yoke (Mistake-proofing)
+  path: ../poka-yoke/SKILL.md
+- name: Hansei (Self-reflection)
+  path: ../hansei/SKILL.md
+- name: KYT (Hazard Prediction)
+  path: ../kyt/SKILL.md
+- name: Hō-Ren-Sō (Communication)
+  path: ../ho-ren-so/SKILL.md
+- name: Kaizen (Continuous Improvement)
+  path: ../kaizen/SKILL.md
+- name: Value Stream Mapping (VSM)
+  path: ../vsm/SKILL.md
+level: methodology
 ---
 
 # Lean: Eradicating Agentic Waste (Muda)

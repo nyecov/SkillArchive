@@ -1,30 +1,33 @@
 ---
 name: ship-production
 version: 1.0.0
-description: >
-  Use when code is "feature complete" and approaching deployment, or when verifying production readiness.
-  Handles staging gates, 6-domain ship checklists, minimum viable production floor, and rollback planning.
+description: 'Use when code is "feature complete" and approaching deployment, or when
+  verifying production readiness. Handles staging gates, 6-domain ship checklists,
+  minimum viable production floor, and rollback planning.
+
+  '
 category: engineering
-tags: [ship, production, deployment, monitoring, staging, crowd-control]
+tags: []
 references:
-  - name: Crowd Control (Source Repo)
-    url: https://github.com/newsbubbles/crowd_control
-  - name: CC — Deglaze (Anti-Sycophancy)
-    path: ../deglaze-tactics/SKILL.md
-  - name: CC — Comprehend (Understanding Gate)
-    path: ../comprehend-understanding/SKILL.md
-  - name: CC — Anchor (Architectural Coherence)
-    path: ../anchor-coherence/SKILL.md
-  - name: CC — Circuit (Iteration Breaker)
-    path: ../circuit-breaker/SKILL.md
-  - name: CC — Isolate (Systematic Debugging)
-    path: ../isolate-debugging/SKILL.md
-  - name: CC — Secure (Security)
-    path: ../secure-security/SKILL.md
-  - name: Lean Principles (Muda Eradication)
-    path: ../muda/SKILL.md
-  - name: Value Stream Mapping (VSM)
-    path: ../vsm/SKILL.md
+- name: Crowd Control (Source Repo)
+  url: https://github.com/newsbubbles/crowd_control
+- name: CC — Deglaze (Anti-Sycophancy)
+  path: ../deglaze-tactics/SKILL.md
+- name: CC — Comprehend (Understanding Gate)
+  path: ../comprehend-understanding/SKILL.md
+- name: CC — Anchor (Architectural Coherence)
+  path: ../anchor-coherence/SKILL.md
+- name: CC — Circuit (Iteration Breaker)
+  path: ../circuit-breaker/SKILL.md
+- name: CC — Isolate (Systematic Debugging)
+  path: ../isolate-debugging/SKILL.md
+- name: CC — Secure (Security)
+  path: ../secure-security/SKILL.md
+- name: Lean Principles (Muda Eradication)
+  path: ../muda/SKILL.md
+- name: Value Stream Mapping (VSM)
+  path: ../vsm/SKILL.md
+level: tactical
 ---
 
 # Ship: Production Readiness

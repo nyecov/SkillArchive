@@ -1,28 +1,31 @@
 ---
 name: deglaze-tactics
 version: 1.0.0
-description: >
-  Use when reviewing AI-generated solutions, validating user comprehension, or stress-testing proposals.
-  Handles 5 constraint-pressure techniques: Compression, Deletion, Adversary, Explain-to-Junior, and Rollback tests.
+description: 'Use when reviewing AI-generated solutions, validating user comprehension,
+  or stress-testing proposals. Handles 5 constraint-pressure techniques: Compression,
+  Deletion, Adversary, Explain-to-Junior, and Rollback tests.
+
+  '
 category: cognition
-tags: [deglaze, anti-sycophancy, constraint-pressure, critical-thinking, crowd-control]
+tags: []
 references:
-  - name: Crowd Control (Source Repo)
-    url: https://github.com/newsbubbles/crowd_control
-  - name: CC — Comprehend (Understanding Gate)
-    path: ../comprehend-understanding/SKILL.md
-  - name: CC — Anchor (Architectural Coherence)
-    path: ../anchor-coherence/SKILL.md
-  - name: CC — Circuit (Iteration Breaker)
-    path: ../circuit-breaker/SKILL.md
-  - name: CC — Isolate (Systematic Debugging)
-    path: ../isolate-debugging/SKILL.md
-  - name: CC — Secure (Security)
-    path: ../secure-security/SKILL.md
-  - name: CC — Ship (Production Readiness)
-    path: ../ship-production/SKILL.md
-  - name: Hansei (Self-reflection)
-    path: ../hansei/SKILL.md
+- name: Crowd Control (Source Repo)
+  url: https://github.com/newsbubbles/crowd_control
+- name: CC — Comprehend (Understanding Gate)
+  path: ../comprehend-understanding/SKILL.md
+- name: CC — Anchor (Architectural Coherence)
+  path: ../anchor-coherence/SKILL.md
+- name: CC — Circuit (Iteration Breaker)
+  path: ../circuit-breaker/SKILL.md
+- name: CC — Isolate (Systematic Debugging)
+  path: ../isolate-debugging/SKILL.md
+- name: CC — Secure (Security)
+  path: ../secure-security/SKILL.md
+- name: CC — Ship (Production Readiness)
+  path: ../ship-production/SKILL.md
+- name: Hansei (Self-reflection)
+  path: ../hansei/SKILL.md
+level: cognition
 ---
 
 # Deglaze: Anti-Sycophancy (Tactical Toolkit)

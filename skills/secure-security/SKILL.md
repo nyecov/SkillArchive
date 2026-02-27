@@ -2,30 +2,32 @@
 name: secure-security
 version: 1.0.0
 level: tactical
-description: >
-  Use when implementing authentication, handling user input, storing secrets, or exposing API endpoints.
-  Handles trust boundary analysis, 5-domain security checklists (secrets, auth, authorization, input, data exposure), and common vulnerability patterns.
+description: Use when handling auth, user input, secrets, or API endpoints. Mandates
+  trust-boundary audits.
 category: safety
-tags: [secure, security, trust-boundary, secrets, authentication, authorization, crowd-control]
+tags:
+- security
 references:
-  - name: Crowd Control (Source Repo)
-    url: https://github.com/newsbubbles/crowd_control
-  - name: CC — Deglaze (Anti-Sycophancy)
-    path: ../deglaze-tactics/SKILL.md
-  - name: CC — Comprehend (Understanding Gate)
-    path: ../comprehend-understanding/SKILL.md
-  - name: CC — Anchor (Architectural Coherence)
-    path: ../anchor-coherence/SKILL.md
-  - name: CC — Circuit (Iteration Breaker)
-    path: ../circuit-breaker/SKILL.md
-  - name: CC — Isolate (Systematic Debugging)
-    path: ../isolate-debugging/SKILL.md
-  - name: CC — Ship (Production Readiness)
-    path: ../ship-production/SKILL.md
-  - name: KYT (Hazard Prediction)
-    path: ../kyt/SKILL.md
-  - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke/SKILL.md
+- name: Crowd Control (Source Repo)
+  url: https://github.com/newsbubbles/crowd_control
+- name: CC — Deglaze (Anti-Sycophancy)
+  path: ../deglaze-tactics/SKILL.md
+- name: CC — Comprehend (Understanding Gate)
+  path: ../comprehend-understanding/SKILL.md
+- name: CC — Anchor (Architectural Coherence)
+  path: ../anchor-coherence/SKILL.md
+- name: CC — Circuit (Iteration Breaker)
+  path: ../circuit-breaker/SKILL.md
+- name: CC — Isolate (Systematic Debugging)
+  path: ../isolate-debugging/SKILL.md
+- name: CC — Ship (Production Readiness)
+  path: ../ship-production/SKILL.md
+- name: KYT (Hazard Prediction)
+  path: ../kyt/SKILL.md
+- name: Poka-yoke (Mistake-proofing)
+  path: ../poka-yoke/SKILL.md
+requires:
+- red-teaming-tactics
 ---
 
 # Secure: Security for the Uninitiated

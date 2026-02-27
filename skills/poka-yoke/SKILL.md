@@ -1,28 +1,33 @@
 ---
 name: poka-yoke
 version: 1.1.0
-description: >
-  Use when designing validation gates, enforcing schemas, or preventing invalid tool calls.
-  Handles deterministic guardrails, prerequisite interlocks, and state machine constraints.
+description: 'Use when designing validation gates, enforcing schemas, or preventing
+  invalid tool calls. Handles deterministic guardrails, prerequisite interlocks, and
+  state machine constraints.
+
+  '
 category: safety
-tags: [poka-yoke, guardrails, validation, deterministic, reliability, lean]
+tags:
+- methodology
+- safety
 references:
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
-  - name: Jidoka (Autonomation)
-    path: ../jidoka/SKILL.md
-  - name: Hansei (Self-reflection)
-    path: ../hansei/SKILL.md
-  - name: KYT (Hazard Prediction)
-    path: ../kyt/SKILL.md
-  - name: Hō-Ren-Sō (Communication)
-    path: ../ho-ren-so/SKILL.md
-  - name: Kaizen (Continuous Improvement)
-    path: ../kaizen/SKILL.md
-  - name: Lean Principles (Muda Eradication)
-    path: ../muda/SKILL.md
-  - name: Value Stream Mapping (VSM)
-    path: ../vsm/SKILL.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+- name: Jidoka (Autonomation)
+  path: ../jidoka/SKILL.md
+- name: Hansei (Self-reflection)
+  path: ../hansei/SKILL.md
+- name: KYT (Hazard Prediction)
+  path: ../kyt/SKILL.md
+- name: Hō-Ren-Sō (Communication)
+  path: ../ho-ren-so/SKILL.md
+- name: Kaizen (Continuous Improvement)
+  path: ../kaizen/SKILL.md
+- name: Lean Principles (Muda Eradication)
+  path: ../muda/SKILL.md
+- name: Value Stream Mapping (VSM)
+  path: ../vsm/SKILL.md
+level: safety
 ---
 
 # Poka-yoke: Mistake-proofing AI Workflows

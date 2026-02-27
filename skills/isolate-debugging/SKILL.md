@@ -2,30 +2,33 @@
 name: isolate-debugging
 version: 1.0.0
 level: tactical
-description: >
-  Use when a bug is reported, unexpected behavior occurs, or a fix attempt has failed.
-  Handles 5-step hypothesis-driven debugging, binary search isolation, minimal reproduction, and single-variable testing.
+description: 'Use when a bug is reported, unexpected behavior occurs, or a fix attempt
+  has failed. Handles 5-step hypothesis-driven debugging, binary search isolation,
+  minimal reproduction, and single-variable testing.
+
+  '
 category: engineering
-tags: [isolate, debugging, systematic, hypothesis, single-variable, crowd-control]
+tags:
+- debugging
 references:
-  - name: Crowd Control (Source Repo)
-    url: https://github.com/newsbubbles/crowd_control
-  - name: CC — Deglaze (Anti-Sycophancy)
-    path: ../deglaze-tactics/SKILL.md
-  - name: CC — Comprehend (Understanding Gate)
-    path: ../comprehend-understanding/SKILL.md
-  - name: CC — Anchor (Architectural Coherence)
-    path: ../anchor-coherence/SKILL.md
-  - name: CC — Circuit (Iteration Breaker)
-    path: ../circuit-breaker/SKILL.md
-  - name: CC — Secure (Security)
-    path: ../secure-security/SKILL.md
-  - name: CC — Ship (Production Readiness)
-    path: ../ship-production/SKILL.md
-  - name: Poka-yoke (Mistake-proofing)
-    path: ../poka-yoke/SKILL.md
-  - name: KYT (Hazard Prediction)
-    path: ../kyt/SKILL.md
+- name: Crowd Control (Source Repo)
+  url: https://github.com/newsbubbles/crowd_control
+- name: CC — Deglaze (Anti-Sycophancy)
+  path: ../deglaze-tactics/SKILL.md
+- name: CC — Comprehend (Understanding Gate)
+  path: ../comprehend-understanding/SKILL.md
+- name: CC — Anchor (Architectural Coherence)
+  path: ../anchor-coherence/SKILL.md
+- name: CC — Circuit (Iteration Breaker)
+  path: ../circuit-breaker/SKILL.md
+- name: CC — Secure (Security)
+  path: ../secure-security/SKILL.md
+- name: CC — Ship (Production Readiness)
+  path: ../ship-production/SKILL.md
+- name: Poka-yoke (Mistake-proofing)
+  path: ../poka-yoke/SKILL.md
+- name: KYT (Hazard Prediction)
+  path: ../kyt/SKILL.md
 ---
 
 # Isolate: Systematic Debugging

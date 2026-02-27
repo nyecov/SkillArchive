@@ -1,28 +1,32 @@
 ---
 name: anchor-coherence
 version: 1.0.0
-description: >
-  Use when starting a project, making architectural decisions, or when AI-suggested changes conflict with established patterns.
-  Handles anchor document creation, drift detection, anchor audits, and deliberate evolution of design decisions.
+description: 'Use when starting a project, making architectural decisions, or when
+  AI-suggested changes conflict with established patterns. Handles anchor document
+  creation, drift detection, anchor audits, and deliberate evolution of design decisions.
+
+  '
 category: engineering
-tags: [anchor, architecture, coherence, drift-prevention, crowd-control]
+tags:
+- design
 references:
-  - name: Crowd Control (Source Repo)
-    url: https://github.com/newsbubbles/crowd_control
-  - name: CC — Deglaze (Anti-Sycophancy)
-    path: ../deglaze-tactics/SKILL.md
-  - name: CC — Comprehend (Understanding Gate)
-    path: ../comprehend-understanding/SKILL.md
-  - name: CC — Circuit (Iteration Breaker)
-    path: ../circuit-breaker/SKILL.md
-  - name: CC — Isolate (Systematic Debugging)
-    path: ../isolate-debugging/SKILL.md
-  - name: CC — Secure (Security)
-    path: ../secure-security/SKILL.md
-  - name: CC — Ship (Production Readiness)
-    path: ../ship-production/SKILL.md
-  - name: Shisa Kanko (Master Workflow)
-    path: ../shisa-kanko/SKILL.md
+- name: Crowd Control (Source Repo)
+  url: https://github.com/newsbubbles/crowd_control
+- name: CC — Deglaze (Anti-Sycophancy)
+  path: ../deglaze-tactics/SKILL.md
+- name: CC — Comprehend (Understanding Gate)
+  path: ../comprehend-understanding/SKILL.md
+- name: CC — Circuit (Iteration Breaker)
+  path: ../circuit-breaker/SKILL.md
+- name: CC — Isolate (Systematic Debugging)
+  path: ../isolate-debugging/SKILL.md
+- name: CC — Secure (Security)
+  path: ../secure-security/SKILL.md
+- name: CC — Ship (Production Readiness)
+  path: ../ship-production/SKILL.md
+- name: Shisa Kanko (Master Workflow)
+  path: ../shisa-kanko/SKILL.md
+level: tactical
 ---
 
 # Anchor: Architectural Coherence
