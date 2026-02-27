@@ -43,6 +43,7 @@ Management and storage for AI agent skills.
 
 - **[Deglaze: Anti-Sycophancy (Tactical Toolkit)](skills/deglaze-tactics/SKILL.md)**
   > Use when reviewing AI-generated solutions, validating user comprehension, or stress-testing proposals. Handles 5 constraint-pressure techniques: Co...
+  > *Tags:* `#cognition` `#safety` `#methodology`
 
 - **[Gemba: The Cognitive Context Engine](skills/gemba/SKILL.md)**
   > Use to establish a factual baseline of the codebase. Mandates direct observation before reasoning.
@@ -72,6 +73,7 @@ Management and storage for AI agent skills.
 
 - **[Ship: Production Readiness](skills/ship-production/SKILL.md)**
   > Use when code is "feature complete" and approaching deployment, or when verifying production readiness. Handles staging gates, 6-domain ship checkl...
+  > *Tags:* `#engineering` `#safety` `#methodology`
 
 - **[Test-Driven Development (TDD)](skills/test-driven-development/SKILL.md)**
   > Use when implementing any feature or bugfix, before writing implementation code. Enforces the strict Red-Green-Refactor loop.

@@ -124,11 +124,6 @@ Frontend hides the admin link, but no server-side route protection → anyone wh
 ### The User ID Incident
 API endpoint accepts user ID from URL without verifying the requester → change the ID, get anyone's data. **Fix:** Verify `req.params.id` matches authenticated user (or user has admin rights).
 
-## Escalation & Halting
-
-- **Jidoka:** Trigger an autonomous halt if a trust boundary violation is detected or if secrets are found exposed in the frontend codebase.
-- **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol if the "Three Questions" reveal unmitigable data exposure risks or if authorization logic is ambiguous.
-
 ## Implementation Workflow
 
 1. **Trigger:** Any feature that touches auth, data, or user input.

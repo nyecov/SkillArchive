@@ -5,7 +5,10 @@ description: 'Use when code is "feature complete" and approaching deployment, or
   verifying production readiness. Handles staging gates, 6-domain ship checklists,
   minimum viable production floor, and rollback planning.\'
 category: engineering
-tags: []
+tags:
+- engineering
+- safety
+- methodology
 references:
 - name: Crowd Control (Source Repo)
   url: https://github.com/newsbubbles/crowd_control

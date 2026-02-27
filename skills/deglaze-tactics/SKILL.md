@@ -5,7 +5,10 @@ description: 'Use when reviewing AI-generated solutions, validating user compreh
   or stress-testing proposals. Handles 5 constraint-pressure techniques: Compression,
   Deletion, Adversary, Explain-to-Junior, and Rollback tests.\'
 category: cognition
-tags: []
+tags:
+- cognition
+- safety
+- methodology
 references:
 - name: Crowd Control (Source Repo)
   url: https://github.com/newsbubbles/crowd_control
