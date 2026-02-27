@@ -31,59 +31,37 @@ references:
 
 Every piece of code the user doesn't understand is **comprehension debt**. Unlike technical debt, you can't refactor your way out of it — you have to actually learn. This skill gates forward progress on demonstrated understanding.
 
-## Core Mandates: The 4-Level Protocol
+## Core Mandates
 
-### Level 1: What Does It Do?
-- **The test:** "Walk me through what happens when [trigger event] occurs."
-- **Passing:** Step-by-step trace through the code path, identification of key decision points, awareness of data transformations.
-- **Failing:** "It handles the [thing]", vague gestures at functionality, "The AI set that up."
+### 1. Comprehension Gating (The 4-Level Protocol)
+Gate all forward progress on the user's demonstrated understanding of the current state.
+- **Action:** Before execution, verify understanding across four levels: What (Trace), Why (Rationale), Edge (Hazards), and Flow (Coupling).
+- **Constraint:** NEVER implement a feature on top of code the user cannot explain.
+- **Integration:** This is a cognitive **Poka-yoke** — it prevents the "Magic Code" anti-pattern.
 
-### Level 2: Why This Approach?
-- **The test:** "Why did you choose [pattern/library/structure] over alternatives?"
-- **Passing:** Articulation of tradeoffs, awareness of alternatives considered, understanding of constraints that drove the decision.
-- **Failing:** "The AI suggested it", "It's best practice" (without knowing why), "I don't know, but it works."
+### 2. Debt Identification
+Identify and "call out" comprehension debt early.
+- **Action:** Flag phrases like "The AI wrote this" or "I don't know why it works" as critical risks.
+- **Constraint:** Do not ignore comprehension gaps to maintain "velocity."
+- **Integration:** Feeds into **Hansei** to reflect on why understanding was lost.
 
-### Level 3: Where Are The Edges?
-- **The test:** "What inputs would make this behave unexpectedly?"
-- **Passing:** Identification of boundary conditions, awareness of error states, understanding of assumptions baked in.
-- **Failing:** "It should handle everything", "I tested the happy path", blank stare.
-- **Integration:** Maps directly to **KYT (Hazard Prediction)** Round 1 — edge cases are hazards.
+### 3. Rubber Duck Escalation
+When understanding fails, pivot from "Execution Mode" to "Teaching/Clarification Mode."
+- **Action:** Use the "Rubber Duck" protocol: ask the user to explain the entire flow and fill the gaps.
+- **Constraint:** Stop all file modifications until the comprehension debt is settled.
+- **Integration:** Connects to **Ho-Ren-So** to provide structured explanations of the system state.
 
-### Level 4: How Does It Connect?
-- **The test:** "How does this interact with [adjacent system/component]?"
-- **Passing:** Clear articulation of interfaces, understanding of data contracts, awareness of coupling points.
-- **Failing:** "It just calls the API", "That part was already there", confusion about boundaries.
+## Escalation & Halting
 
-## The Rubber Duck Escalation
-
-When a user fails 2+ comprehension levels, escalate to rubber duck mode:
-
-1. **Stop all implementation.**
-2. **Ask them to explain the entire flow** from user action to system response.
-3. **Note where they get stuck or vague** — those are the comprehension gaps.
-4. **Fill gaps before proceeding.**
-
-## When to Enforce Comprehend
-
-**Hard enforcement** (stop and verify):
-- Before debugging a failure
-- Before extending existing functionality
-- Before touching auth/security code
-- When user says "I don't know why this works"
-- When user says "the AI wrote this part"
-
-**Soft enforcement** (check but proceed):
-- Simple CRUD operations
-- Well-established patterns
-- User has demonstrated prior understanding
-- Isolated changes with clear boundaries
+- **Jidoka:** If a user fails 2+ comprehension levels, trigger a Jidoka halt to address the cognitive debt.
+- **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol to highlight the specific comprehension gaps and propose a "Deep Dive" before continuing.
 
 ## Implementation Workflow
 
 1. **Trigger:** User requests a change or encounters a failure.
-2. **Gate:** Run the 4-level protocol on the relevant code area.
-3. **Assess:** Failed gate → stop, explain, understand, then proceed.
-4. **Escalate:** 2+ failed gates → rubber duck mode. Feed findings into **Hansei** for reflection on why the gap exists.
+2. **Execute:** Run the 4-level comprehension protocol.
+3. **Verify:** Confirm the user can explain the logic, rationale, edges, and flow.
+4. **Output:** A user who is "back in the driver's seat" and a de-risked implementation path.
 
 ## Quick Reference
 

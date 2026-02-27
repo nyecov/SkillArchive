@@ -19,14 +19,23 @@ The **Ontology** methodology solves this by teaching the agent to maintain a *ty
 
 ## Core Mandates
 
-### 1. Model Knowledge as Typed Entities
-Instead of storing knowledge as flat text blobs, knowledge must be modeled as discrete **Entities** with strictly typed properties.
+### 1. Entity-Based Modeling
+Model all knowledge as discrete, strictly-typed Entities rather than flat, unstructured text blobs.
+- **Action:** Identify the Entity Type (Person, Project, Task, Document) and its required properties before persistence.
+- **Constraint:** DO NOT store "loose" facts that are not anchored to a specific Entity in the graph.
+- **Integration:** Directly supports the **Poka-yoke** principle of "Schema Enforcement."
 
-### 2. Define Explicit Relationships (Edges)
-Entities are useless without edges. Edges must be directional and semantically meaningful (e.g., `DEPENDS_ON`, `OWNED_BY`).
+### 2. Explicit Relationship Mapping (Edges)
+Define semantically meaningful, directional Edges between entities to map the "web of meaning."
+- **Action:** Assign specific relationship types (e.g., `DEPENDS_ON`, `OWNED_BY`, `CONTRIBUTES_TO`) between every new and existing entity.
+- **Constraint:** NEVER create an entity without at least one relationship to the existing graph; avoid orphaned knowledge silos.
+- **Integration:** Feeds into **Nemawashi** by providing the dependency map for impact analysis.
 
-### 3. Enforce Logical Consistency
-The ontology enforces logical consistency. A `Task` cannot have a `status: "Complete"` if it `DEPENDS_ON` a `Task` with `status: "Pending"`.
+### 3. Consistency Enforcement
+Enforce logical rules and type constraints across the graph to prevent contradictory or malformed state.
+- **Action:** Validate that a change (e.g., marking a Task as 'Complete') does not violate edge-based logic (e.g., if it still has 'Pending' dependencies).
+- **Constraint:** Reject any update that would result in a circular dependency in a Directed Acyclic Graph (DAG) structure.
+- **Integration:** Triggers a **Jidoka** halt if a logical inconsistency is detected.
 
 ## Escalation & Halting
 

@@ -31,26 +31,32 @@ Hansei is the practice of looking back at a plan or action with a critical, obje
 
 ## Core Mandates
 
-### 1. Proactive Reflection (Pre-Execution)
-Before finalizing a plan in the **Shisa Kanko** workflow, the agent MUST perform a critical review of its own reasoning.
-- **Action:** Run a 'Reflection Pass' on the drafted plan.
-- **Prompt:** "Identify three ways this plan could fail, violate architectural guidelines, or introduce subtle regressions."
-- **Integration:** The findings from this proactive Hansei are fed directly into the **KYT (Hazard Prediction)** protocol to establish concrete **Poka-yoke** countermeasures.
+### 1. Proactive Reflection (The Plan Critique)
+Before finalizing a plan, perform a critical review of the proposed reasoning to identify subtle flaws.
+- **Action:** Formulate three distinct ways the current plan could fail or introduce architectural rot.
+- **Constraint:** NEVER accept the first draft of a complex plan without a formal Hansei pass.
+- **Integration:** The findings feed directly into **KYT (Hazard Prediction)** to establish countermeasures.
 
-### 2. Reactive Root Cause Analysis (Post-Halt)
-When a **Jidoka** halt is triggered (e.g., due to a failed **Poka-yoke** interlock or a bad API response), the agent MUST analyze the failure rather than just reporting the error code.
-- **Action:** Trace the error back to its origin. Was it a hallucination? Missing context? Ambiguous instructions?
-- **Objective Acknowledgment:** The agent must state the failure plainly without attempting to 'cover up' logical leaps or missing data.
+### 2. Reactive Root Cause Analysis (RCA)
+When an execution fails or a Jidoka halt occurs, analyze the failure rather than just reporting the error.
+- **Action:** Trace the error back to its origin (Hallucination, Missing Context, Logic Flaw).
+- **Constraint:** Do not attempt to "hide" or "gloss over" logical leaps. State the failure plainly.
+- **Integration:** Directly supports the **Jidoka** halt protocol.
 
-### 3. Improvement Planning & Escalation
-Hansei is only complete when an actionable improvement is proposed.
-- **Action:** Generate a revised plan or a set of options to resolve the root cause.
-- **Integration (Hō-Ren-Sō):** This analysis forms the core payload of the **Sōdan (Consult)** message sent via the **Hō-Ren-Sō** protocol, providing the human operator with the context needed to make an informed decision.
-- **Integration (Kaizen):** If the reflection reveals a *recurring* root cause — the same class of error appearing across multiple executions — escalate it to a **Kaizen** event to permanently update the workflow standard, rather than applying ad-hoc fixes each time.
+### 3. Improvement Synthesis
+Translate every reflection into an actionable improvement for the current or future tasks.
+- **Action:** Propose a revised plan or a permanent change to the workflow standard.
+- **Constraint:** Hansei is incomplete without a concrete "Next Action" to prevent recurrence.
+- **Integration:** Feeds into **Kaizen** for long-term optimization.
+
+## Escalation & Halting
+
+- **Jidoka:** If Hansei reveals that the root cause is a fundamental misunderstanding of the task, trigger a Jidoka halt.
+- **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol to share the root-cause analysis and proposed improvements with the user.
 
 ## Implementation Workflow
 
-1. **Trigger:** Initiated proactively during planning (Phase A of Shisa Kanko) or reactively after a Jidoka halt.
-2. **Reflect (Hansei):** Critically analyze the draft or the failure state.
-3. **Trace:** Identify the specific assumption, missing context, or logic flaw.
-4. **Output:** Produce a revised plan (if proactive) or a root-cause diagnostic (if reactive) to fuel KYT or Hō-Ren-Sō escalations.
+1. **Trigger:** Initiated during planning (Shisa Kanko Phase A) or after an execution failure.
+2. **Execute:** Critically analyze the draft or failure to identify assumptions and logic flaws.
+3. **Verify:** Confirm the reflection identifies specific, actionable root causes.
+4. **Output:** A refined plan, a diagnostic report, or a Kaizen proposal.

@@ -31,56 +31,37 @@ references:
 
 Deglaze combats "glaze" — the false sense of understanding that forms when AI-generated solutions look clean and work on the happy path, but the user cannot explain *why* they work. Experienced practitioners unconsciously apply **constraint pressure** — questions that force ideas into hard edges. This skill makes that pressure explicit.
 
-## Core Mandates: The Five Pressure Techniques
+## Core Mandates
 
-### 1. The Compression Test
-- **Method:** Ask the user to explain their solution in one sentence without jargon.
-- **Why it works:** Glaze dissolves under compression. If they can't compress it, they don't understand it.
-- **Red flags:** "It's complicated, but basically…", restating the problem instead of the solution, describing *what* without *why*.
+### 1. Constraint Pressure (Deglazing)
+Combats "glaze" (the false sense of understanding) by applying five standardized pressure techniques: Compression, Deletion, Adversary, Explain-to-Junior, and Rollback.
+- **Action:** Before accepting an AI-generated solution, challenge it with at least two pressure techniques.
+- **Constraint:** NEVER accept a solution that is "too polished" to explain or defend.
+- **Integration:** This is a cognitive **Poka-yoke** designed to expose **Muda (Waste)** in reasoning.
 
-### 2. The Deletion Test
-- **Method:** "What happens if we remove [component X]?"
-- **Why it works:** Forces understanding of dependencies. Glazed solutions have components that "feel necessary" but aren't.
-- **Red flags:** "I'm not sure, let me check", "The AI added that, I think it's important", inability to trace data flow.
+### 2. Socratic Verification
+Shift the burden of proof to the user by asking questions that force the externalization of their mental model.
+- **Action:** Ask "What happens if we remove X?" or "How would an adversary break this?".
+- **Constraint:** Do not provide the answers. The goal is to verify the *user's* understanding, not the model's.
+- **Integration:** Directly supports the **Comprehend** understanding gate.
 
-### 3. The Adversary Test
-- **Method:** "If someone wanted to break this, how would they?"
-- **Why it works:** Shifts from construction to destruction. Exposes assumptions.
-- **Red flags:** "I hadn't thought about that", "The AI handled security", no answer beyond "they'd need access."
-- **Integration:** Maps directly to **KYT (Hazard Prediction)** Round 1 — identifying the hazard from an adversarial angle.
+### 3. Gap Identification
+Identify "glaze" by watching for red flags like jargon, vague gestures, or "The AI handled it" responses.
+- **Action:** Flag any 3+ unchecked boxes in the Deglaze checklist as a critical risk.
+- **Constraint:** Do not proceed with implementation if the solution cannot survive the Deglaze protocol.
+- **Integration:** Feeds into **Hansei** to reflect on why a solution was accepted without deep understanding.
 
-### 4. The Explain-to-Junior Test
-- **Method:** "Explain this to someone who's never seen the codebase."
-- **Why it works:** Forces externalization of mental model. Reveals gaps.
-- **Red flags:** Starting with implementation details instead of purpose, "You'd need to understand [other thing] first", circular explanations.
+## Escalation & Halting
 
-### 5. The Rollback Test
-- **Method:** "If this fails in production at 3am, how do we revert?"
-- **Why it works:** Forces operational thinking. Exposes deployment assumptions.
-- **Red flags:** "We'd just fix it", no rollback strategy, "It won't fail."
-- **Integration:** Mirrors the **Hansei (Self-reflection)** proactive review — identifying failure modes before they materialize.
-
-## When to Apply Deglaze
-
-**Apply aggressively when:**
-- User is excited about an AI-generated solution
-- Solution came together "too easily"
-- User can't explain why it works
-- Architecture was built incrementally via prompts
-- User says "the AI suggested this approach"
-
-**Apply gently when:**
-- User has demonstrated understanding
-- Solution matches established patterns
-- User can trace data flow confidently
-- User has already stress-tested the design
+- **Jidoka:** If a solution fails 3+ Deglaze tests, trigger a Jidoka halt to perform a deep-dive review.
+- **Hō-Ren-Sō:** Use Sōdan (Consult) to report the specific gaps revealed by the pressure tests and propose a simpler alternative.
 
 ## Implementation Workflow
 
-1. **Trigger:** New solution proposed or AI-generated code accepted.
-2. **Pressure:** Run the five techniques in sequence (Compression → Deletion → Adversary → Explain → Rollback).
-3. **Assess:** If 3+ techniques reveal gaps, flag for deeper review.
-4. **Escalate:** Feed findings into **Hansei** for root-cause reflection, or **Comprehend** for the understanding gate protocol.
+1. **Trigger:** A new solution is proposed or AI-generated code is accepted.
+2. **Execute:** Apply the five pressure techniques in sequence.
+3. **Verify:** Confirm the user can defend the solution against all five tests.
+4. **Output:** A de-glazed, robust implementation plan and a user with a verified mental model.
 
 ## Quick Reference
 

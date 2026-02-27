@@ -35,43 +35,28 @@ Assume users will try to break things, the frontend will be bypassed, secrets wi
 
 ## Core Mandates
 
-### 1. The Three Questions
-Before any feature ships, ask:
+### 1. Trust Boundary Enforcement
+Assume everything from the browser (input, params, cookies) is UNTRUSTED and validate it on the server.
+- **Action:** Perform server-side validation for every request, regardless of client-side checks.
+- **Constraint:** NEVER trust client-provided IDs or roles without verification against the authenticated session.
+- **Integration:** Directly implements the **Poka-yoke** principle of "Contact Checks."
 
-1. **What can a user see?** (Data exposure)
-2. **What can a user do?** (Authorization)
-3. **What can a user send?** (Input validation)
+### 2. Secret Isolation
+Ensure all sensitive credentials (API keys, passwords) are stored in environment variables and never exposed to the frontend.
+- **Action:** Use `.env` files (gitignored) or secret managers for all non-public keys.
+- **Constraint:** DO NOT commit secrets to the repository or include server-only keys in frontend bundles.
+- **Integration:** This is a security **Poka-yoke** — make it impossible to leak secrets via the browser.
 
-If you can't answer these confidently, you have security gaps.
+### 3. Defensive Data Exposure
+Minimize the risk of data leakage by filtering API responses and genericizing error messages.
+- **Action:** Return only the minimum required fields to the client and redact sensitive data from logs.
+- **Constraint:** NEVER show stack traces or internal system details in user-facing error messages.
+- **Integration:** Uses **Lean Principles (Muda)** to eliminate "Over-generation" of sensitive data.
 
-- **Integration:** These map directly to **KYT (Hazard Prediction)** Round 1 — each unanswered question is an identified hazard.
+## Escalation & Halting
 
-### 2. The Trust Boundary
-
-```
-┌─────────────────────────────────────────┐
-│              UNTRUSTED                  │
-│  - Browser                              │
-│  - User input                           │
-│  - URL parameters                       │
-│  - Cookies (can be manipulated)         │
-│  - localStorage (can be read by script) │
-└─────────────────────────────────────────┘
-                    │
-            TRUST BOUNDARY
-                    │
-┌─────────────────────────────────────────┐
-│              TRUSTED                    │
-│  - Server-side code                     │
-│  - Database                             │
-│  - Environment variables                │
-│  - Server-only secrets                  │
-└─────────────────────────────────────────┘
-```
-
-**Rule:** Never trust anything from above the line. Always validate on the server.
-
-## The Security Checklist
+- **Jidoka:** If a trust boundary violation is detected or secrets are found exposed in the frontend, trigger an immediate Jidoka halt.
+- **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol if authorization logic is ambiguous or if the "Three Questions" reveal high data-exposure risks.
 
 ### 🔑 Secrets
 | ✗ Wrong | ✓ Right |

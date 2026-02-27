@@ -57,6 +57,11 @@ Transition from autonomous mode to human-in-the-loop 'Consultation' mode.
   - **Hansei (Reflection):** The root cause analysis (e.g., "The provided file path did not match the actual directory structure").
   - **Sōdan (Consultation):** Proposed paths for the human to resume, correct the context, or abort the operation entirely.
 
+## Escalation & Halting
+
+- **Jidoka:** This skill *is* the primary halting mechanism. It triggers when any abnormality or interlock breach is detected.
+- **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol immediately after an autonomous halt to provide the diagnostic report to the user.
+
 ## Implementation Workflow
 
 1. **Monitor:** Run a validation check after every internal reasoning step.

@@ -42,25 +42,32 @@ Agents MUST actively monitor and eliminate these common wastes:
 
 ## Core Mandates
 
-### 1. Value Definition
-Before taking any action, the agent MUST explicitly define what constitutes "Value" for the user in the current context (e.g., "A working test case," "A deployed endpoint"). Everything else is waste.
+### 1. Value-First Orientation
+Explicitly define the user-facing value for every task and eliminate any activity that does not contribute to it.
+- **Action:** Identify "Value" (e.g., a passing test, a deployed fix) before execution.
+- **Constraint:** NEVER perform "just-in-case" coding or over-processing.
+- **Integration:** Directly informs the **VSM (Value Stream Mapping)** process.
 
-### 2. Surgical Precision
-Apply the **Shisa Kanko** precise pointing to ensure changes are isolated and minimal. Do not rewrite a whole file if a single line replacement suffices.
+### 2. Surgical Muda Eradication
+Actively monitor and eliminate the 7 agentic wastes: Over-generation, Waiting, Context Bloat, Over-processing, Inventory, Motion, and Defects.
+- **Action:** Use the most direct means (e.g., regex instead of LLM, parallel calls) to achieve the goal.
+- **Constraint:** Do not rewrite entire files if a single-line replacement suffices.
+- **Integration:** Supports **Shisa Kanko** by ensuring "Precise Pointing" minimizes waste.
 
-### 3. Flow Optimization
-Ensure that the transition from Intent -> Execution -> Verification is seamless, blocking only when a **Jidoka** halt is absolutely necessary.
+### 3. Continuous Flow (Pull System)
+Ensure the transition from Intent -> Execution -> Verification is seamless and "pulled" by the user's requirements.
+- **Action:** Minimize the time between a directive and its verified output.
+- **Constraint:** Do not introduce artificial bottlenecks or "Wait-states."
+- **Integration:** Works with **Heijunka** to maintain a consistent flow without spikes.
+
+## Escalation & Halting
+
+- **Jidoka:** If a "Defect" (Hallucination/Bug) waste is detected, trigger an immediate Jidoka halt.
+- **Hō-Ren-Sō:** Use the Hōkoku (Report) protocol to communicate significant waste reductions and efficiency gains to the user.
 
 ## Implementation Workflow
 
-1. **Observe:** At the start of any task, explicitly define the user-facing value and identify any steps that do not directly contribute to it.
-2. **Classify:** Map any suspected waste to one of the 7 Muda categories above. Use **Value Stream Mapping** to visualize the flow if the waste is structural rather than incidental.
-3. **Eliminate:** Remove the waste through the most direct means available — shorten context, parallelize calls, replace LLM reasoning with deterministic logic, or delete dead code.
-4. **Verify:** Confirm via **Hansei (Self-reflection)** that the elimination did not degrade output quality or bypass necessary safety checks (**Poka-yoke**, **KYT**).
-5. **Standardize:** If the waste pattern is recurring, escalate it to a **Kaizen** event to permanently update the workflow standard.
-
-## Escalation & Integration
-
-- **Defect Waste (Jidoka):** When a defect is detected, it is both a waste event and an abnormality. The **Jidoka** halt protocol takes precedence — stop, reflect via **Hansei**, and escalate via **Hō-Ren-Sō**.
-- **Systemic Waste (Kaizen):** When waste is caused by a structural flaw in the workflow rather than a one-off mistake, trigger a **Kaizen** PDCA cycle to redesign the affected portion.
-- **Reporting (Hō-Ren-Sō):** Significant waste reductions SHOULD be reported via **Hōkoku (Report)** so the human operator maintains awareness of efficiency improvements.
+1. **Trigger:** A new task is received.
+2. **Execute:** Define the value, identify Muda in the plan, and surgically eliminate it.
+3. **Verify:** Confirm the waste reduction did not compromise safety or quality (Hansei).
+4. **Output:** A high-value, lean result with minimal resource consumption.

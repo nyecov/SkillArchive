@@ -48,144 +48,42 @@ Evaluate format by **tabular eligibility** — the percentage of data that fits 
 
 **Hybrid approach:** Keep JSON for application-level APIs, convert to TOON at the LLM boundary.
 
-## TOON Syntax Reference
+## Technical Reference
 
-### Simple Object (key-value pairs)
+For detailed syntax examples, tab-delimiter rules, and benchmark data, refer to:
+- **Syntax & Benchmarks**: `./references/syntax-and-benchmarks.md`
 
-```toon
-name: Alice
-age: 30
-city: Bengaluru
-```
+## Core Mandates
 
-Equivalent JSON: `{"name": "Alice", "age": 30, "city": "Bengaluru"}`
+### 1. Tabular Eligibility Assessment
+Before serializing data, assess if it is "Tabular Eligible" (>70% uniform arrays of objects) to ensure maximum token savings.
+- **Action:** Use JSON compact if the data is irregular or >2 levels deep; use TOON for uniform tabular sets.
+- **Constraint:** NEVER use TOON for non-AI use cases (REST APIs, config files); keep JSON as the standard for interoperability.
+- **Integration:** Directly reduces "Transportation" waste as defined in **Lean Principles (Muda)**.
 
-### Array of Values
+### 2. Tabular Schema Enforcement
+Use the `[N]{fields}` header syntax to provide the LLM with a clear schema for tabular arrays.
+- **Action:** Encode arrays of objects using the tabular format with clear field headers.
+- **Constraint:** Do not omit the `[count]` or `{fields}` headers, as they are critical for LLM retrieval accuracy.
+- **Integration:** Acts as a structural **Poka-yoke** for data retrieval.
 
-```toon
-colors[3]: red,green,blue
-```
+### 3. Boundary Conversion
+Maintain JSON as the internal application standard and convert to TOON only at the LLM prompt/output boundary.
+- **Action:** Use library `encode()`/`decode()` or the TOON CLI to handle conversions.
+- **Constraint:** NEVER manually author TOON for complex datasets to avoid syntax errors.
+- **Integration:** Part of the "Orderly Workspace" (Seiton) in **Lean Foundations**.
 
-Syntax: `fieldName[count]: value1,value2,...`
+## Escalation & Halting
 
-### Array of Objects (tabular — the primary TOON strength)
+- **Jidoka:** If TOON serialization results in unexpected data loss or parser errors, trigger a Jidoka halt to revert to compact JSON.
+- **Hō-Ren-Sō:** Use the Hōkoku (Report) protocol to quantify token savings (via `--stats`) for the user.
 
-```toon
-users[2]{id,name,role}:
-1,Alice,admin
-2,Bob,user
-```
+## Implementation Workflow
 
-Syntax: `fieldName[count]{field1,field2,...}:` followed by one data row per line. The `[N]` length and `{fields}` header give the LLM a clear schema to follow, improving parsing reliability.
-
-### Nested Objects (indentation-based)
-
-```toon
-user:
-  id: 1
-  name: Alice
-  profile:
-    age: 30
-    city: Bengaluru
-```
-
-### Array of Objects With Nested Fields
-
-```toon
-teams[1]:
-- name: Team Alpha
-  members[2]{id,name}:
-  1,Alice
-  2,Bob
-```
-
-### Tab Delimiters (extra efficiency)
-
-Use tab characters instead of commas for even fewer tokens in tabular arrays. The delimiter is auto-detected by the parser.
-
-## Conversion Workflow
-
-### Decision Gate
-
-Before serializing data for an LLM:
-
-1. **Assess tabular eligibility.** What percentage of your data is uniform arrays of objects? If >70% → **Use TOON**.
-2. **Check nesting depth.** 3+ levels deep with irregular shapes? → **Keep JSON compact**.
-3. **Check consumer.** Going to an LLM prompt or agent tool output? → **TOON**. REST API or config file? → **JSON**.
-4. **Measure.** Use `npx @toon-format/cli data.json --stats` to compare token counts before committing.
-
-### CLI (No Installation Required)
-
-```bash
-# JSON → TOON
-npx @toon-format/cli input.json -o output.toon
-
-# TOON → JSON
-npx @toon-format/cli data.toon -o output.json
-
-# Pipe from stdin
-cat data.json | npx @toon-format/cli
-
-# Show token savings
-npx @toon-format/cli data.json --stats
-```
-
-### JavaScript / TypeScript
-
-```bash
-npm install @toon-format/toon
-```
-
-```javascript
-import { encode, decode } from "@toon-format/toon";
-
-// JSON → TOON
-const toonString = encode({ users: [{ id: 1, name: "Alice" }] });
-
-// TOON → JSON
-const jsonObject = decode(toonString);
-```
-
-### Python
-
-```bash
-pip install python-toon
-```
-
-```python
-from toon import encode, decode
-
-# JSON → TOON
-toon_output = encode({"name": "Alice", "age": 30})
-
-# TOON → JSON
-json_output = decode("name: Alice\nage: 30")
-```
-
-### Other Languages
-
-Official and community implementations available for **Go, Rust, Java, Swift, .NET**, and more. See the [full list](https://toonformat.dev/ecosystem/implementations).
-
-## Using TOON With LLMs
-
-TOON works best when you **show** the format instead of describing it. The structure is self-documenting — models parse it naturally once they see the pattern.
-
-**Rules:**
-1. Wrap TOON data in ` ```toon ` code blocks when embedding in prompts.
-2. Show the expected header template when asking models to **generate** TOON output.
-3. Use tab delimiters for maximum token efficiency in large datasets.
-4. For validation strategies, see the [LLM integration guide](https://toonformat.dev/guide/llm-prompts).
-
-## Benchmarks Summary
-
-| Data Type | vs Formatted JSON | vs JSON Compact | vs YAML | vs XML |
-|---|---|---|---|---|
-| E-commerce (nested, 33% tabular) | **−33.1%** | +5.5% | −14.2% | −40.5% |
-| Event logs (semi-uniform, 50% tabular) | **−15.0%** | +19.9% | −0.8% | −25.2% |
-| Deep config (0% tabular) | **−31.3%** | +11.9% | −6.2% | −37.4% |
-| **Mixed-structure total** | **−21.8%** | +14.9% | −5.6% | −31.0% |
-
-**Key insight:** TOON consistently beats formatted JSON, YAML, and XML. JSON compact (minified) wins on token count but sacrifices readability and LLM accuracy — TOON achieves **74% retrieval accuracy vs JSON's 70%** across 4 models.
+1. **Trigger:** Structured data needs to be serialized for an LLM prompt or tool output.
+2. **Execute:** Assess tabular eligibility, choose the format (TOON vs JSON), and perform the conversion.
+3. **Verify:** Use `--stats` to confirm token savings and ensure retrieval accuracy is maintained.
+4. **Output:** A token-optimized, high-accuracy data payload for the agentic pipeline.
 
 ## Integration Points
 

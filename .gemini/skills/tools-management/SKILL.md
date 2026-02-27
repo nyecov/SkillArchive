@@ -34,56 +34,35 @@ Before adopting an abstraction from the community or building your own, classify
 
 ## Core Mandates
 
-### 1. The "No Thin Wrappers" Rule
+### 1. Architectural Classification
+Before adopting an abstraction, classify it as a Skill (Cognitive), Tool (Mechanized), or MCP (External/Stateful).
+- **Action:** Use the Classification Matrix to determine the appropriate storage location and format.
+- **Constraint:** NEVER create a high-level `SKILL.md` for a "thin wrapper" around a single CLI command or API call.
+- **Integration:** Directly impacts the **Skill of Skill Authoring** by defining the boundary of "Cognitive Procedures."
 
-Do NOT create a high-level `SKILL.md` just to wrap a single CLI command or API call. 
+### 2. Tool Nesting & Scope
+Store mechanized scripts within the skill's folder if they are specific to a methodology, or in the global `tools/` directory if they are generally useful.
+- **Action:** Nest methodology-specific scripts (e.g., binary search test runners) inside `skills/{skill-name}/scripts/`.
+- **Constraint:** Global tools MUST include a `description.md` to be discoverable by the agent.
+- **Integration:** Supports **Lean Principles (Muda)** by reducing "Motion" (Navigational) waste.
 
-✅ **Good (Tool Script):** A simple `generate_pdf.py` script stored in `tools/pdf-generator/`, alongside a `description.md`, invoked directly by the agent when it needs to generate a PDF.
+### 3. Delegation to MCP
+Delegate complex state management, external API access, or proprietary data handling to MCP Servers.
+- **Action:** Use MCP for Jira, Gmail, or cloud service interactions. Use local scripts for filesystem and build operations.
+- **Constraint:** Do not store sensitive API keys or complex state logic in local shell scripts.
+- **Integration:** Follows the protocols established in **MCP Integration Governance**.
 
-### 2. Nesting Tools Inside Skills
+## Escalation & Halting
 
-When a cognitive Skill requires specific mechanized actions to accomplish its goals, store those tools as scripts *within the skill's folder*.
-
-```
-skills/
-  cc-isolate-debugging/
-    SKILL.md              <-- The cognitive methodology (binary search isolation)
-    scripts/
-      run_test_subset.sh  <-- The tool (mechanization)
-```
-
-**Rule of Thumb:** If the tool is only useful in the context of one methodology, nest it. If it is generally useful across the entire repository (e.g., "Reset Database"), put it in its own folder within the archive's `tools/` directory, complete with a `description.md`.
-
-### 3. Offloading to MCP
-
-If a Tool requires complex state management, external API keys, rate limiting, or connection to proprietary data sources, **do not** write it as a local shell script. Delegate it to an **MCP Server**.
-
-- If you want the agent to read Jira tickets → Use MCP.
-- If you want the agent to automate Gmail → Use MCP.
-- If you want the agent to run a local Vite dev server → Use a bash script (Tool).
-
-See `mcp-integration-governance/SKILL.md` for details on building MCP servers.
-
-### 4. Framework Patterns belong in Context, not Skills
-
-Many community "skills" (like Vercel React Best Practices) are just coding guidelines. These do not belong in the Skill Archive. They belong directly in the project contextual layer.
-
-- Use `.cursorrules`, `.windsurfrules`, or a global AI configuration file (`.agent/rules.md`).
-- Do not burden the agent's dynamic skill-loading mechanism with static syntax preferences.
+- **Jidoka:** If a tool's complexity exceeds the limits of a local script (e.g., it starts requiring state management), trigger a Jidoka halt to evaluate migration to MCP.
+- **Hō-Ren-Sō:** Use the Hōkoku (Report) protocol to announce the addition of new mechanized tools to the project's capability set.
 
 ## Implementation Workflow
 
-When faced with a new automation requirement (e.g., "I need the agent to test the web app"):
-
-1. **Does it require critical thinking and a multi-step methodology?** 
-   - Yes: Write a `SKILL.md`.
-2. **Does it require external API access or specific application state?**
-   - Yes: Build an MCP Server.
-3. **Is it just a list of coding preferences or syntax rules?**
-   - Yes: Put it in a project-specific rule file (e.g. `.cursorrules`).
-4. **Is it a repeatable mechanized task (e.g. running a test suite, generating a report)?**
-   - Yes: Write a bash/python script inside its own folder in the archive's `tools/` directory, and include a `description.md`.
-   - **Crucial:** After adding the tool, run `python generate_readme.py` in the archive root to index it in the global directory.
+1. **Trigger:** A new automation or cognitive requirement is identified.
+2. **Execute:** Apply the classification logic to choose between a Skill, Tool, or MCP.
+3. **Verify:** Confirm the implementation follows the "No Thin Wrappers" and "Relative Path" rules.
+4. **Output:** A cleanly abstracted capability (Skill/Tool/MCP) that enhances the agent's efficiency.
 
 ## Anti-Patterns
 

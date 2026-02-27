@@ -29,12 +29,13 @@ references:
 
 This master skill synthesizes the **Shisa Kanko (Pointing and Calling)** architecture with core Lean manufacturing principles. It transforms 'vibecoding' from intuitive execution into a rigorously safe, deterministic engineering discipline.
 
-## Core Mandates & Constraints
+## Core Mandates
 
 ### 1. Precise Pointing (Context Isolation)
 Before any modification, 'point' to the target with absolute precision.
 - **Action:** Output a `[TARGET_ISOLATION]` block containing the file path, line ranges, and the **Exact Code Snippet**.
-- **Poka-yoke Interlock:** If the snippet cannot be perfectly matched via a `read_file` check, you MUST NOT proceed to execution.
+- **Constraint:** If the snippet cannot be perfectly matched via a `read_file` check, you MUST NOT proceed to execution.
+- **Integration:** Acts as a **Poka-yoke** interlock.
 
 ### 2. Explicit Calling (Intent & Success)
 Never execute a tool call without 'calling out' the expected outcome.
@@ -42,46 +43,23 @@ Never execute a tool call without 'calling out' the expected outcome.
   - **Intent:** Specific code change.
   - **Success Criteria:** What defines success.
   - **Validation Method:** The exact command to verify success.
+- **Constraint:** All execution MUST be preceded by this declaration.
+- **Integration:** Feeds into the final **Verification** step.
 
 ### 3. Jidoka (Autonomation & Self-Monitoring)
 Continuously monitor internal confidence and API responses.
-- **Action:** If an abnormality (e.g., mismatched schema, unexpected test output) occurs, trigger an immediate **Autonomous Halt** and freeze execution. Do not attempt blind guesses to fix it.
+- **Action:** If an abnormality (e.g., mismatched schema, unexpected test output) occurs, trigger an immediate **Autonomous Halt** and freeze execution. 
+- **Constraint:** Do not attempt blind guesses to fix it.
+- **Integration:** Triggers the **Jidoka** skill.
 
-## The High-Integrity Vibecoding Lifecycle
+## Escalation & Halting
 
-### Phase A: Alignment & Reflection (Hansei)
-1. **Define the Vibe:** State the architectural goal.
-2. **Draft Plan:** Outline the technical implementation.
-3. **Hansei (Self-reflection):** Critically review the draft. "Identify three ways this plan could fail or introduce architectural rot."
-4. **Refine:** Incorporate countermeasures into the final plan.
+- **Jidoka:** Any pointing mismatch or abnormal tool response MUST trigger a Jidoka halt.
+- **Hō-Ren-Sō:** Use Sōdan (Consult) if pointing reveals severe drift from the mental model or if KYT identifies unrecoverable risk.
 
-### Phase B: Pre-Mortem Risk Assessment (KYT)
-Before executing Phase C, run the 4-round KYT protocol:
-1. **Hazard:** Identify the primary danger of the change.
-2. **Critical Point:** Identify the 'Point of No Return'.
-3. **Countermeasure:** Establish a mitigation step.
-4. **Action Target:** Create a binary Go/No-Go checklist.
+## Implementation Workflow
 
-### Phase C: Deterministic Execution
-1. **Point:** Isolate the target (Mandate 1).
-2. **Call:** Declare logic and validation (Mandate 2).
-3. **Act:** Execute the surgical update.
-4. **Point (Re-verify):** Read the file back to ensure perfect application.
-
-### Phase D: Multi-Sensory Verification
-1. **Validation:** Run the validation command defined in Phase C.
-2. **Vibe Audit:** Confirm the output (logs/UI) aligns with Phase A.
-
-## Escalation & Communication (Hō-Ren-Sō)
-Replace silent failure or assumption-making with standardized communication.
-
-- **Hōkoku (Report):** Summarize successful completion of Phase D to the user.
-- **Renraku (Contact):** Broadcast any unexpected environmental changes (e.g., "Tests are failing locally").
-- **Sōdan (Consult) - The Red Stop Trigger:** You MUST halt and consult the user if:
-  - Jidoka detects an abnormality (e.g., missing dependencies).
-  - The KYT Pre-Mortem identifies unrecoverable risk.
-  - 'Pointing' reveals severe drift from your mental model.
-
-## Path Rules
-- Internal references MUST use relative paths.
-- External resources MUST use absolute URLs.
+1. **Trigger:** A Directive is received from the user.
+2. **Execute:** Follow the Phases A-C (Reflect -> Risk Assessment -> Deterministic Execution).
+3. **Verify:** Phase D (Validation + Vibe Audit).
+4. **Output:** A verified, high-integrity update and a Hōkoku (Report) to the user.

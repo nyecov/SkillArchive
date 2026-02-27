@@ -33,63 +33,35 @@ The user is caught in a dopamine loop: prompt, hope, disappointment, prompt agai
 
 ## Core Mandates
 
-### 1. Trigger Conditions
-The circuit breaker trips when any of these thresholds are met:
+### 1. Threshold Monitoring
+Track and enforce strict iteration thresholds to prevent the "Dopamine-Sunk-Cost Spiral."
+- **Action:** Before starting a task, set an iteration budget (e.g., 3-5 prompts for a bug fix).
+- **Constraint:** NEVER exceed the budget without a formal "Strategic Re-Pivot" and user consultation.
+- **Integration:** Acts as a higher-level workflow monitor for **Shisa Kanko** execution loops.
 
-| Condition | Threshold |
-|-----------|----------|
-| Consecutive failed fixes | 3+ attempts at same bug |
-| Regression rate | New bugs equal or exceed fixes |
-| Comprehension loss | User can't explain recent changes |
-| Time spiral | 2+ hours on single issue |
-| Scope explosion | Fix requires touching 5+ files |
+### 2. Standardized Responses
+When a threshold is hit, the circuit MUST trip, and only three responses are permitted: Stop, Revert, or Restart.
+- **Action:** Present the user with the three options (Stop, Revert, Restart) and the rationale for the trip.
+- **Constraint:** Do not suggest "just one more fix" once the circuit has tripped.
+- **Integration:** Connects to **Hansei** to identify why the iteration budget was exhausted.
 
-- **Integration:** This is a user-facing complement to the **Jidoka** autonomous halt — while Jidoka halts on system abnormalities, Circuit halts on human-workflow abnormalities.
+### 3. Regression Enforcement
+Stop work if the rate of new bugs introduced equals or exceeds the rate of fixes.
+- **Action:** Audit the workspace for new linting errors or test failures after every 3 iterations.
+- **Constraint:** If the debt is compounding, trigger an immediate halt.
+- **Integration:** Uses **Jidoka** for the technical halt and **Circuit** for the workflow halt.
 
-### 2. The Three Options
-When the circuit trips, there are only three valid responses:
+## Escalation & Halting
 
-**Option 1: STOP** — Walk away, return with fresh eyes. Use when fatigue is the problem, not the code.
-
-**Option 2: REVERT** — Go back to last known good state. The approach is wrong, but the goal is clear.
-
-**Option 3: RESTART** — Start fresh with lessons learned. The codebase is beyond repair. More common than you'd think.
-
-### 3. Iteration Budgets
-Before starting any task, set an explicit budget:
-
-| Task Type | Budget |
-|-----------|--------|
-| Bug fix | 3–5 prompts |
-| Simple feature | 5–10 prompts |
-| Complex feature | 15–25 prompts |
-
-Over budget = wrong approach. Reassess.
-
-## The Restart Calculation
-
-| Scenario | Time to Fix | Time to Restart |
-|----------|-------------|----------------|
-| 50 prompts of accumulated bugs | 50+ more prompts | 20 prompts (with lessons learned) |
-| Tangled auth system | Days of debugging | Hours of clean implementation |
-| Mixed architectural patterns | Endless refactoring | Fresh start with anchors |
-
-**The rule:** If you can't explain the current state, restart is probably faster.
-
-## Anti-Patterns to Watch
-
-- **"Just One More Fix"** — The most dangerous phrase. If you've said it three times, the circuit should trip.
-- **"The AI Will Figure It Out"** — The debt compounds.
-- **"I'm So Close"** — You're probably not. The feeling of being close is often the spiral tightening.
-- **"I Can't Lose This Progress"** — The progress was learning what doesn't work. The code is not the progress.
+- **Jidoka:** This skill triggers a Jidoka halt when iteration budgets are exhausted or regression rates spike.
+- **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol to present the Stop/Revert/Restart options to the user.
 
 ## Implementation Workflow
 
-1. **Budget:** Set an iteration budget before starting the task.
-2. **Monitor:** Track attempts, regressions, and time against thresholds.
-3. **Trip:** When a threshold is hit, stop all work and present the three options.
-4. **Decide:** User chooses Stop, Revert, or Restart.
-5. **Act:** Execute the chosen path cleanly — no hybrid "partial revert."
+1. **Trigger:** An iteration budget is set or a repeated failure is detected.
+2. **Execute:** Track attempts, regressions, and time against thresholds.
+3. **Verify:** When a threshold is hit, stop and signal the "Red Light" status.
+4. **Output:** A user-selected decision (Stop, Revert, or Restart) and a clean state.
 
 ## Quick Reference
 

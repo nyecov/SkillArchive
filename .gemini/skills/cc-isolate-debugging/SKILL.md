@@ -33,98 +33,44 @@ references:
 
 Gamblers try random things hoping something works. Scientists form hypotheses, test them, and learn from results. Debugging is not about luck — it's about systematically eliminating possibilities until only the truth remains.
 
-## Core Mandates: The 5-Step Protocol
+## Core Mandates
 
-### Step 1: Define The Symptom
-Before anything else, **precisely define what's broken**.
+### 1. Symptom Definition
+Before attempting a fix, precisely define the abnormality and establish a deterministic reproduction path.
+- **Action:** Output a "Symptom Report" (Expectation vs. Reality) and a minimal reproduction command.
+- **Constraint:** NEVER start "guessing" at a fix before the bug is reproduced.
+- **Integration:** Directly supports **Genchi Genbutsu** (Go and See).
 
-```
-BAD:  "The app is broken"
-BAD:  "Auth doesn't work"
-GOOD: "When I click login with valid credentials, I get redirected
-       to /dashboard but the user object is null"
-```
+### 2. Hypothesis-Driven Isolation
+Systematically eliminate possibilities using the "Single Variable Rule" and binary search.
+- **Action:** Form a single, testable hypothesis and change only one variable at a time.
+- **Constraint:** Do not apply multiple changes simultaneously. One change, one observation.
+- **Integration:** This is a diagnostic **Poka-yoke** — it prevents the "Gambler's Fallacy" in debugging.
 
-**The test:** Can you reproduce it? If you can't reproduce it, you can't debug it.
+### 3. Evidence-Based Conclusion
+Verify the fix with empirical evidence that specifically addresses the reproduction path.
+- **Action:** Run the reproduction script to confirm the fix and run the full test suite to ensure no regressions.
+- **Constraint:** "It works now" is not an acceptable status. You MUST explain *why* it now works and *how* the fix addressed the root cause.
+- **Integration:** Feeds into **Hansei** to reflect on why the bug was introduced.
 
-### Step 2: Locate The Boundary
-Find where things go from **working** to **broken**.
+## Escalation & Halting
 
-```
-✓ User clicks login button          (working - button responds)
-✓ Form submits to /api/auth/login   (working - network request fires)
-✓ Server receives request           (working - logs show request)
-✓ Server validates credentials      (working - returns 200)
-✓ Server returns user object        (working - response has data)
-✗ Client receives response          (BROKEN - response is empty??)
-```
-
-The bug is between "server returns" and "client receives." Now we know where to look.
-
-### Step 3: Form A Hypothesis
-**One hypothesis at a time.** Not "maybe it's A or B or C." Pick one.
-
-```
-HYPOTHESIS: The response is being transformed incorrectly
-            by the API client middleware.
-
-TEST: Log the raw response before middleware processing.
-
-EXPECTED: Raw response will have user data.
-```
-
-### Step 4: Test The Hypothesis
-**Change only what's necessary to test.** Don't fix while testing.
-
-The moment you "fix while testing," you've lost the ability to verify.
-
-### Step 5: Interpret Results
-
-| Result | Meaning |
-|--------|--------|
-| Hypothesis confirmed | Proceed to fix |
-| Hypothesis rejected | Form new hypothesis |
-| Inconclusive | Need better test |
-
-**Never** conclude without evidence. "I think it's fixed" is not evidence. "The test passes" is evidence.
-
-## The Single Variable Rule
-
-Change ONE thing. Test. Then change the next thing. Never change multiple things simultaneously.
-
-- **Integration:** This is the debugging analogue of **Poka-yoke** deterministic validation — one check, one result, no ambiguity.
-
-## The Isolation Toolkit
-
-### Binary Search Debugging
-When you don't know where the bug is:
-1. Find the midpoint of the code path.
-2. Add a log/breakpoint there.
-3. Is the data correct at midpoint? Yes → bug is after. No → bug is before.
-4. Repeat until isolated.
-
-### The Minimal Reproduction
-Strip away everything that isn't necessary to reproduce the bug. The smaller the reproduction, the clearer the bug.
-
-### The Reversion Test
-"When did this last work?" → Revert to that state → Confirm it works → Apply changes one at a time until it breaks → The breaking change contains the bug.
-
-## Anti-Patterns to Catch
-
-- **"Let Me Just Try This"** — No. Form a hypothesis first. What do you expect to happen? Why?
-- **"I'll Change A Few Things"** — No. One thing. Test. Then the next thing.
-- **"The AI Said To Do This"** — The AI is guessing too. It doesn't know more than you do about YOUR bug.
-- **"It Works Now" (Without Understanding Why)** — Then you haven't fixed it. You've hidden it. It will return.
+- **Jidoka:** If 3+ hypotheses fail or if a fix attempt introduces a regression, trigger a Jidoka halt.
+- **Hō-Ren-Sō:** Use Sōdan (Consult) if the bug is rooted in an architectural contradiction (an Anchor conflict) that requires a strategic decision.
 
 ## Implementation Workflow
 
-1. **Trigger:** Bug reported or unexpected behavior observed.
-2. **Define:** Precisely state the symptom (Step 1).
-3. **Locate:** Find the working→broken boundary (Step 2).
-4. **Hypothesize:** Form a single hypothesis (Step 3).
-5. **Test:** One change, one observation (Step 4).
-6. **Interpret:** Evidence-based conclusion (Step 5).
-7. **Escalate:** If 3+ hypotheses fail, trigger **Circuit** protocol — the approach may be wrong.
+1. **Trigger:** A bug is reported or a test fails.
+2. **Execute:** Follow the 5-step protocol (Define -> Locate -> Hypothesize -> Test -> Interpret).
+3. **Verify:** Confirm the reproduction script passes and no regressions exist.
+4. **Output:** A verified fix and a root-cause analysis report.
+
+## The Isolation Toolkit
+
+### Automated Binary Search
+For complex isolations (e.g., finding a breaking line in a large file or a breaking commit), use the provided deterministic runner:
+- **Tool**: `./scripts/binary_search_runner.py`
+- **Usage**: `python ./scripts/binary_search_runner.py "test_command {item}" item1 item2 ...`
 
 ## Quick Reference
 

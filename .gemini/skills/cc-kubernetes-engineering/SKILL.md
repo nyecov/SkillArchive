@@ -24,83 +24,27 @@ This skill defines the standards for deploying applications to Kubernetes. It fo
 ## Core Mandates
 
 ### 1. Resource Discipline (Muda Reduction)
-Every container MUST have explicit CPU and Memory `requests` and `limits`.
-
+Every container MUST have explicit CPU and Memory `requests` and `limits` to prevent unpredictable scheduling.
 - **Action:** Set `requests` based on typical load and `limits` to prevent noisy-neighbor syndromes.
-- **Constraint:** DO NOT leave resource blocks empty; this leads to unpredictable scheduling (waste).
-- **Integration:** Directly implements **Seiri** (Sort) by allocating only what is necessary.
+- **Constraint:** DO NOT leave resource blocks empty. Allocation without measurement is **Muda** (Waste).
+- **Integration:** Implements **Seiri** (Sort) by allocating only what is necessary.
 
 ### 2. Resilience Gates (Jidoka)
-Workloads MUST implement the three types of probes to allow the orchestrator to make informed decisions.
-
-- **Action:** `livenessProbe` (is the process dead?), `readinessProbe` (is it ready for traffic?), and `startupProbe` (is it still initializing?).
-- **Constraint:** DO NOT point probes at dependencies (e.g., checking the DB in an app probe); probes should only reflect the local container health.
-- **Integration:** Supports **Jidoka** by allowing K8s to autonomously restart or isolate failing components.
+Workloads MUST implement liveness, readiness, and startup probes to enable autonomous orchestration decisions.
+- **Action:** Configure `livenessProbe`, `readinessProbe`, and `startupProbe` for every container.
+- **Constraint:** DO NOT point probes at external dependencies (e.g., a DB); probes must reflect local health only.
+- **Integration:** Supports **Jidoka** by allowing the cluster to autonomously restart or isolate failing Pods.
 
 ### 3. Hardened Security Context (Poka-yoke)
-Pods MUST run with the principle of least privilege.
-
-- **Action:** Set `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, and `readOnlyRootFilesystem: true` where possible.
-- **Constraint:** Never run containers with `privileged: true` unless they are low-level system daemons.
-- **Integration:** **Poka-yoke** for the runtime environment.
-
-### 4. Configuration Decoupling
-Application code and configuration MUST be separated using ConfigMaps and Secrets.
-
-- **Action:** Use `envFrom` or volume mounts for configurations.
-- **Constraint:** DO NOT bake environment-specific strings or secrets into the image layers.
-- **Goal:** Single image for all environments (Dev -> Staging -> Prod).
-
-### 5. Graceful Termination (Hō-Ren-Sō)
-Applications MUST handle the `SIGTERM` signal to ensure zero-downtime deployments.
-
-- **Action:** Implement a shutdown handler that closes database connections and finishes active requests.
-- **Action:** Set `terminationGracePeriodSeconds` appropriately (default is 30s).
-- **Goal:** Ensure the application "reports" its departure cleanly to the cluster.
-
-## Implementation Patterns
-
-### Standard Deployment Template
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: app-gateway
-  labels:
-    app: nomos-gateway
-spec:
-  replicas: 3
-  template:
-    spec:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-      containers:
-      - name: gateway
-        image: nomos-gateway:v2.0.1
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 8008
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8008
-        readinessProbe:
-          httpGet:
-            path: /ready
-            port: 8008
-```
+Pods MUST operate with the principle of least privilege using PodSecurityContext.
+- **Action:** Enforce `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, and `readOnlyRootFilesystem: true`.
+- **Constraint:** NEVER run containers as `privileged: true` unless they are system-level daemons.
+- **Integration:** Acts as a runtime **Poka-yoke** to prevent privilege escalation.
 
 ## Escalation & Halting
 
-- **Jidoka:** Halt if a Deployment causes a `CrashLoopBackOff` that persists beyond 5 minutes.
-- **Hō-Ren-Sō:** Report any resource "OOMKilled" events as an urgent need for resource re-allocation.
+- **Jidoka:** Halt if a Deployment causes a `CrashLoopBackOff` that persists beyond 5 minutes or if a Pod is `OOMKilled`.
+- **Hō-Ren-Sō:** Use the Renraku (Fact) protocol to report persistent scheduling failures or resource exhaustion to the user.
 
 ## Implementation Workflow
 

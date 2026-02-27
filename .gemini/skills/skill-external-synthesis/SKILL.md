@@ -23,16 +23,22 @@ A skill for extending the internal knowledge base by leveraging established patt
 ## Core Mandates
 
 ### 1. Mandatory External Discovery
-Before drafting a new skill, the agent MUST search external reference points to see if the problem has already been solved or if relevant prompt patterns exist.
-- **Action:** Visit `https://platform.claude.com/cookbook/` and `https://clawhub.ai/skills?sort=downloads`.
-- **Constraint:** Do not blindly copy-paste. Evaluate external content for "Skill Archive" compatibility (token efficiency, procedural style).
-- **Integration:** Feeds directly into the "Research" phase of the `skill-of-skill-authoring` workflow.
+Perform a thorough search of external reference points before drafting a new skill to leverage existing community patterns.
+- **Action:** Visit the Claude Cookbook and Clawhub to identify similar procedures or architectural patterns.
+- **Constraint:** DO NOT blindly copy-paste; evaluate external content for compatibility with the Three-Stage Loading Model.
+- **Integration:** Directly informs the "Research" phase of **Skill of Skill Authoring**.
 
 ### 2. Analytical Synthesis
-Identify the "delta" between existing community solutions and local requirements.
-- **Action:** Extract core logic, tool-use patterns, and failure modes from external examples.
-- **Constraint:** Ensure all synthesized content is adapted to the Three-Stage Loading Model defined in `skill-of-skill-authoring`.
-- **Integration:** Uses `Kaizen` to refine the synthesized procedure until it meets local standards.
+Extract core logic, tool-use patterns, and failure modes from external examples and adapt them to local requirements.
+- **Action:** Identify the "delta" between community solutions and the current project needs.
+- **Constraint:** All synthesized content MUST be transformed into a procedural, actionable workflow.
+- **Integration:** Uses **Kaizen** to refine and improve upon the synthesized community patterns.
+
+### 3. Source Citation
+Maintain transparency and traceability by documenting the origins of synthesized logic.
+- **Action:** Cite external sources in the `references` section of the new skill's frontmatter.
+- **Constraint:** Do not present external logic as "original" without identifying the foundational source.
+- **Integration:** Supports the "Shine" (Seiso) phase of **Lean Foundations** by keeping the knowledge source clear.
 
 ## Implementation Workflow
 

@@ -31,14 +31,23 @@ The Model Context Protocol (MCP) is the open standard for connecting AI agents t
 
 ## Core Mandates
 
-### 1. Maintain Clean Separation
-AI agents must strictly distinguish between tools (mutation/computation), resources (read-only context), and prompts (interaction templates).
+### 1. Architectural Primitive Selection
+Strictly classify every integration as a Tool (Mutation/Computation), Resource (Read-only Context), or Prompt (Interaction Template).
+- **Action:** If it mutates state or computes → Tool. If it provides context → Resource.
+- **Constraint:** DO NOT create "God Tools" that handle multiple unrelated operations; keep them single-purpose and focused.
+- **Integration:** Directly impacts the **Tools Management Strategy** classification.
 
-### 2. Rigorous Schema Validation
-Every tool input and output must follow a strict JSON Schema. Untyped pass-throughs are prohibited.
+### 2. Rigorous Schema Enforcement
+Every tool input and resource URI MUST follow a strict, documented JSON Schema to ensure deterministic interaction.
+- **Action:** Define every parameter with `type`, `description`, and `required` status. 
+- **Constraint:** Untyped pass-throughs (e.g., `type: object` with no properties) are strictly prohibited.
+- **Integration:** Acts as an integration-level **Poka-yoke** for the agent.
 
-### 3. Human-in-the-Loop for Side Effects
-Any tool marked with `destructiveHint: true` must require explicit human confirmation before execution.
+### 3. Human-in-the-Loop Safeguards
+Explicitly mark and gate destructive operations to prevent unintended state changes.
+- **Action:** Set `destructiveHint: true` for any tool that modifies or deletes persistent data.
+- **Constraint:** NEVER auto-execute destructive tools without explicit human-in-the-loop (HITL) authorization.
+- **Integration:** Connects to the **Sōdan (Consult)** protocol in **Hō-Ren-Sō**.
 
 ## Escalation & Halting
 

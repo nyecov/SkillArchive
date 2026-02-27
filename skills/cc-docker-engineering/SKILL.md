@@ -21,115 +21,28 @@ This skill provides the authoritative standard for building production-grade con
 
 ## Core Mandates
 
-### 1. BuildKit Optimization (The Speed Gate)
-You MUST utilize Docker BuildKit features to eliminate redundant work across builds.
-
-- **Action:** Use `RUN --mount=type=cache` for package managers (apt, pip, npm, cargo).
-- **Action:** Use `RUN --mount=type=bind` to access files without creating a layer.
+### 1. BuildKit Optimization (Speed Gate)
+Utilize Docker BuildKit features to eliminate redundant work and achieve sub-30 second rebuilds.
+- **Action:** Use `RUN --mount=type=cache` for package managers and `RUN --mount=type=bind` for temporary files.
 - **Constraint:** DO NOT rely on simple layer caching for large dependency installations; it is too brittle.
-- **Goal:** Sub-30 second rebuilds for minor code changes.
+- **Integration:** Directly reduces "Waiting" waste in the **VSM (Value Stream Mapping)**.
 
-### 2. Manifest-First Caching & Stage Decoupling
-Layer ordering MUST prioritize stability.
-
-- **Action:** Copy dependency manifests (`package.json`, `requirements.txt`) BEFORE the source code.
-- **Action:** Use `AS builder` stages for compilers/build-tools and a minimal final stage (alpine, distroless) for runtime.
+### 2. Manifest-First Layering
+Prioritize layer stability by decoupling manifests from source code and using multi-stage builds.
+- **Action:** Copy dependency manifests BEFORE source code and use minimal final stages (alpine, distroless).
 - **Constraint:** The final image MUST NOT contain build-time secrets, git, or compilers.
+- **Integration:** Acts as a structural **Poka-yoke** to prevent secret leakage and bloated artifacts.
 
-### 3. Security & Non-Root Execution
-Images MUST be secure by default.
-
-- **Action:** Explicitly `USER` to a non-privileged account.
-- **Action:** Use specific version tags (e.g., `python:3.12-slim`) instead of `latest`.
-- **Constraint:** Never run processes as `root` unless absolutely required for low-level system access.
-
-### 4. Context Optimization (Muda Reduction)
-The build context MUST be as small as possible.
-
-- **Action:** Maintain a strict `.dockerignore` to exclude `.git`, `node_modules`, `venv`, and local artifacts.
-- **Goal:** Minimize "Sending build context to Docker daemon" time.
-
-### 5. Deterministic CI Installation
-Installation commands MUST prioritize lockfile integrity and speed.
-
-- **Action:** Use `npm ci` (Node), `poetry install --sync` (Python), or equivalent "frozen" commands.
-- **Constraint:** DO NOT use `npm install` or `pip install .` in CI/production stages as they may mutate the lockfile or resolve new versions unexpectedly.
-- **Integration:** Directly supports **Jidoka** by halting the build if dependencies are inconsistent.
-
-### 6. Observability & Portability
-Images MUST be self-describing and architecture-aware.
-
-- **Action:** Include a `HEALTHCHECK` that tests the actual application port (not just the process).
-- **Action:** Use OCI labels for traceability (e.g., `LABEL org.opencontainers.image.source=...`).
-- **Action:** Use `ARG` for platform-specific builds if the image will run on multiple architectures (AMD64/ARM64).
-
-### 7. Signal-Aware Entrypoints (Clean Exit)
-Entrypoints MUST handle termination signals (`SIGTERM`) correctly to avoid 10-second wait times and zombie processes.
-
-- **Action:** ALWAYS use the **Exec Form** (`["executable", "param"]`) for `CMD` and `ENTRYPOINT`.
-- **Constraint:** DO NOT use the "Shell Form" (raw string) as it wraps the process in `/bin/sh -c`, which does not forward signals.
-
-### 8. Immutable Executables & Reduced Capabilities
-The runtime environment MUST be hardened against runtime modification.
-
-- **Action:** Ensure executables and system files are owned by `root` and are NOT world-writable, even when running as a non-root user.
-- **Action:** Use `distroless` or `scratch` for compiled binaries to eliminate shell-based attack vectors.
-- **Constraint:** Drop all Linux capabilities (`--cap-drop=ALL`) at runtime unless specific ones are required.
-
-### 9. Stream-Based Observability
-Logging MUST follow the Twelve-Factor App methodology.
-
-- **Action:** Log everything to `stdout` and `stderr`.
-- **Constraint:** DO NOT log to files inside the container; this complicates log rotation and persistence.
-
-## Implementation Patterns
-
-### Go (Distroless) Example
-```dockerfile
-# syntax=docker/dockerfile:1
-FROM golang:1.22-alpine AS builder
-WORKDIR /app
-COPY go.mod go.sum ./
-RUN go mod download
-COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o main .
-
-FROM gcr.io/distroless/static-debian12
-COPY --from=builder /app/main /main
-# Immutable: Owned by root, executed by non-root
-USER 65532:65532
-ENTRYPOINT ["/main"]
-```
-
-### Python (Poetry) Example
-```dockerfile
-# syntax=docker/dockerfile:1
-FROM python:3.12-slim AS builder
-WORKDIR /app
-RUN --mount=type=cache,target=/var/cache/apt \
-    apt-get update && \
-    apt-get install -y --no-install-recommends build-essential
-RUN pip install poetry
-COPY pyproject.toml poetry.lock ./
-RUN --mount=type=cache,target=/root/.cache/pypoetry \
-    poetry install --no-root
-
-FROM python:3.12-slim
-WORKDIR /app
-COPY --from=builder /app/.venv /app/.venv
-ENV PATH="/app/.venv/bin:$PATH" \
-    PYTHONUNBUFFERED=1
-COPY src/ src/
-# Non-root UID
-USER 1000
-ENTRYPOINT ["python"]
-CMD ["-m", "src.main"]
-```
+### 3. Security & Signal Handling
+Ensure images are secure by default and exit cleanly without zombie processes.
+- **Action:** Use specific version tags, run as a non-root `USER`, and use the **Exec Form** for `ENTRYPOINT`.
+- **Constraint:** NEVER run processes as `root` or use the "Shell Form" for `CMD` which blocks signal forwarding.
+- **Integration:** Provides the "Point of Origin" for **Jidoka** signals in orchestrated environments.
 
 ## Escalation & Halting
 
-- **Jidoka:** Halt if `secrets.env` or similar sensitive files are detected in the build context.
-- **Hō-Ren-Sō:** If a build takes >5 minutes, escalate for architectural review of the layers.
+- **Jidoka:** Halt if `secrets.env` or sensitive files are detected in the build context or if a `HEALTHCHECK` fails during staging.
+- **Hō-Ren-Sō:** Use the Renraku (Fact) protocol to escalate if a build takes >5 minutes or if image size exceeds project thresholds.
 
 ## Implementation Workflow
 

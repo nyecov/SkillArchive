@@ -33,61 +33,35 @@ An **anchor** is an explicit architectural decision that resists prompt pressure
 
 ## Core Mandates
 
-### 1. Establish Anchors Early
-Every project needs an anchor document — it doesn't need to be long, it needs to be **authoritative**.
+### 1. Anchor Establishment
+Every project needs an authoritative anchor document that resists prompt pressure.
+- **Action:** Identify key domains (State, Auth, Data, API, Files) and document the "Sovereign Decision" for each.
+- **Constraint:** NEVER proceed with a multi-pattern implementation. Choose one and anchor it.
+- **Integration:** The Anchor Document serves as the "Ground Truth" for **Shisa Kanko** pointing.
 
-- **Key domains to anchor:**
+### 2. Drift Enforcement
+Catch and resist drift when the AI suggests patterns that contradict anchors.
+- **Action:** Compare every proposed implementation against the anchor document.
+- **Constraint:** Do not silently override anchors. Reject changes that introduce architectural rot.
+- **Integration:** Use **KYT** to identify if a change poses a risk to architectural coherence.
 
-| Domain | Anchor Examples |
-|--------|----------------|
-| **State** | "State lives in [X]. Components read via [Y]." |
-| **Auth** | "Auth uses [approach]. Tokens stored in [location]." |
-| **Data** | "Database is [X]. ORM is [Y]. Queries go through [Z]." |
-| **API** | "Endpoints follow [pattern]. Errors return [format]." |
-| **Files** | "Components in /components. Utils in /utils. No exceptions." |
+### 3. Deliberate Evolution
+Update anchors intentionally, not as a side effect of a feature implementation.
+- **Action:** When an anchor becomes a bottleneck, explicitly update the anchor document and refactor affected areas.
+- **Constraint:** Anchors MUST be updated globally or not at all to prevent "Hybrid Rot."
+- **Integration:** Use **Kaizen** to manage the evolution of anchors.
 
-- **Integration:** The Anchor Document is the reference artifact for **Shisa Kanko** Precise Pointing (Mandate 1) — it defines what "correct" looks like.
+## Escalation & Halting
 
-### 2. Enforce Anchors During Implementation
-- **Before Implementation:** Does this change align with existing anchors?
-- **During Implementation:** Catch drift when AI suggests something that contradicts anchors.
-- **After Implementation:** Audit the new code against anchors.
-
-### 3. Evolve Anchors Deliberately
-Anchors are not forever. When they need to change, change them **deliberately** — not as a side effect of a prompt-driven implementation.
-
-## Anchor Hygiene
-
-### Signs of Anchor Rot
-- "I'm not sure which pattern to use here"
-- Multiple ways to do the same thing
-- New code doesn't match old code style
-- "The AI suggested a different approach"
-
-### The Anchor Audit
-Periodically (every major feature, or weekly), audit anchors:
-```
-ANCHOR AUDIT:
-□ State management consistent across codebase?
-□ Auth approach uniform?
-□ API patterns followed?
-□ File structure respected?
-□ Any new patterns that should be anchored?
-```
-
-## When Anchors Conflict
-If a proposed change conflicts with an anchor:
-1. **Stop** — do not silently override the anchor.
-2. **Evaluate** — is the anchor outdated, or is the change wrong?
-3. **Decide** — update the anchor deliberately, or reject the change.
-4. **Document** — if the anchor changes, update the anchor document immediately.
+- **Jidoka:** If an implementation requires violating an anchor to function, trigger a Jidoka halt.
+- **Hō-Ren-Sō:** Use Sōdan (Consult) if a proposed feature requires an architectural shift that contradicts existing anchors.
 
 ## Implementation Workflow
 
-1. **Trigger:** Start of project or any architectural decision point.
-2. **Establish:** Create or update the anchor document for the affected domain.
-3. **Enforce:** Check every change against existing anchors before, during, and after.
-4. **Evolve:** When anchors need updating, do it deliberately and document the change.
+1. **Trigger:** Start of a project or any architectural decision point.
+2. **Execute:** Establish or audit the anchor document for the affected domain.
+3. **Verify:** Check every change against existing anchors before, during, and after.
+4. **Output:** A coherent codebase and an updated, authoritative anchor document.
 
 ## Quick Reference
 

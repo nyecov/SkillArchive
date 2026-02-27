@@ -32,36 +32,31 @@ Value Stream Mapping (VSM) is an analytical technique used to document, analyze,
 ## Core Mandates
 
 ### 1. Current State Mapping (The Diagnostic)
-When a complex workflow feels slow or frequently hallucinates, the agent MUST map the current state.
-- **Action:** Log the exact sequence of events, including:
-  - Tool calls made (and their latency).
-  - Context size passed to each reasoning step.
-  - Number of autonomous loops or retries.
-  - Locations of any **Jidoka** halts.
-  - Points where **Poka-yoke** interlocks were checked (and whether they passed or failed).
+Document the actual flow of context (tokens), reasoning (LLM calls), and execution (tool use) for complex tasks.
+- **Action:** Log the sequence of tool calls, context sizes, latencies, and locations of Jidoka halts.
+- **Constraint:** NEVER optimize a workflow without first mapping its current state to identify the true bottlenecks.
+- **Integration:** Directly uses findings from **Jidoka** and **Poka-yoke** logs.
 
-### 2. Identifying the Bottlenecks
-Analyze the Current State Map to locate structural waste (Muda).
-- **Questions to Ask:**
-  - Where is the LLM spending the most tokens?
-  - Are there sequential tool calls that could be parallelized?
-  - Is there a "Contact Check" (**Poka-yoke**) that happens too late in the flow, causing wasted processing if it fails?
-  - Are there unnecessary **Hansei** reflection loops that add latency without improving output quality?
+### 2. Bottleneck & Muda Identification
+Analyze the Current State Map to locate structural waste, focusing on Transportation (Context Bloat) and Over-processing.
+- **Action:** Identify where the LLM spends the most tokens or where sequential calls could be parallelized.
+- **Constraint:** Do not ignore "silent waste"—processes that work but are inefficient.
+- **Integration:** Maps to the 7 Muda categories defined in **Lean Principles (Muda)**.
 
-### 3. Future State Design (The Target)
-Design a more efficient, direct path.
-- **Action:** Propose an optimized architectural flow. This often involves rearranging the order of operations, summarizing context before passing it to sub-agents, or introducing a fast deterministic script to bypass the LLM entirely for specific steps.
-- **KYT Integration:** Run a lightweight **KYT** pass on the proposed Future State to ensure the optimization does not remove a critical safety check.
+### 3. Future State Design
+Design and propose an optimized architectural flow that maximizes deterministic output and minimizes waste.
+- **Action:** Propose rearrangements, context summaries, or deterministic script bypasses.
+- **Constraint:** MUST run a **KYT (Hazard Prediction)** pass on the proposed future state to ensure safety is not compromised for speed.
+- **Integration:** Triggers a **Kaizen** event to implement the optimized flow.
 
-## Escalation & Reporting
+## Escalation & Halting
 
-- **Hō-Ren-Sō (Hōkoku):** The completed VSM map (Current State + Future State) SHOULD be reported to the human operator as a structured diagnostic. This gives the operator visibility into where the system spends its resources and what improvements are proposed.
-- **Jidoka Correlation:** If the map reveals that **Jidoka** halts are clustering around a specific workflow phase, this is a strong signal that the phase needs a **Kaizen** redesign rather than individual fixes.
+- **Jidoka:** If VSM reveals clustering of Jidoka halts in a specific phase, trigger a mandatory Jidoka halt for that phase until it is redesigned.
+- **Hō-Ren-Sō:** Use the Hōkoku (Report) protocol to present the Current and Future State maps to the user as a structured diagnostic.
 
 ## Implementation Workflow
 
-1. **Observe:** Run a complex task and trace the execution path.
-2. **Map:** Output a visual or structured text representation of the steps (e.g., `User -> Prompt -> Agent (20k tokens) -> Tool A -> Agent (22k tokens) -> Output`).
-3. **Analyze:** Classify the identified waste using the **Lean Principles** 7 Muda categories — focus on "Transportation," "Waiting," and "Over-processing."
-4. **Improve:** Trigger a **Kaizen** event to restructure the workflow toward the Future State Map.
-5. **Verify:** After the Kaizen change is applied, re-run the map to confirm the bottleneck has been resolved.
+1. **Trigger:** A workflow feels slow, expensive (token-wise), or frequently encounters hallucinations.
+2. **Execute:** Trace the execution path, identify bottlenecks, and design a future state.
+3. **Verify:** Use a Kaizen PDCA cycle to implement and test the optimized flow.
+4. **Output:** A leaner, faster, and more reliable agentic process.

@@ -51,25 +51,32 @@ Apply these five steps to maintain a high-signal, low-noise environment:
 
 ## Core Mandates
 
-### 1. Stability Before Speed
-The agent MUST prioritize a stable, consistent workflow (**Heijunka**) over bursts of high-speed but erratic activity. Eliminate **Mura** to prevent the creation of **Muda**.
+### 1. Stability Before Speed (Mura Prevention)
+Prioritize a stable, consistent workflow over erratic bursts of high-speed activity.
+- **Action:** Identify and eliminate inconsistencies (**Mura**) in reasoning, code style, and task handling.
+- **Constraint:** NEVER sacrifice structural integrity for the sake of finishing a task faster.
+- **Integration:** Directly supports **Shisa Kanko** by ensuring each "Calling" is based on a stable "Pointing."
 
-### 2. Respect the Limits (No Muri)
-The agent MUST NOT attempt tasks that exceed the context window or reliable reasoning capabilities of the underlying model. Break complex logic into verifiable sub-tasks.
+### 2. Capacity Respect (Muri Prevention)
+Recognize and respect the limits of the context window and reasoning capabilities.
+- **Action:** Decompose tasks that threaten to "Overburden" (**Muri**) the model's performance.
+- **Constraint:** MUST NOT attempt monolithic reasoning on tasks that exceed the optimal context window.
+- **Integration:** Triggers **Heijunka** to level the workload.
 
-### 3. Workplace Hygiene
-Every tool call or file modification MUST leave the workspace in a state of **Seiketsu** (Standardization). No "messy" intermediate states should persist into the final delivery.
+### 3. Workplace Discipline (5S)
+Maintain a high-signal, low-noise environment through constant sorting, ordering, and cleaning.
+- **Action:** Perform Seiri (Sort) and Seiso (Shine) operations to remove "dead code" and redundant context.
+- **Constraint:** Every tool call MUST leave the workspace in a state of Seiketsu (Standardization).
+- **Integration:** Works with **Poka-yoke** to ensure that "Set in Order" (Seiton) constraints are maintained.
+
+## Escalation & Halting
+
+- **Jidoka:** If **Muri** (Overburden) leads to repeated hallucinations or tool failures, trigger a Jidoka halt to re-level the task.
+- **Hō-Ren-Sō:** Use the Renraku (Fact) protocol to inform the user when major 5S operations (e.g., refactoring for clarity) are performed.
 
 ## Implementation Workflow
 
-1.  **Audit (Sort/Shine):** Before starting a complex task, review the current file tree and context. Isolate what is truly needed.
-2.  **Stabilize (3M Check):** Check for **Mura** (Are my instructions consistent?) and **Muri** (Is this task too big for one go?).
-3.  **Execute (Set in Order):** Perform the work while maintaining structural integrity.
-4.  **Cleanse (Standardize):** Refactor, format, and document as you go.
-5.  **Audit (Sustain):** Final check of the workspace before concluding the session.
-
-## Escalation & Integration
-
-- **Muri Detection (Jidoka):** If a task is so large it causes repeated failures or extreme latency, trigger a **Jidoka** halt. Decompose the task and restart.
-- **Mura Correction (Kaizen):** If inconsistencies are found in existing code or documentation, treat it as a **Kaizen** opportunity to standardize the pattern.
-- **Reporting (Hō-Ren-Sō):** Significant "Sort" or "Shine" operations (e.g., major refactors for clarity) should be reported to the user.
+1. **Trigger:** Start of a new session or a major task.
+2. **Execute:** Run the 3M check (Unevenness, Overburden, Waste) and apply the 5S steps.
+3. **Verify:** Confirm the workspace is organized, consistent, and within model limits.
+4. **Output:** A stabilized, high-signal workspace ready for precise engineering.

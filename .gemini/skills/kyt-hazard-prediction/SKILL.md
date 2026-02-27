@@ -31,28 +31,28 @@ KYT (Kiken Yochi Training) is a systematic, multi-round protocol for identifying
 
 ## Core Mandates
 
-The Critic Agent MUST run this protocol on the Execution Agent's plan *before* any **Shisa Kanko** execution begins.
+### 1. Multi-Round Hazard Identification
+Perform a systematic, 4-round pre-mortem analysis on any plan involving high-risk or irreversible changes.
+- **Action:** Identify the Hazard, Determine Critical Danger Points, Establish Countermeasures, and Set Action Targets.
+- **Constraint:** NEVER skip the KYT protocol for destructive commands (e.g., `rm`, `drop`, `reset`).
+- **Integration:** Directly informs the **Poka-yoke** design for the specific task.
 
-### Round 1: Identify the Hazard (Hansei Alignment)
-- **Action:** Utilize **Hansei (Self-reflection)** to critically analyze the Execution Agent's proposed 'Logic Declaration'. List all potential dangers, side-effects, or architectural drift associated with the action.
-- *Example:* "Executing a raw SQL drop command might cascade and delete user relational data if the foreign keys are not properly constrained."
+### 2. Critical Point Isolation
+Precisely identify the "Point of No Return" where a change becomes irreversible.
+- **Action:** Isolate the specific tool call or command that represents the core danger.
+- **Constraint:** Do not proceed with execution until a specific countermeasure is established for every identified critical point.
+- **Integration:** Feeds into **Shisa Kanko** "Precise Pointing" to ensure the danger zone is well-defined.
 
-### Round 2: Determine Critical Danger Points
-- **Action:** Narrow the list to the most severe or irreversible 'Points of No Return'.
-- *Example:* "The critical point is the `DROP TABLE` command itself, which bypasses application-level soft deletes."
-
-### Round 3: Establish Countermeasures (Poka-yoke Design)
-- **Action:** Define specific, deterministic actions to mitigate the critical dangers. Whenever possible, design these countermeasures as **Poka-yoke (Mistake-proofing)** interlocks rather than just 'trying to be careful'.
-- *Example:* "Countermeasure: Implement a Poka-yoke interlock that requires a `before_drop_backup.sql` file to exist in the `tmp/` directory before the database tool can be invoked."
-
-### Round 4: Set Action Targets (The Go/No-Go Check)
-- **Action:** Create a final, binary checklist that must be passed before execution.
-- *Example:* "Checklist: 1. Backup file exists (Poka-yoke check). 2. Impact radius reviewed (Hansei). 3. Maintenance window active."
+### 3. Countermeasure Synthesis (Poka-yoke)
+Design deterministic interlocks that make the identified hazard physically or logically impossible to trigger accidentally.
+- **Action:** Create "Pre-flight" checks (e.g., backup verification, environment validation) as mandatory interlocks.
+- **Constraint:** Avoid "soft" countermeasures like "be careful"; only use deterministic, verifiable interlocks.
+- **Integration:** This is the primary design engine for task-specific **Poka-yoke** constraints.
 
 ## Escalation & Halting
 
-- **Jidoka:** If Round 3 fails to produce a reliable countermeasure for a catastrophic risk, the Critic Agent MUST trigger a **Jidoka** halt.
-- **Hō-Ren-Sō:** If a halt is triggered, or if the Critical Danger Point involves core security/infrastructure, the system MUST use the **Sōdan (Consult)** protocol to present the KYT findings to a human operator for a final Go/No-Go decision.
+- **Jidoka:** If Round 3 fails to produce a reliable, deterministic countermeasure for a high-risk hazard, trigger an immediate Jidoka halt.
+- **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol to present the KYT findings (Hansei, Critical Point, Countermeasures) to the user for final approval.
 
 ## Implementation Workflow
 

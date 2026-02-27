@@ -29,32 +29,30 @@ references:
 
 Kaizen is the commitment to constant, incremental evolution. While **Hansei** is the act of reflecting on a specific mistake, Kaizen is the systemic application of that learning to permanently improve the standard operating procedure. It transforms isolated lessons into durable architectural upgrades.
 
-## Core Mandates: The PDCA Cycle
+## Core Mandates
 
-Kaizen relies on the Plan-Do-Check-Act (PDCA) loop to ensure improvements are scientifically validated.
+### 1. Systematic PDCA
+Apply the Plan-Do-Check-Act cycle to transform isolated lessons (Hansei) into durable architectural upgrades.
+- **Action:** Formulate a small, testable hypothesis to reduce friction or waste in a baseline workflow.
+- **Constraint:** Kaizen changes MUST be incremental. NEVER overhaul the entire architecture in a single experiment.
+- **Integration:** Uses **VSM (Value Stream Mapping)** to identify the specific bottleneck for the "Plan" phase.
 
-### 1. Plan (Standardize & Hypothesize)
-- **Action:** Identify a baseline workflow that frequently experiences **Jidoka** halts or generates waste (Muda).
-- **Hypothesis:** Formulate a small, specific change to the system prompt, schema, or **Poka-yoke** constraint that will reduce friction.
-- **VSM Input:** Use **Value Stream Mapping** output to pinpoint the exact bottleneck or waste category to target.
+### 2. Experimental Validation
+Execute the proposed improvement in a controlled cycle and measure its impact against the baseline.
+- **Action:** Run the experiment and use **Hansei** to evaluate metrics (token usage, error rate, execution speed).
+- **Constraint:** Revert immediately if the experiment introduces new **Jidoka** halts or regressions.
+- **Integration:** Connects to **KYT** to assess the risks of the proposed improvement itself.
 
-### 2. Do (Execute the Experiment)
-- **Action:** Implement the small change in the next execution cycle.
-- **Constraint:** Kaizen changes MUST be small and isolated. Do not overhaul the entire architecture at once.
-- **KYT Pre-Check:** Run a lightweight **KYT** assessment on the proposed change itself — even improvement experiments carry risk.
-
-### 3. Check (Measure via Hansei)
-- **Action:** Use **Hansei (Self-reflection)** to evaluate the results. Did the change reduce token usage? Did it lower the error rate? Did it speed up execution?
-- **Metrics:** Compare against the baseline established in Phase 1 using concrete, observable criteria.
-
-### 4. Act (Standardize the New Baseline)
-- **Action:** If the experiment was successful, permanently update the skill documentation, system prompt, or **Poka-yoke** schema to make this the new standard.
-- **Hō-Ren-Sō (Hōkoku):** Report the outcome — whether success or failure — to the human operator so the team maintains visibility of evolving standards.
+### 3. Standardization (New Baseline)
+If an experiment is successful, permanently update the skill documentation or system prompt to establish a new standard.
+- **Action:** Update the `SKILL.md` or schema once the improvement is verified.
+- **Constraint:** Do not consider an improvement complete until it is documented and standardized for all future executions.
+- **Integration:** Supports the "Sustain" (Shitsuke) phase of **Lean Foundations (5S)**.
 
 ## Escalation & Halting
 
-- **Failed Experiment (Jidoka):** If the Kaizen change introduces regressions or new **Jidoka** halts, immediately revert to the previous standard. Do not compound a failed improvement with further speculative changes.
-- **Ambiguous Results (Hō-Ren-Sō):** If the Check phase produces ambiguous or inconclusive results, use the **Sōdan (Consult)** protocol to present the data to the human operator and request a judgment call on whether to adopt, modify, or discard the change.
+- **Jidoka:** If an improvement experiment causes a system-wide failure or multiple tool errors, trigger an immediate Jidoka halt and revert.
+- **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol if PDCA results are ambiguous, or the Hōkoku (Report) protocol to announce a new verified standard to the user.
 
 ## Implementation Workflow
 
