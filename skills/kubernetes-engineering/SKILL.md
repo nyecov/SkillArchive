@@ -34,6 +34,11 @@ Audit Pods for privilege escalation risks.
 - **Action:** Apply `securityContext` with `runAsNonRoot: true` and `readOnlyRootFilesystem: true`.
 - **Integration:** Acts as a runtime **Poka-yoke** to prevent privilege escalation.
 
+## Escalation & Halting
+
+- **Jidoka:** Halt if a Deployment causes a `CrashLoopBackOff` that persists beyond 5 minutes or if a Pod is `OOMKilled`.
+- **Hō-Ren-Sō:** Use the Renraku (Fact) protocol to report persistent scheduling failures or resource exhaustion to the user.
+
 ## Implementation Workflow
 
 1. **Trigger:** Creation or auditing of a Kubernetes manifest.

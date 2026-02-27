@@ -40,6 +40,11 @@ Every discovery MUST be verified as a "Current Reality" (Genchi Genbutsu).
 - **Action:** Read the actual content of the discovered file or record the tool's raw output.
 - **Constraint:** DO NOT rely on cached summaries or previous-turn assumptions.
 
+## Escalation & Halting
+
+- **Jidoka:** If a file's content contradicts the user's description or the model's prediction, trigger a Jidoka halt and perform a deeper search/read to resolve the discrepancy.
+- **Hō-Ren-Sō:** Report any "Hidden Waste" (unused code, broken links, outdated comments) discovered during the observation.
+
 ## Implementation Workflow
 
 1. **Trigger:** A new task is received or a context gap is identified.

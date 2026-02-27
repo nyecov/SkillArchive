@@ -36,6 +36,11 @@ Order commands to maximize cache reuse and minimize "Waiting Muda."
 - **Action:** Copy dependency manifests (`package.json`, `go.mod`) BEFORE source code. Use BuildKit `--mount=type=cache`.
 - **Integration:** Directly reduces build latency in the **VSM (Value Stream Mapping)**.
 
+## Escalation & Halting
+
+- **Jidoka:** Halt if `secrets.env` or sensitive files are detected in the build context or if a `HEALTHCHECK` fails during staging.
+- **Hō-Ren-Sō:** Use the Renraku (Fact) protocol to escalate if a build takes >5 minutes or if image size exceeds project thresholds.
+
 ## Implementation Workflow
 
 1. **Trigger:** Creation or optimization of a Dockerfile.

@@ -7,6 +7,7 @@ description: 'Kodawari (Devoted Craftsmanship) for high-quality, self-documentin
 
   '
 category: methodology
+level: methodology
 tags:
 - design
 - methodology

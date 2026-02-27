@@ -31,6 +31,11 @@ Every TOON block MUST be preceded by the `[N]{fields}` header syntax.
 - **Action:** Explicitly define field names in the header to ensure the LLM maintains a clear schema.
 - **Integration:** This is a structural **Poka-yoke** to prevent column-misalignment hallucinations.
 
+## Escalation & Halting
+
+- **Jidoka:** If TOON serialization results in unexpected data loss or parser errors, trigger a Jidoka halt to revert to compact JSON.
+- **Hō-Ren-Sō:** Use the Hōkoku (Report) protocol to quantify token savings (via `--stats`) for the user.
+
 ## Implementation Workflow
 
 1. **Trigger:** Large tabular dataset detected in a prompt or tool output.
