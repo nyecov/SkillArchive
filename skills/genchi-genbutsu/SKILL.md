@@ -2,9 +2,7 @@
 name: genchi-genbutsu
 version: 1.0.0
 description: 'Use to "Go and See for Yourself." Mandates empirical verification of
-  all hypotheses  and findings through direct execution and testing.
-
-  '
+  all hypotheses  and findings through direct execution and testing.\'
 category: methodology
 tags:
 - methodology

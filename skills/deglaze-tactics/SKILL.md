@@ -3,9 +3,7 @@ name: deglaze-tactics
 version: 1.0.0
 description: 'Use when reviewing AI-generated solutions, validating user comprehension,
   or stress-testing proposals. Handles 5 constraint-pressure techniques: Compression,
-  Deletion, Adversary, Explain-to-Junior, and Rollback tests.
-
-  '
+  Deletion, Adversary, Explain-to-Junior, and Rollback tests.\'
 category: cognition
 tags: []
 references:

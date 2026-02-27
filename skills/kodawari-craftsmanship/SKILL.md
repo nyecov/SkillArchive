@@ -3,9 +3,7 @@ name: kodawari-craftsmanship
 version: 1.0.0
 description: 'Kodawari (Devoted Craftsmanship) for high-quality, self-documenting
   code. Mandates the relentless pursuit of perfection in the details, ensuring architectural
-  harmony (Wa) and readability.
-
-  '
+  harmony (Wa) and readability.\'
 category: methodology
 level: methodology
 tags:

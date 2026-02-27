@@ -3,9 +3,7 @@ name: external-synthesis
 version: 1.0.0
 description: 'Use when researching, designing, or authoring new agent skills. Guides
   the agent to search external repositories like the Claude Cookbook and Clawhub to
-  identify existing patterns and synthesize them into high-quality local skills.
-
-  '
+  identify existing patterns and synthesize them into high-quality local skills.\'
 category: meta
 tags:
 - meta

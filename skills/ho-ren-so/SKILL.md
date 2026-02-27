@@ -3,9 +3,7 @@ name: ho-ren-so
 version: 1.1.0
 description: 'Use when reporting progress, broadcasting state changes, or escalating
   ambiguous or blocked decisions to a human operator. Handles structured reporting,
-  factual notifications, and consultation-with-options formats.
-
-  '
+  factual notifications, and consultation-with-options formats.\'
 category: methodology
 tags:
 - communication

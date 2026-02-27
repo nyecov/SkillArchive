@@ -4,9 +4,7 @@ version: 1.0.0
 level: tactical
 description: 'Use when a bug is reported, unexpected behavior occurs, or a fix attempt
   has failed. Handles 5-step hypothesis-driven debugging, binary search isolation,
-  minimal reproduction, and single-variable testing.
-
-  '
+  minimal reproduction, and single-variable testing.\'
 category: engineering
 tags:
 - debugging

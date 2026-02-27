@@ -3,9 +3,7 @@ name: comprehend-understanding
 version: 1.0.0
 description: 'Use before debugging, extending, or shipping code the user cannot explain.
   Handles 4-level comprehension gates, rubber duck escalation, and hard/soft enforcement
-  modes.
-
-  '
+  modes.\'
 category: cognition
 tags:
 - cognition

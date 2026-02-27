@@ -4,9 +4,7 @@ version: 1.1.0
 level: methodology
 description: 'Use when a recurring error, structural bottleneck, or workflow inefficiency
   is identified. Handles PDCA-based experiment design, controlled rollout, measurement,
-  and permanent standard updates.
-
-  '
+  and permanent standard updates.\'
 category: methodology
 tags:
 - methodology

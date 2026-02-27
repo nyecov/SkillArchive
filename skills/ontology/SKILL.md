@@ -3,9 +3,7 @@ name: ontology
 version: 1.0.0
 description: 'Typed knowledge graph methodology for structured agent memory and composable
   actions.  Use to create, query, and enforce constraints across interconnected entities
-  (Person, Project, Task, Event, Document).
-
-  '
+  (Person, Project, Task, Event, Document).\'
 category: architecture
 tags:
 - context

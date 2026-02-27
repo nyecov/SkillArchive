@@ -3,9 +3,7 @@ name: vsm
 version: 1.1.0
 description: 'Use when diagnosing slow workflows, high token consumption, or unexplained
   latency in multi-step tasks. Handles current-state mapping, bottleneck identification,
-  and future-state design for optimized flow.
-
-  '
+  and future-state design for optimized flow.\'
 category: architecture
 tags:
 - design

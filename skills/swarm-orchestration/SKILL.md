@@ -4,9 +4,7 @@ version: 1.0.0
 level: methodology
 description: 'Protocols for multi-agent coordination and delegation.  Ensures that
   specialized sub-agents are tasked precisely and their outputs are synthesized without
-  losing architectural harmony (Wa).
-
-  '
+  losing architectural harmony (Wa).\'
 category: architecture
 tags:
 - communication

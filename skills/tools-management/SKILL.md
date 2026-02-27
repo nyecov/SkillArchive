@@ -4,9 +4,7 @@ version: 1.0.0
 description: 'Use when deciding whether to implement an abstraction as a cognitive
   Skill, an MCP Server, or a low-level Tool (script). Handles the boundary between
   high-level reasoning methodologies and low-level task automation, framework patterns,
-  and API wrappers.
-
-  '
+  and API wrappers.\'
 category: meta
 tags:
 - architecture

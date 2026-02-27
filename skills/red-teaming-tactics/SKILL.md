@@ -3,9 +3,7 @@ name: red-teaming-tactics
 version: 1.0.0
 level: safety
 description: 'Adversarial stress-testing for security and logic.  Use to identify
-  bypasses, edge-case failures, and "happy-path" biases in proposed implementations.
-
-  '
+  bypasses, edge-case failures, and "happy-path" biases in proposed implementations.\'
 category: safety
 tags:
 - safety

@@ -3,9 +3,7 @@ name: skill-authoring-management
 version: 1.3.0
 description: 'Use when creating, reviewing, or managing agent skills.  Provides the
   authoritative "Gold Standard" for content and formatting, management of skill lifecycles,
-  and template usage for persistent capability modules.
-
-  '
+  and template usage for persistent capability modules.\'
 category: meta
 tags:
 - meta

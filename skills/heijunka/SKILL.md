@@ -2,9 +2,7 @@
 name: heijunka
 version: 1.0.0
 description: 'Use to level the workload and prevent token/context spikes (Muri).  Handles
-  the decomposition of massive tasks into manageable, consistent batches.
-
-  '
+  the decomposition of massive tasks into manageable, consistent batches.\'
 category: methodology
 tags:
 - methodology

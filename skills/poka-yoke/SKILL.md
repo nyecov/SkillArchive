@@ -3,9 +3,7 @@ name: poka-yoke
 version: 1.1.0
 description: 'Use when designing validation gates, enforcing schemas, or preventing
   invalid tool calls. Handles deterministic guardrails, prerequisite interlocks, and
-  state machine constraints.
-
-  '
+  state machine constraints.\'
 category: safety
 tags:
 - methodology

@@ -3,9 +3,7 @@ name: ship-production
 version: 1.0.0
 description: 'Use when code is "feature complete" and approaching deployment, or when
   verifying production readiness. Handles staging gates, 6-domain ship checklists,
-  minimum viable production floor, and rollback planning.
-
-  '
+  minimum viable production floor, and rollback planning.\'
 category: engineering
 tags: []
 references:

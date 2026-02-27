@@ -4,9 +4,7 @@ version: 1.0.0
 level: methodology
 description: 'Horizontal deployment of knowledge and best practices.  Used to "broadcast"
   successful patterns or critical fixes from one module to all other relevant areas
-  of the project.
-
-  '
+  of the project.\'
 category: methodology
 tags:
 - methodology

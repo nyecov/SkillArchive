@@ -3,9 +3,7 @@ name: anchor-coherence
 version: 1.0.0
 description: 'Use when starting a project, making architectural decisions, or when
   AI-suggested changes conflict with established patterns. Handles anchor document
-  creation, drift detection, anchor audits, and deliberate evolution of design decisions.
-
-  '
+  creation, drift detection, anchor audits, and deliberate evolution of design decisions.\'
 category: engineering
 tags:
 - design
