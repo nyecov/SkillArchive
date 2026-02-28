@@ -33,6 +33,11 @@ Write the test first. Watch it fail. Write minimal code to pass. If you didn't w
 - **Constraint:** Do not add extra features or guess future requirements while in the Green phase. YAGNI (You Aren't Gonna Need It).
 - **Integration:** Refactoring connects to **Kodawari** (Craftsmanship).
 
+### 4. 5S Test Organization (Seiton / Set in Order)
+- **Action:** Tests must be permanently stored as regression assets, but they MUST NOT pollute the project root.
+- **Constraint:** After the initial Red/Green loop, relocate the test file into the target component's folder (e.g., `skills/<skill_name>/scripts/` or `skills/<skill_name>/tests/`).
+- **Integration:** Directly applies the Lean **5S** concept of sorting and setting in order, preventing digital workspace bloat.
+
 ## Escalation & Halting
 
 - **Jidoka:** If a test errors out instead of failing cleanly, halt and fix the test setup before writing implementation code.

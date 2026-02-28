@@ -50,6 +50,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[External Synthesis](skills/external-synthesis/SKILL.md)** | Use when researching, designing, or authoring new agent skills. Guides the agent to search external repositories like... | `meta` `research` |
 | **[Skill Authoring Management](skills/skill-authoring-management/SKILL.md)** | Use when creating, reviewing, or managing agent skills.  Provides the authoritative "Gold Standard" for content and f... | `meta` |
 | **[Tools Management](skills/tools-management/SKILL.md)** | Use when deciding whether to implement an abstraction as a cognitive Skill, an MCP Server, or a low-level Tool (scrip... | `architecture` `design` `meta` |
+| **[Workflow Management](skills/workflow-management/SKILL.md)** | Use when creating, reviewing, or managing workflows. Ensures workflows meet the structural standards and prevents doc... | `meta` `architecture` |
 
 ### 📐 Methodology
 
