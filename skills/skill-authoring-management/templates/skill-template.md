@@ -38,3 +38,14 @@ A concise paragraph explaining the skill's role in the agentic system and how it
 2. **Execute:** The core steps.
 3. **Verify:** How success is confirmed.
 4. **Output:** What is produced and where it feeds into the system.
+
+## Poka-yoke Output Template (Optional)
+
+If this skill generates a formal report, code scaffold, or structured data output, explicitly define the strict Markdown or JSON schema here.
+
+```markdown
+# [Output Title]
+
+## 1. [Section Name]
+- **[Data Point]:** [Description]
+```

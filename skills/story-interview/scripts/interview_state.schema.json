@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Story Interview State",
+    "description": "Schema for tracking the deterministic state of a story interview.",
+    "type": "object",
+    "properties": {
+        "current_phase": {
+            "type": "string",
+            "enum": [
+                "init",
+                "defining_value",
+                "interrogating_logic",
+                "probing_edge_cases",
+                "ready_for_consensus"
+            ],
+            "description": "The current architectural phase of the interview."
+        },
+        "story_name": {
+            "type": "string",
+            "description": "A concise name for the development story."
+        },
+        "user_value": {
+            "type": "string",
+            "description": "The specific problem being solved and for whom (Why)."
+        },
+        "core_logic": {
+            "type": "string",
+            "description": "The technical approach and behavior agreed upon (How)."
+        },
+        "edge_cases": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "List of sad paths, constraints, and boundary conditions identified."
+        },
+        "verification_criteria": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "Concrete, testable acceptance conditions."
+        },
+        "unresolved_questions": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "A rolling list of questions that the user still needs to answer."
+        }
+    },
+    "required": [
+        "current_phase"
+    ]
+}

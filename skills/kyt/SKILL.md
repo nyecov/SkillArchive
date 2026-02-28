@@ -38,7 +38,7 @@ KYT (Kiken Yochi Training) is a systematic, multi-round protocol for identifying
 
 ### 1. Multi-Round Hazard Identification
 Perform a systematic, 4-round pre-mortem analysis on any plan involving high-risk or irreversible changes.
-- **Action:** Identify the Hazard, Determine Critical Danger Points, Establish Countermeasures, and Set Action Targets.
+- **Action:** Identify the Hazard, Determine Critical Danger Points, Establish Countermeasures, and Set Action Targets using the strict Poka-yoke Output Template provided below.
 - **Constraint:** NEVER skip the KYT protocol for destructive commands (e.g., `rm`, `drop`, `reset`).
 - **Integration:** Directly informs the **Poka-yoke** design for the specific task.
 
@@ -65,3 +65,27 @@ Design deterministic interlocks that make the identified hazard physically or lo
 2. **KYT Pass:** Critic Agent executes the 4 rounds.
 3. **Refinement:** Execution Agent integrates the Poka-yoke countermeasures.
 4. **Verification:** System checks Action Targets; if cleared, proceed to Shisa Kanko pointing and calling.
+
+## Poka-yoke Output Template
+
+When the KYT pre-mortem is complete, the agent MUST format its findings using exactly this Markdown schema:
+
+```markdown
+# KYT Hazard Matrix: [Plan/Command Name]
+
+## 1. Identified Hazards
+- **Hazard 1:** [What could go wrong? E.g., Accidental database deletion]
+- **Hazard 2:** [...]
+
+## 2. Critical Danger Points
+- **Irreversible Step:** [The exact tool call or command that executes the hazard]
+- **Trigger Condition:** [What state causes the failure?]
+
+## 3. Poka-yoke Countermeasures
+- **Interlock 1:** [The deterministic safeguard to prevent Hazard 1]
+- **Verify Method:** [How the safeguard will be tested before proceeding]
+
+## 4. Action Targets
+- [ ] Implement [Interlock 1]
+- [ ] Await user `Sōdan` approval before executing [Irreversible Step]
+```

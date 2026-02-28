@@ -19,7 +19,8 @@
     "lean",
     "kubernetes",
     "leadership",
-    "mcp"
+    "mcp",
+    "heijunka"
   ],
   "allowed_categories": [
     "methodology",
@@ -51,6 +52,7 @@
       "debugging",
       "design",
       "engineering",
+      "heijunka",
       "kaizen",
       "kubernetes",
       "leadership",

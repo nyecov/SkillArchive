@@ -50,6 +50,7 @@ Every skill in the library MUST adhere to these structural and qualitative requi
 - **## Core Mandates**: The non-negotiable rules. Must use the **Action / Constraint / Integration** format.
 - **## Escalation & Halting**: Defines the "Red Light" conditions. Must include specific **Jidoka** and **Hō-Ren-Sō** sub-points.
 - **## Implementation Workflow**: A 1-4 step numbered list: **1. Trigger**, **2. Execute**, **3. Verify**, **4. Output**.
+- **## Poka-yoke Output Template**: (Optional) required for any skill that generates structured data.
 
 ## Core Mandates
 

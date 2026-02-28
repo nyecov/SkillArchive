@@ -50,7 +50,7 @@ Analyze the Current State Map to locate structural waste, focusing on Transporta
 
 ### 3. Future State Design
 Design and propose an optimized architectural flow that maximizes deterministic output and minimizes waste.
-- **Action:** Propose rearrangements, context summaries, or deterministic script bypasses.
+- **Action:** Propose rearrangements, context summaries, or deterministic script bypasses using the strict Poka-yoke Output Template provided below.
 - **Constraint:** MUST run a **KYT (Hazard Prediction)** pass on the proposed future state to ensure safety is not compromised for speed.
 - **Integration:** Triggers a **Kaizen** event to implement the optimized flow.
 
@@ -64,4 +64,29 @@ Design and propose an optimized architectural flow that maximizes deterministic 
 1. **Trigger:** A workflow feels slow, expensive (token-wise), or frequently encounters hallucinations.
 2. **Execute:** Trace the execution path, identify bottlenecks, and design a future state.
 3. **Verify:** Use a Kaizen PDCA cycle to implement and test the optimized flow.
-4. **Output:** A leaner, faster, and more reliable agentic process.
+4. **Output:** A leaner, faster, and more reliable agentic process using the template below.
+
+## Poka-yoke Output Template
+
+When the VSM analysis is complete, the agent MUST format its findings using exactly this Markdown schema:
+
+```markdown
+# Value Stream Map: [Process/System Name]
+
+## 1. Current State Diagnostics
+- **Context/Tokens:** [Where is the highest context consumption?]
+- **Compute/Time:** [Where are the slowest reasoning phases?]
+- **Jidoka Faults:** [Where do halts cluster?]
+
+## 2. Bottlenecks & Muda Identification
+- **Structural Waste 1:** [Description of over-processing or friction]
+- **Structural Waste 2:** [...]
+
+## 3. Future State Proposal
+[A concise narrative description of the optimized flow.]
+- **Step 1:** [New/Optimized Step]
+- **Step 2:** [...]
+
+## 4. Associated Hazards (KYT Required)
+- **KYT Note:** Before implementation, a hazard prediction pass MUST be run on [Specific point of friction/destructiveness].
+```
