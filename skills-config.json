@@ -16,7 +16,10 @@
     "optimization",
     "TPS",
     "kaizen",
-    "lean"
+    "lean",
+    "kubernetes",
+    "leadership",
+    "mcp"
   ],
   "allowed_categories": [
     "methodology",

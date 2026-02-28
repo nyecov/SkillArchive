@@ -4,6 +4,7 @@ import yaml
 import shutil
 import platform
 import subprocess
+import re
 
 # Paths
 ROOT_DIR = "."
@@ -33,12 +34,13 @@ def get_skill_metadata(skill_folder):
     try:
         with open(skill_file, 'r', encoding='utf-8') as f:
             content = f.read()
-            if content.startswith('---'):
-                parts = content.split('---')
-                if len(parts) >= 3:
-                    return yaml.safe_load(parts[1])
-    except:
+            fm_match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
+            if fm_match:
+                return yaml.safe_load(fm_match.group(1))
+    except yaml.YAMLError:
         pass
+    except Exception as e:
+        print(f"Error parsing metadata for {skill_folder}: {e}")
     return None
 
 def resolve_dependencies(skill_folder, resolved_set):
@@ -68,6 +70,12 @@ def main():
     allowed_tags = set(config.get("allowed_tags", []))
     allowed_categories = set(config.get("allowed_categories", []))
     allowed_skills = set(config.get("allowed_skills", [])) # New: explicit skill pull
+
+    # KYT Safeguard: Prevent accidental directory wipes
+    # Ensure that TARGET_SKILLS_DIR unambiguously points to .gemini/skills
+    safe_target = TARGET_SKILLS_DIR.replace('\\', '/')
+    if not safe_target.endswith('.gemini/skills') and not safe_target.endswith('.gemini/skills/'):
+        raise ValueError(f"KYT Safeguard Error: Target directory '{TARGET_SKILLS_DIR}' is unsafe. It must explicitly target '.gemini/skills' to prevent accidental deletion of source files.")
 
     # Clear target directory
     if os.path.exists(TARGET_SKILLS_DIR):

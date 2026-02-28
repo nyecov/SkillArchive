@@ -1,6 +1,7 @@
 import os
 import json
 import yaml
+import re
 
 # Paths
 ROOT_DIR = "."
@@ -26,23 +27,22 @@ def main():
         try:
             with open(skill_file, 'r', encoding='utf-8') as f:
                 content = f.read()
-                if content.startswith('---'):
-                    parts = content.split('---')
-                    if len(parts) >= 3:
-                        metadata = yaml.safe_load(parts[1])
-                        
-                        category = metadata.get('category')
-                        if category:
-                            all_categories.add(category)
-                        
-                        level = metadata.get('level')
-                        if level:
-                            all_levels.add(level)
-                        
-                        tags = metadata.get('tags', [])
-                        if isinstance(tags, list):
-                            for tag in tags:
-                                all_tags.add(tag)
+                fm_match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
+                if fm_match:
+                    metadata = yaml.safe_load(fm_match.group(1))
+                    
+                    category = metadata.get('category')
+                    if category:
+                        all_categories.add(category)
+                    
+                    level = metadata.get('level')
+                    if level:
+                        all_levels.add(level)
+                    
+                    tags = metadata.get('tags', [])
+                    if isinstance(tags, list):
+                        for tag in tags:
+                            all_tags.add(tag)
         except Exception as e:
             print(f"  [ERROR] Processing {skill_folder}: {e}")
 

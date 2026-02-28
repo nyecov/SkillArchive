@@ -1,6 +1,6 @@
 ---
 name: skill-authoring-management
-version: 1.3.0
+version: 1.4.0
 description: 'Use when creating, reviewing, or managing agent skills.  Provides the
   authoritative "Gold Standard" for content and formatting, management of skill lifecycles,
   and template usage for persistent capability modules.\'
@@ -68,7 +68,7 @@ Every skill MUST be audited and updated to maintain the highest formatting and c
 ### 3. Progressive Disclosure (Structure)
 Optimize token costs by layering instructions and offloading large data.
 - **Action:** Move large knowledge bases to `references/` and deterministic logic to `scripts/`.
-- **Constraint:** Keep the frequently-loaded `SKILL.md` body under 5,000 tokens (target < 3,000).
+- **Constraint:** Keep the `SKILL.md` body under 5,000 tokens (target < 3,000). Enforce a **soft line limit of 150 lines** and a **warning at 200 lines**. Auxiliary materials (templates, scripts, references) are NOT counted — only the `SKILL.md` file itself.
 - **Integration:** Supports **Lean Foundations** by reducing context transportation waste.
 
 ## Escalation & Halting
@@ -107,4 +107,9 @@ FRONTMATTER:
   name:        1-64 chars, lowercase, hyphens
   version:     x.x.x
   description: 1-1,024 chars, third person, trigger-oriented
+
+SIZE LIMITS (SKILL.md only, excludes auxiliary files):
+  Soft limit:  150 lines
+  Warning:     200 lines
+  Token target: < 3,000 (hard cap: 5,000)
 ```
