@@ -1,6 +1,6 @@
 ---
 name: kyt
-version: 1.1.0
+version: 1.2.0
 description: Use before executing high-risk, destructive, or irreversible commands
   (rm, drop, reset). Mandates hazard prediction.
 category: safety
@@ -64,28 +64,10 @@ Design deterministic interlocks that make the identified hazard physically or lo
 1. **Plan Generation:** Execution Agent drafts a plan.
 2. **KYT Pass:** Critic Agent executes the 4 rounds.
 3. **Refinement:** Execution Agent integrates the Poka-yoke countermeasures.
-4. **Verification:** System checks Action Targets; if cleared, proceed to Shisa Kanko pointing and calling.
+4. **Verification:** System checks Action Targets; if cleared, proceed to Shisa Kanko pointing and calling, using the Poka-yoke Output Template.
 
 ## Poka-yoke Output Template
 
-When the KYT pre-mortem is complete, the agent MUST format its findings using exactly this Markdown schema:
+When the KYT pre-mortem is complete, the agent MUST format its findings using the exact schema defined in the Poka-yoke Output Template.
 
-```markdown
-# KYT Hazard Matrix: [Plan/Command Name]
-
-## 1. Identified Hazards
-- **Hazard 1:** [What could go wrong? E.g., Accidental database deletion]
-- **Hazard 2:** [...]
-
-## 2. Critical Danger Points
-- **Irreversible Step:** [The exact tool call or command that executes the hazard]
-- **Trigger Condition:** [What state causes the failure?]
-
-## 3. Poka-yoke Countermeasures
-- **Interlock 1:** [The deterministic safeguard to prevent Hazard 1]
-- **Verify Method:** [How the safeguard will be tested before proceeding]
-
-## 4. Action Targets
-- [ ] Implement [Interlock 1]
-- [ ] Await user `Sōdan` approval before executing [Irreversible Step]
-```
+[KYT Hazard Matrix Template](templates/kyt-hazard-matrix.md)
