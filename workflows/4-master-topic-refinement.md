@@ -11,9 +11,22 @@ Execute a comprehensive, end-to-end refinement protocol on a complex topic, feat
 The user provides:
 - A raw concept, feature request, existing document, or system architecture that needs to be elevated to the "best possible level."
 
+## Core Mandates (Poka-yoke)
+
+> [!IMPORTANT]
+> **Hallucination starts where verification ends.**
+> This workflow enforces a strict "Verification-First" architecture. All analysis performed in Phases 2, 3, and 4 MUST be derived exclusively from the Ground Truth established in Phase 1.
+
+### Jidoka (Autonomous Halt)
+If any command or phase (Lean Analysis, Architecture Review, etc.) is triggered **WITHOUT a verified Development Story from Phase 1**, the agent MUST immediately invoke the **Jidoka Halt**:
+1. Stop all current analysis.
+2. Inform the user that the "Baseline Fact" is missing.
+3. Automatically pivot to **Phase 1: Story Interview**.
+4. Do NOT attempt to "guess" or "hallucinate" the logic to fill the vacuum.
+
 ## Execution Phases
 
-Run each phase sequentially. Only proceed to the next phase once the outputs of the current phase are fully realized and documented.
+Run each phase sequentially. Only proceed to the next phase once the outputs of the current phase are fully realized and documented. **Phase 1 is the immutable Fact Baseline for the entire workflow.**
 
 ---
 
@@ -31,7 +44,7 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 **Target:** `workflows/1-lean-analysis.md` | **Goal:** 360-degree analytical scan.
 
 1. **Analyze:** Feed the Development Story Document (from Phase 1) into the `1-lean-analysis.md` workflow.
-2. **Execute Lenses:** Run the topic through all 9 lean-tagged analytical lenses (Waste, Verification, Flow, Hazard, Interlock, Precision, Impact, Strategy, Horizontal).
+2. **Execute Lenses:** Run the topic through all 9 lean-tagged analytical lenses. **Constraint:** Use ONLY the verified logic and constraints defined in the Story. If a lens reveals a gap, escalate back to Phase 1.
 3. **Output:** A comprehensive **Lean Analysis Report**, detailing bottlenecks, systemic waste, and a prioritized list of critical actions.
 
 ---
