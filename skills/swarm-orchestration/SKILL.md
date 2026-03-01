@@ -63,3 +63,4 @@ Ensure that all agents in the "Swarm" share a consistent view of the "True North
 When delegating a task to a sub-agent, the Lead Agent MUST output the delegation using the schema defined in the Poka-yoke Output Template.
 
 👉 **[Swarm Mission Brief Template](templates/mission-brief.md)**
+

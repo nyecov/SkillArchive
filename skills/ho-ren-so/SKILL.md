@@ -66,3 +66,4 @@ Seek authorization or a decision when encountering an ambiguous, blocked, or hig
 2. **Execute:** Select the appropriate tier (Hōkoku for status, Renraku for facts, Sōdan for consultation). If Sōdan, strictly apply the formatted template constraint.
 3. **Verify:** Ensure the message does not spam the operator with redundant information and clearly differentiates between a status log and a request for action.
 4. **Output:** A formatted message delivered to the user via the `notify_user` tool or equivalent output channel.
+

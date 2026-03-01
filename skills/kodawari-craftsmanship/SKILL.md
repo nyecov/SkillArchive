@@ -56,3 +56,4 @@ Ensure that new code blends seamlessly with the existing system's patterns and s
    - Run deterministic linters/formatters.
 3. **Verify:** Perform a Shisa Kanko audit — Is the new logic verifiable? Does the surrounding code remain unchanged in functional capability?
 4. **Output:** A high-integrity, harmonious addition to the codebase without scope creep.
+

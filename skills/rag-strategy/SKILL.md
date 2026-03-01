@@ -70,3 +70,4 @@ Do not limit context retrieval to just code or text files; utilize custom toolin
 When retrieving external knowledge, the agent MUST output the completed manifest using the exact schema defined in the Poka-yoke Output Template to prevent context bloat and hallucination.
 
 [RAG Context Manifest Template](templates/rag-context-manifest.md)
+

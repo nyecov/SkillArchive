@@ -36,7 +36,7 @@ A skill is not documentation; it is a **procedure**. This meta-skill codifies th
 Every skill in the library MUST adhere to these structural and qualitative requirements:
 
 ### 1. Metadata (Frontmatter)
-- **name**: Lowercase, hyphenated (e.g., `cc-secure-security`).
+- **name**: Lowercase, hyphenated (e.g., `cc-security-enforcement`).
 - **version**: Semantic versioning (e.g., `1.0.0`), incremented with every change.
 - **description**: Trigger-oriented. NOT a summary. States *when* to activate.
 - **category**: Functional grouping for the library index.
@@ -101,3 +101,4 @@ For detailed sizing limits, required structure, and anti-pattern checklists, Rea
 
 For the exact diagnostic output schema to use post-validation, read:
 [Poka-yoke Output Template](templates/poka-yoke-output.md)
+

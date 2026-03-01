@@ -77,3 +77,4 @@ Delegate complex state management, external API access, or proprietary data hand
 | **Skill Bloat** | Skill Archive reaches 50+ files, mostly consisting of framework tutorials and CLI wrappers. | Purge specific tools; convert them to raw scripts or project `.rules` files. |
 | **The "Prompt Engineer" Tool** | Re-writing API documentation into a `SKILL.md` so the agent knows how to use an API. | Use MCP to expose the API natively with strong JSON schemas. |
 | **Cognitive Offloading** | Asking a python script to "analyze" logic rather than compute state. | Scripts should *execute* (Tool); the Agent should *analyze* (Skill). |
+

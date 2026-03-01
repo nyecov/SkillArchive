@@ -76,3 +76,4 @@ For the exact diagnostic output schema to use post-validation, read:
 
 For detailed definitions of the 3 Ms, the 7 Wastes, and the 5S Framework, read:
 [Lean Glossary](references/lean-glossary.md)
+

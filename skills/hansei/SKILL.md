@@ -69,3 +69,4 @@ Translate every reflection into an actionable improvement for the current or fut
 2. **Execute:** Critically analyze the draft or failure to identify assumptions and logic flaws. Apply the strict 5-Whys template constraint if reactive.
 3. **Verify:** Confirm the reflection identifies specific, actionable root causes and not generalized blame.
 4. **Output:** A formatted 5-Whys text block delivered as a diagnostic report, Kaizen proposal, or Sōdan request.
+

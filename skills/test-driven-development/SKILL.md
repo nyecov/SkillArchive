@@ -7,7 +7,7 @@ category: engineering
 tags: [engineering, testing, methodology]
 references:
   - name: Isolate (Systematic Debugging)
-    path: ../isolate-debugging/SKILL.md
+    path: ../root-cause-isolation/SKILL.md
   - name: Shisa Kanko (Master Workflow)
     path: ../shisa-kanko/SKILL.md
 ---
@@ -56,4 +56,5 @@ Write the test first. Watch it fail. Write minimal code to pass. If you didn't w
 When a TDD cycle is complete, the agent MUST output the final verification using exactly the schema defined in the Poka-yoke Output Template.
 
 👉 **[TDD Cycle Verification Template](templates/poka-yoke-output.md)**
+
 

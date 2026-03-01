@@ -1,5 +1,5 @@
 ---
-name: comprehend-understanding
+name: comprehension-gate
 version: 1.1.0
 description: Use before debugging, extending, or shipping code. Acts as a strict policy gate implementing Risk-Tiered comprehension checks (conversational vs. Deglaze reporting) to prevent cognitive debt.
 category: cognition
@@ -12,17 +12,17 @@ references:
 - name: Crowd Control (Source Repo)
   url: https://github.com/newsbubbles/crowd_control
 - name: CC — Deglaze (Anti-Sycophancy)
-  path: ../deglaze-tactics/SKILL.md
+  path: ../logic-deglazing/SKILL.md
 - name: CC — Anchor (Architectural Coherence)
-  path: ../anchor-coherence/SKILL.md
+  path: ../architectural-anchoring/SKILL.md
 - name: CC — Circuit (Iteration Breaker)
   path: ../jidoka/SKILL.md
 - name: CC — Isolate (Systematic Debugging)
-  path: ../isolate-debugging/SKILL.md
+  path: ../root-cause-isolation/SKILL.md
 - name: CC — Secure (Security)
-  path: ../secure-security/SKILL.md
+  path: ../security-enforcement/SKILL.md
 - name: CC — Ship (Production Readiness)
-  path: ../ship-production/SKILL.md
+  path: ../release-management/SKILL.md
 - name: Hansei (Self-reflection)
   path: ../hansei/SKILL.md
 level: methodology
@@ -64,7 +64,7 @@ When understanding fails, pivot from "Execution Mode" to "Teaching/Clarification
 2. **Evaluate:** Determine the Risk Tier of the proposed action (Tier 1 vs Tier 2).
 3. **Execute:** 
     - If Tier 1: Run conversational 4-level check.
-    - If Tier 2: Invoke `deglaze-tactics`.
+    - If Tier 2: Invoke `logic-deglazing`.
 4. **Verify:** Confirm the conversational check passes OR the `Deglaze Pressure Report` is fully populated.
 5. **Output:** A de-risked implementation path where the human and agent definitively possess a shared, verified mental model.
 
@@ -82,9 +82,10 @@ TIER 1 GATES (Conversational):
 □ Can describe system connections? (Flow)
 
 TIER 2 GATES (Hard-Lock):
-■ MUST produce a formal Deglaze Pressure Report via deglaze-tactics.
+■ MUST produce a formal Deglaze Pressure Report via logic-deglazing.
 
 RUBBER DUCK TRIGGER:
 - Failed gates at either tier
 - User/Agent says "I don't know"
 ```
+

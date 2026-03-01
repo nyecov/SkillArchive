@@ -57,3 +57,4 @@ Maintain transparency and traceability by documenting the origins of synthesized
 3. **Verify:** Confirm the extracted logic resolves the user's need and does not rely on unavailable bespoke external tools.
 4. **Output:** You MUST stop modifying the file system and output the `External Research Report` to be handed off to the authoring process.
 [Research Report Template](./templates/research-report-template.md)
+

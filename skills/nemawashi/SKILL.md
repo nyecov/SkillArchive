@@ -53,3 +53,4 @@ Nemawashi is the practice of quietly laying the foundation for a change. In agen
 When proposing a major refactor or architectural change, the agent MUST format the proposal using the exact schema defined in the Poka-yoke Output Template.
 
 [A3 Proposal Template](templates/a3-proposal.md)
+

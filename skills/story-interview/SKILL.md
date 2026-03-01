@@ -16,7 +16,7 @@ references:
 - name: Heijunka (Workload Leveling)
   path: ../heijunka/SKILL.md
 - name: Deglaze Tactics (Constraint Pressure)
-  path: ../deglaze-tactics/SKILL.md
+  path: ../logic-deglazing/SKILL.md
 - name: Lean Foundations (Waste Elimination)
   path: ../lean-foundations/SKILL.md
 - name: Shisa Kanko (Master Workflow)
@@ -28,7 +28,7 @@ references:
 - name: Story Template
   path: ./templates/story-template.md
 requires:
-- deglaze-tactics
+- logic-deglazing
 ---
 
 # Development Story Interview
@@ -103,3 +103,4 @@ All boxes checked     → format Development Document
 
 When consensus is reached, the agent MUST output the final requirements using the standard schema:
 [Story Template](./templates/story-template.md)
+

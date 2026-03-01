@@ -105,3 +105,4 @@ Compile the strategy into a final **TPS Architecture Proposal (A3 format)**:
 ```
 
 Save the proposal as an artifact and notify the user to achieve consensus before any execution begins.
+

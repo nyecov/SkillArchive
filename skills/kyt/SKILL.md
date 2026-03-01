@@ -74,3 +74,4 @@ Design safeguards that make the identified hazard logically or physically imposs
 When the KYT pre-mortem is complete, the agent MUST format its findings using the exact schema defined in the Poka-yoke Output Template.
 
 [KYT Hazard Matrix Template](templates/kyt-hazard-matrix.md)
+

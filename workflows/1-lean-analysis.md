@@ -154,3 +154,4 @@ After completing all 9 phases, compile the findings into a consolidated **Lean A
 ```
 
 Save the report as an artifact in the brain directory.
+

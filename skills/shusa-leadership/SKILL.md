@@ -59,3 +59,4 @@ The Shusa bridges the gap between different domains (e.g., Frontend, Backend, De
 When establishing technical direction, the Shusa MUST generate a formal strategy using the schema defined in the Poka-yoke Output Template.
 
 [Shusa Strategy Template](templates/shusa-strategy.md)
+

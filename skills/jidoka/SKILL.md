@@ -67,3 +67,4 @@ Transition from autonomous execution to human-in-the-loop 'Consultation' mode.
    - *If proactive:* Dispatch a subagent to evaluate the blast radius of the proposed action.
 3. **Verify:** Check the subagent output or perform Hansei. If the risk is high or the error loop is confirmed, execute the HALT protocol.
 4. **Output:** Format the diagnostic report using Hō-Ren-Sō principles and pause the pipeline for user input.
+

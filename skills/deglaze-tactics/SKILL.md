@@ -1,5 +1,5 @@
 ---
-name: deglaze-tactics
+name: logic-deglazing
 version: 1.1.0
 description: Use when reviewing AI-generated solutions, validating user comprehension, or stress-testing proposals. Handles 5 constraint-pressure techniques to generate a formal Deglaze Pressure Report.
 category: cognition
@@ -11,17 +11,17 @@ references:
 - name: Crowd Control (Source Repo)
   url: https://github.com/newsbubbles/crowd_control
 - name: CC — Comprehend (Understanding Gate)
-  path: ../comprehend-understanding/SKILL.md
+  path: ../comprehension-gate/SKILL.md
 - name: CC — Anchor (Architectural Coherence)
-  path: ../anchor-coherence/SKILL.md
+  path: ../architectural-anchoring/SKILL.md
 - name: CC — Circuit (Iteration Breaker)
   path: ../jidoka/SKILL.md
 - name: CC — Isolate (Systematic Debugging)
-  path: ../isolate-debugging/SKILL.md
+  path: ../root-cause-isolation/SKILL.md
 - name: CC — Secure (Security)
-  path: ../secure-security/SKILL.md
+  path: ../security-enforcement/SKILL.md
 - name: CC — Ship (Production Readiness)
-  path: ../ship-production/SKILL.md
+  path: ../release-management/SKILL.md
 - name: Hansei (Self-reflection)
   path: ../hansei/SKILL.md
 - name: Deglaze Report Template
@@ -65,3 +65,4 @@ Identify "glaze" by watching for red flags like jargon, vague gestures, or "The 
 3. **Verify:** Confirm the user or the AI explicitly defends the solution against all five tests with concrete reasoning.
 4. **Output:** The agent MUST output the `Deglaze Pressure Report` to formally clear the verification gate.
 [Deglaze Report Template](./templates/deglaze-report-template.md)
+

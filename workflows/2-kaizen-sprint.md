@@ -104,3 +104,4 @@ After completing all 6 phases, produce the final **Kaizen PDCA Report**:
 ```
 
 Save the report as an artifact in the brain directory.
+

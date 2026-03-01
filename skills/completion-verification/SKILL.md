@@ -1,5 +1,5 @@
 ---
-name: verification-before-completion
+name: completion-verification
 version: 1.0.0
 level: methodology
 description: 'Use when about to claim work is complete, fixed, or passing, before committing or creating PRs. Requires running verification commands and confirming output before making any success claims.'
@@ -41,3 +41,4 @@ Every major task MUST maintain a timecoded `verification_log.md` within the proj
 2. **Execute:** Identify the exact command needed (e.g., `npm test`, `cargo build`). Run it.
 3. **Verify:** Read the full output, check the exit code, and count failures.
 4. **Output:** Only state success IF and ONLY IF the command explicitly proves it. Otherwise, state the failure state.
+

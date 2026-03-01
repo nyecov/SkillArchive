@@ -10,11 +10,11 @@ tags:
 - security
 references:
 - name: Secure Security
-  path: ../secure-security/SKILL.md
+  path: ../security-enforcement/SKILL.md
 - name: KYT (Hazard Prediction)
   path: ../kyt/SKILL.md
 - name: Deglaze Tactics
-  path: ../deglaze-tactics/SKILL.md
+  path: ../logic-deglazing/SKILL.md
 ---
 
 # Red-Teaming
@@ -61,3 +61,4 @@ A vulnerability is only "fixed" once its Proof of Vulnerability (reproduction sc
 When verifying the proof of vulnerability (PoV) and attack vectors, the agent MUST output the completed report using the exact schema defined in the Poka-yoke Output Template.
 
 [Red-Teaming PoV Template](templates/red-teaming-pov.md)
+

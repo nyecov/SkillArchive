@@ -48,3 +48,4 @@ Workflows are structurally and procedurally distinct from skills, despite sharin
 
 When the `manage_workflows.py` script validates or repairs a workflow, the agent MUST format its diagnostic report using the standard schema:
 [Workflow Report Template](./templates/workflow-report-template.md)
+

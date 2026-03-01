@@ -1,5 +1,5 @@
 ---
-name: secure-security
+name: security-enforcement
 version: 1.1.0
 level: tactical
 description: Use when handling auth, user input, secrets, or API endpoints. Mandates
@@ -11,17 +11,17 @@ references:
 - name: Crowd Control (Source Repo)
   url: https://github.com/newsbubbles/crowd_control
 - name: CC — Deglaze (Anti-Sycophancy)
-  path: ../deglaze-tactics/SKILL.md
+  path: ../logic-deglazing/SKILL.md
 - name: CC — Comprehend (Understanding Gate)
-  path: ../comprehend-understanding/SKILL.md
+  path: ../comprehension-gate/SKILL.md
 - name: CC — Anchor (Architectural Coherence)
-  path: ../anchor-coherence/SKILL.md
+  path: ../architectural-anchoring/SKILL.md
 - name: CC — Circuit (Iteration Breaker)
   path: ../jidoka/SKILL.md
 - name: CC — Isolate (Systematic Debugging)
-  path: ../isolate-debugging/SKILL.md
+  path: ../root-cause-isolation/SKILL.md
 - name: CC — Ship (Production Readiness)
-  path: ../ship-production/SKILL.md
+  path: ../release-management/SKILL.md
 - name: KYT (Hazard Prediction)
   path: ../kyt/SKILL.md
 - name: Poka-yoke (Mistake-proofing)
@@ -136,3 +136,4 @@ API endpoint accepts user ID from URL without verifying the requester → change
 When verifying the trust boundary, the agent MUST output the completed security checklist using the exact schema defined in the Poka-yoke Output Template.
 
 [Security Checklist Template](templates/security-checklist.md)
+

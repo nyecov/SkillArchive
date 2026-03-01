@@ -1,5 +1,5 @@
 ---
-name: ship-production
+name: release-management
 version: 1.1.0
 description: 'Use when code is "feature complete" and approaching deployment, or when
   verifying production readiness. Handles staging gates, 6-domain ship checklists,
@@ -13,17 +13,17 @@ references:
 - name: Crowd Control (Source Repo)
   url: https://github.com/newsbubbles/crowd_control
 - name: CC — Deglaze (Anti-Sycophancy)
-  path: ../deglaze-tactics/SKILL.md
+  path: ../logic-deglazing/SKILL.md
 - name: CC — Comprehend (Understanding Gate)
-  path: ../comprehend-understanding/SKILL.md
+  path: ../comprehension-gate/SKILL.md
 - name: CC — Anchor (Architectural Coherence)
-  path: ../anchor-coherence/SKILL.md
+  path: ../architectural-anchoring/SKILL.md
 - name: CC — Circuit (Iteration Breaker)
   path: ../jidoka/SKILL.md
 - name: CC — Isolate (Systematic Debugging)
-  path: ../isolate-debugging/SKILL.md
+  path: ../root-cause-isolation/SKILL.md
 - name: CC — Secure (Security)
-  path: ../secure-security/SKILL.md
+  path: ../security-enforcement/SKILL.md
 - name: Lean Foundations
   path: ../lean-foundations/SKILL.md
 - name: Value Stream Mapping (VSM)
@@ -74,3 +74,4 @@ Active verification of system health immediately following a production deployme
 When verifying production readiness, the agent MUST output the completed checklist using the exact schema defined in the Poka-yoke Output Template.
 
 [Ship Checklist Template](templates/ship-checklist.md)
+

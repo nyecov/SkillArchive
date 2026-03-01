@@ -47,3 +47,4 @@ Genchi Genbutsu means going to the source to find the facts. For an AI agent, th
    - Capture raw logs or snapshots of system state.
 3. **Verify:** Confirm that the "Real" behavior matches "Expected". Ensure evidence capture is complete and unambiguous.
 4. **Output:** A verified status report that MUST include the raw evidence block (logs, screenshots, or `render_diffs`). Do not deliver the report if the evidence is missing.
+

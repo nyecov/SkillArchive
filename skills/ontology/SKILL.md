@@ -67,3 +67,4 @@ When persisting entities or reporting on ontology extraction, the agent MUST use
 
 The **Ontology Skill** dictates *how* to think about structured memory. However, the exact mechanism for *storing* and *querying* this graph should be handled by an **MCP Server**. 
 
+

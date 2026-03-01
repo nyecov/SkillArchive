@@ -70,3 +70,4 @@ Ensure all 'prerequisites' are physically present before acting.
 When establishing or triggering an interlock constraint, the agent MUST output the schema check or dependency verification using the exact schema defined in the Poka-yoke Output Template.
 
 [Poka-yoke Interlock Declaration Template](templates/poka-yoke-interlock.md)
+

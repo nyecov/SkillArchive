@@ -46,3 +46,4 @@ Heijunka ensures a stable flow of work by leveling the volume and variety of tas
    - Sequence the batches to maintain a steady flow.
 3. **Verify:** Confirm each batch is complete and the context remains "lean" before starting the next.
 4. **Output:** A series of successful, verified increments rather than one high-risk leap.
+

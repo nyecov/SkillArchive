@@ -71,3 +71,4 @@ If an experiment is successful, permanently update the skill documentation or sy
 
 When the Kaizen sprint concludes successfully, output the findings exclusively using the standard format:
 [Kaizen Report Template](./templates/kaizen-report-template.md)
+

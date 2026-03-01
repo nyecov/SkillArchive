@@ -60,3 +60,4 @@ Every discovery MUST be verified as a "Current Reality" (Genchi Genbutsu).
 3. **Verify:** Read the bytes/data to explicitly confirm reality. Ensure no hallucinated paths or logic exist in your working memory.
 4. **Output:** A high-signal factual foundation for the **shisa-kanko** plan. You MUST output the `Gemba Discovery Report`.
 [Gemba Report Template](./templates/gemba-report-template.md)
+

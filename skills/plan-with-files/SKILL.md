@@ -65,3 +65,4 @@ Use persistent markdown files as your "working memory on disk." Context windows 
 When initiating a complex task, the agent MUST structure the planning files using the exact schema defined in the Poka-yoke Output Template to prevent context drift and ensure standardization.
 
 [Planning Triad Template](templates/planning-triad.md)
+

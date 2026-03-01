@@ -21,7 +21,7 @@ references:
 - name: Reference Server Implementations
   url: https://github.com/modelcontextprotocol/servers
 - name: CC Secure (Security Guardrails)
-  path: ../secure-security/SKILL.md
+  path: ../security-enforcement/SKILL.md
 - name: Poka-yoke (Validation Gates)
   path: ../poka-yoke/SKILL.md
 - name: Jidoka (Halt on Anomaly)
@@ -77,3 +77,4 @@ Manage the data flowing through the governed interface to prevent catastrophic l
 2. **Execute:** Define Primitives (Tool, Resource, Prompt). Enforce rigid JSON schemas and semantic trigger descriptions for all interfaces. Filter sensitive outputs and gate destructive actions.
 3. **Verify:** Execute the **Phase 3 Evaluation Protocol**: Explore via MCP Inspector, generate 5-10 complex multi-step questions, and run them with an agent.
 4. **Output:** A verified, schema-rigid MCP interface and a documented evaluation report proving LLM usability.
+

@@ -1,5 +1,5 @@
 ---
-name: isolate-debugging
+name: root-cause-isolation
 version: 1.1.0
 level: tactical
 description: 'Use when a bug is reported, unexpected behavior occurs, or a fix attempt has failed. Handles 5-step hypothesis-driven debugging, binary search isolation, minimal reproduction, and single-variable testing.'
@@ -10,17 +10,17 @@ references:
 - name: Crowd Control (Source Repo)
   url: https://github.com/newsbubbles/crowd_control
 - name: CC — Deglaze (Anti-Sycophancy)
-  path: ../deglaze-tactics/SKILL.md
+  path: ../logic-deglazing/SKILL.md
 - name: CC — Comprehend (Understanding Gate)
-  path: ../comprehend-understanding/SKILL.md
+  path: ../comprehension-gate/SKILL.md
 - name: CC — Anchor (Architectural Coherence)
-  path: ../anchor-coherence/SKILL.md
+  path: ../architectural-anchoring/SKILL.md
 - name: CC — Circuit (Iteration Breaker)
   path: ../jidoka/SKILL.md
 - name: CC — Secure (Security)
-  path: ../secure-security/SKILL.md
+  path: ../security-enforcement/SKILL.md
 - name: CC — Ship (Production Readiness)
-  path: ../ship-production/SKILL.md
+  path: ../release-management/SKILL.md
 - name: Poka-yoke (Mistake-proofing)
   path: ../poka-yoke/SKILL.md
 - name: KYT (Hazard Prediction)
@@ -94,3 +94,4 @@ QUESTIONS BEFORE FIXING:
 □ How will you test it?
 □ What evidence will confirm/reject?
 ```
+

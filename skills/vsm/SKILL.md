@@ -72,3 +72,4 @@ Design and propose an optimized architectural flow that maximizes deterministic 
 
 When the VSM analysis is complete, the agent MUST format its findings using the standard schema:
 [VSM Report Template](./templates/vsm-report-template.md)
+

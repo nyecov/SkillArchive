@@ -84,3 +84,4 @@ Confirm that the results of the execution match the logic declaration through di
 When performing the Pointing and Calling procedure, agents MUST output their isolation and logic statements using the schema defined in the Poka-yoke Output Template.
 
 [Shisa Kanko Declaration Template](templates/shisa-kanko-declaration.md)
+
