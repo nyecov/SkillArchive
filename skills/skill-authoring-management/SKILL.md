@@ -73,6 +73,7 @@ Every skill MUST be strictly audited to maintain the highest formatting and cont
 Prevent operational friction from pathing mismatches or environment drift.
 - **Action:** Before executing any bulk automated scripts (e.g., library-wide audits), you MUST perform a "Pilot" execution on a single, isolated module to verify pathing, whitespace handling, and script access.
 - **Constraint:** NEVER proceed to bulk execution if the Pilot fails or requires manual path correction.
+- **Constraint:** You MUST use ONLY relative filepaths across all skills, scripts, links, and references. Absolute filepaths are strictly forbidden.
 - **Integration:** Reduces **Transportation Waste** and prevents cascading tool failures.
 
 ### 4. Progressive Disclosure (Structure)

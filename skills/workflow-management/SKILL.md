@@ -32,6 +32,11 @@ Workflows are structurally and procedurally distinct from skills, despite sharin
 - **Constraint:** If a workflow is logically unrecoverable (e.g., lacks procedural steps or coherent goals), DO NOT try to guess the steps.
 - **Integration:** Directly hooks into **Story Interview** for recovery.
 
+### 3. Strict Relative Pathing
+- **Action:** Author and maintain ALL filepaths within workflows (including links, script executions, and references) exclusively as relative paths.
+- **Constraint:** Absolute filepaths are strictly forbidden. Workflows MUST be inherently portable across different environments and directory roots.
+- **Integration:** Coordinates with **Skill Authoring Management** to verify environment-agnostic execution and prevent pathing drift.
+
 ## Escalation & Halting
 
 - **Jidoka:** If `manage_workflows.py` fails to auto-correct a file and returns an "unrecoverable" status, halt the current agentic process to prevent saving garbage data.
