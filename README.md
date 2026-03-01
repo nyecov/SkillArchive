@@ -57,7 +57,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | Skill | Description | Tags |
 |-------|-------------|------|
 | **[Development Story Interview](skills/story-interview/SKILL.md)** | Use when a user requests feature scoping, requirements definition, or wants to plan a new development story, bugfix, ... | `methodology` `methodology` `lean` `cognition` `heijunka` |
-| **[Genchi Genbutsu](skills/genchi-genbutsu/SKILL.md)** | Use to "Go and See for Yourself." Mandates empirical verification of all hypotheses  and findings through direct exec... | `methodology` `research` `testing` `lean` `TPS` |
+| **[Genchi Genbutsu](skills/genchi-genbutsu/SKILL.md)** | Use to "Go and See for Yourself." Mandates empirical verification of all hypotheses and findings through direct execu... | `methodology` `research` `testing` `lean` `TPS` |
 | **[Heijunka](skills/heijunka/SKILL.md)** | Use to level the workload and prevent token/context spikes (Muri).  Handles the decomposition of massive tasks into m... | `methodology` `optimization` `lean` `TPS` |
 | **[Hō-Ren-Sō](skills/ho-ren-so/SKILL.md)** | Use when reporting progress, broadcasting state changes, or escalating ambiguous or blocked decisions to a human oper... | `communication` `methodology` `lean` `TPS` |
 | **[Kaizen](skills/kaizen/SKILL.md)** | Use when a recurring error, structural bottleneck, or workflow inefficiency is identified (either manually or via Han... | `methodology` `optimization` `lean` `TPS` `kaizen` |
