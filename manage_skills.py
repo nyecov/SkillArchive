@@ -32,6 +32,9 @@ def main():
     
     # 5. Sync allowed skills to the working `.gemini/skills` directory
     run_script("sync_skills.py")
+    
+    # 6. Sync workflows to the working `.gemini/workflows` directory
+    run_script("sync_workflows.py")
 
     print(f"\n{'='*50}")
     print("🎉 Pipeline completed successfully!")

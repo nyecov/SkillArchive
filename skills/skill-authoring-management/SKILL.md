@@ -22,6 +22,8 @@ references:
   path: ../tools-management/SKILL.md
 - name: External Resource Synthesis
   path: ../external-synthesis/SKILL.md
+- name: Skill Specification Reference
+  path: ./references/skill-spec-reference.md
 level: methodology
 ---
 
@@ -61,10 +63,10 @@ The description is the primary mechanism for activation.
 - **Integration:** Directly impacts L1 token efficiency and activation reliability.
 
 ### 2. Gold Standard Compliance (Management)
-Every skill MUST be audited and updated to maintain the highest formatting and content standards.
-- **Action:** Use the `templates/skill-template.md` for all new skills.
-- **Constraint:** DO NOT allow "Skill Rot" (outdated references, broken paths, or missing mandates).
-- **Integration:** Connects to **Kaizen** for continuous library refinement.
+Every skill MUST be strictly audited to maintain the highest formatting and content standards.
+- **Action:** You must initialize and run `python scripts/manage_skill_authoring.py` when drafting or modifying ANY skill in `.gemini/skills/` or `G:/Skill Archive/skills/`.
+- **Constraint:** Do not assume your generated file is correct. Allow the python script to parse and auto-correct structural omissions.
+- **Integration:** Connects to **Poka-yoke** mistake-proofing by physically preventing malformed skills from entering orchestration.
 
 ### 3. Progressive Disclosure (Structure)
 Optimize token costs by layering instructions and offloading large data.
@@ -80,37 +82,14 @@ Optimize token costs by layering instructions and offloading large data.
 ## Implementation Workflow
 
 1. **Trigger:** A repeatable process is identified, or a skill needs maintenance.
-2. **Execute:** Scaffold from the `templates/skill-template.md`. Author or update content following the Gold Standard.
-3. **Verify:** Run a compliance audit (Metadata, Headers, Mandates, Workflow).
-4. **Output:** A verified, high-integrity capability module synchronized via `sync_skills.py`.
+2. **Execute:** Scaffold from the `templates/skill-template.md`. Author or update content. Then, MUST run `python scripts/manage_skill_authoring.py <path_to_skill>`.
+3. **Verify:** Check the python script output. If the script repaired errors, log them. If it returned "unrecoverable", halt immediately.
+4. **Output:** Render the final compliance state using the Poka-yoke Output Template.
 
-## Anti-Patterns Checklist
+## Progressive Resources
 
-| Anti-Pattern | Symptom | Fix |
-|---|---|---|
-| **Workflow in description** | Agent skips the body | Move procedure out of description; keep only trigger conditions. |
-| **README style** | Agent has no actionable steps | Rewrite as a numbered workflow with verification. |
-| **Broken References** | Path not found errors | Use relative paths: `../folder/SKILL.md`. |
-| **Missing Interlocks** | Agent continues through errors | Add mandatory **Escalation & Halting** section. |
+For detailed sizing limits, required structure, and anti-pattern checklists, read:
+👉 **[Skill Specification Reference](references/skill-spec-reference.md)**
 
-## Quick Reference: Specification Constraints
-
-```
-STRUCTURE:
-  skills/
-    my-skill-name/           ← one directory per skill
-      SKILL.md               Required — entry point
-      templates/             Optional — local templates
-      scripts/               Optional — deterministic tools
-      references/            Optional — large knowledge bases
-
-FRONTMATTER:
-  name:        1-64 chars, lowercase, hyphens
-  version:     x.x.x
-  description: 1-1,024 chars, third person, trigger-oriented
-
-SIZE LIMITS (SKILL.md only, excludes auxiliary files):
-  Soft limit:  150 lines
-  Warning:     200 lines
-  Token target: < 3,000 (hard cap: 5,000)
-```
+For the exact diagnostic output schema to use post-validation, read:
+👉 **[Poka-yoke Output Template](templates/poka-yoke-output.md)**

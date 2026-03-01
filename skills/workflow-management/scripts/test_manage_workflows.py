@@ -67,5 +67,32 @@ garbage text with no numbered list
         self.assertEqual(result.status, "unrecoverable")
         self.assertEqual(result.recommended_action, "invoke_story_interview")
 
+    def test_should_return_validated_for_compliant_workflow(self):
+        # Arrange
+        compliant_workflow = self.test_path / "good-workflow.md"
+        content = "---\ndescription: A perfectly good workflow\n---\n# Step 1\n1. Do this\n2. Do that\n"
+        compliant_workflow.write_text(content, encoding="utf-8")
+        
+        # Act
+        result = manage_workflows.validate_and_repair_workflow(compliant_workflow)
+        
+        # Assert
+        self.assertFalse(result.was_repaired)
+        self.assertEqual(result.status, "validated")
+
+    def test_should_escalate_if_workflow_uses_skill_mandates(self):
+        # Arrange
+        skill_rot = self.test_path / "rot-workflow.md"
+        content = "---\ndescription: A workflow with skill mandates\n---\n## Core Mandates\n- **Action:** Do something\n- **Constraint:** Stop\n"
+        skill_rot.write_text(content, encoding="utf-8")
+        
+        # Act
+        result = manage_workflows.validate_and_repair_workflow(skill_rot)
+        
+        # Assert
+        self.assertFalse(result.was_repaired)
+        self.assertEqual(result.status, "unrecoverable")
+        self.assertEqual(result.recommended_action, "invoke_story_interview")
+
 if __name__ == '__main__':
     unittest.main()
