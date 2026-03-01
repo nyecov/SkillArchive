@@ -1,6 +1,6 @@
 ---
 name: ship-production
-version: 1.0.0
+version: 1.1.0
 description: 'Use when code is "feature complete" and approaching deployment, or when
   verifying production readiness. Handles staging gates, 6-domain ship checklists,
   minimum viable production floor, and rollback planning.\'
@@ -67,30 +67,10 @@ Active verification of system health immediately following a production deployme
 1. **Trigger:** A feature is "code complete" and ready for deployment.
 2. **Execute:** Deploy to Staging and complete the 6-Domain readiness audit.
 3. **Verify:** Confirm staging stability and post-production health check.
-4. **Output:** A successful deployment, a stable production environment, and an updated rollback strategy.
+4. **Output:** A successful deployment, a stable production environment, and an updated rollback strategy, documented via the Poka-yoke Output Template.
 
-## Quick Reference
+## Poka-yoke Output Template
 
-```
-SHIP CHECKLIST:
-□ Environment variables configured (not hardcoded)?
-□ Production database set up with backups?
-□ Error logging and monitoring in place?
-□ Health check endpoint exists?
-□ Deployment process documented?
-□ Rollback plan tested?
-□ HTTPS enabled?
-□ Rate limiting configured?
+When verifying production readiness, the agent MUST output the completed checklist using the exact schema defined in the Poka-yoke Output Template.
 
-MINIMUM VIABLE PRODUCTION:
-1. HTTPS
-2. Environment variables
-3. Error logging
-4. Health check
-5. Rollback plan
-
-THE STAGING GATE:
-Dev → Staging → Production
-Never skip staging.
-If it hasn't run in staging, it doesn't ship.
-```
+[Ship Checklist Template](templates/ship-checklist.md)
