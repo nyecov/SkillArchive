@@ -64,7 +64,17 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 
 ---
 
-### Phase 4: Module-Level Optimization (Kaizen Sprint)
+### Phase 4: Pilot Verification (Nemawashi)
+**Goal:** Confirm environment and tool compatibility before bulk optimization.
+
+1. **Isolate:** Select a single module or skill identified in Phases 2 and 3.
+2. **Execute Pilot:** Perform a trial Kaizen Sprint or audit on this single target.
+3. **Verify Paths:** Ensure all scripts, templates, and directory paths (especially those containing spaces) are correctly handled.
+4. **Output:** A verified "Operation Baseline." If the pilot reveals pathing friction, resolve the root cause before vertical scaling.
+
+---
+
+### Phase 5: Module-Level Optimization (Kaizen Sprint)
 **Target:** `workflows/2-kaizen-sprint.md` | **Goal:** Targeted problem solving and standardization.
 
 1. **Target Friction:** Identify specific, localized friction points, recurring issues, or inefficiencies uncovered in Phases 2 and 3.
@@ -81,6 +91,12 @@ Compile the outputs of all four phases into a consolidated **Master Refinement D
 1. **The Verified Story:** (Output of Phase 1)
 2. **The Lean Audit:** (Output of Phase 2)
 3. **The Strategic Architecture:** (Output of Phase 3)
-4. **The targeted Kaizen Improvements:** (Outputs of Phase 4)
+4. **The Pilot Verification:** (Output of Phase 4)
+5. **The targeted Kaizen Improvements:** (Outputs of Phase 5)
 
 Save the dossier as an artifact in the brain directory and notify the user that the topic has been brought to the best possible level.
+
+
+## Escalation & Halting
+- **Jidoka:** 
+- **Hō-Ren-Sō:** 

@@ -64,11 +64,18 @@ The description is the primary mechanism for activation.
 
 ### 2. Gold Standard Compliance (Management)
 Every skill MUST be strictly audited to maintain the highest formatting and content standards.
-- **Action:** You must initialize and run `python scripts/manage_skill_authoring.py` when drafting or modifying ANY skill in `.gemini/skills/` or `G:/Skill Archive/skills/`.
+- **Action:** You must initialize and run `python scripts/manage_skill_authoring.py` when drafting or modifying ANY skill.
 - **Constraint:** Do not assume your generated file is correct. Allow the python script to parse and auto-correct structural omissions.
-- **Integration:** Connects to **Poka-yoke** mistake-proofing by physically preventing malformed skills from entering orchestration.
+- **Constraint:** `Action Targets` in safety-critical skills (e.g., KYT) MUST be expressed as verifiable tool calls or commands, not subjective text.
+- **Integration:** Connects to **Poka-yoke** mistake-proofing by physically preventing malformed or "soft" safety plans from entering orchestration.
 
-### 3. Progressive Disclosure (Structure)
+### 3. Environment & Path Verification
+Prevent operational friction from pathing mismatches or environment drift.
+- **Action:** Before executing any bulk automated scripts (e.g., library-wide audits), you MUST perform a "Pilot" execution on a single, isolated module to verify pathing, whitespace handling, and script access.
+- **Constraint:** NEVER proceed to bulk execution if the Pilot fails or requires manual path correction.
+- **Integration:** Reduces **Transportation Waste** and prevents cascading tool failures.
+
+### 4. Progressive Disclosure (Structure)
 Optimize token costs by layering instructions and offloading large data.
 - **Action:** Move large knowledge bases to `references/` and deterministic logic to `scripts/`.
 - **Constraint:** Keep the `SKILL.md` body under 5,000 tokens (target < 3,000). Enforce a **soft line limit of 150 lines** and a **warning at 200 lines**.

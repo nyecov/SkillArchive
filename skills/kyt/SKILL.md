@@ -54,6 +54,7 @@ Precisely identify the "Point of No Return" where a change becomes irreversible.
 Design safeguards that make the identified hazard logically or physically impossible.
 - **Action:** Create "Pre-flight" checks or setup commands (e.g., automated backups, environment locks).
 - **Constraint:** ONLY use deterministic, verifiable interlocks. "Human care" or "soft" warnings are strictly forbidden as countermeasures.
+- **Constraint:** Round 4 **Action Targets** MUST be manifested as explicit tool calls or executable commands.
 - **Integration:** Primary design engine for **Poka-yoke** interlocks.
 
 ## Escalation & Halting
