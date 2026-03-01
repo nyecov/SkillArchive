@@ -71,8 +71,9 @@ Every skill MUST be strictly audited to maintain the highest formatting and cont
 ### 3. Progressive Disclosure (Structure)
 Optimize token costs by layering instructions and offloading large data.
 - **Action:** Move large knowledge bases to `references/` and deterministic logic to `scripts/`.
-- **Constraint:** Keep the `SKILL.md` body under 5,000 tokens (target < 3,000). Enforce a **soft line limit of 150 lines** and a **warning at 200 lines**. Auxiliary materials (templates, scripts, references) are NOT counted — only the `SKILL.md` file itself.
-- **Integration:** Supports **Lean Foundations** by reducing context transportation waste.
+- **Constraint:** Keep the `SKILL.md` body under 5,000 tokens (target < 3,000). Enforce a **soft line limit of 150 lines** and a **warning at 200 lines**.
+- **Constraint:** NEVER use emojis (e.g., 👉, ✅, ⚠️) in any skill documentation or templates. Use standard Markdown syntax or bold text for emphasis.
+- **Integration:** Supports **Lean Foundations** by reducing context transportation waste and maintaining professional engineering standards.
 
 ## Escalation & Halting
 
@@ -88,8 +89,8 @@ Optimize token costs by layering instructions and offloading large data.
 
 ## Progressive Resources
 
-For detailed sizing limits, required structure, and anti-pattern checklists, read:
-👉 **[Skill Specification Reference](references/skill-spec-reference.md)**
+For detailed sizing limits, required structure, and anti-pattern checklists, Read:
+[Skill Specification Reference](references/skill-spec-reference.md)
 
 For the exact diagnostic output schema to use post-validation, read:
-👉 **[Poka-yoke Output Template](templates/poka-yoke-output.md)**
+[Poka-yoke Output Template](templates/poka-yoke-output.md)
