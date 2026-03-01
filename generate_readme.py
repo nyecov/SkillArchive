@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 
 SKILLS_DIR = Path("skills")
+WORKFLOWS_DIR = Path("workflows")
 README_PATH = Path("README.md")
 
 def parse_skill_file(file_path):
@@ -24,7 +25,7 @@ def parse_skill_file(file_path):
     if title_match:
         meta['display_name'] = title_match.group(1).strip()
     else:
-        meta['display_name'] = meta.get('name', 'Unknown Skill')
+        meta['display_name'] = meta.get('name', file_path.stem.replace('-', ' ').title())
         
     return meta
 
@@ -112,6 +113,31 @@ def main():
             
             md_lines.append(f"| **[{name}]({path})** | {desc} | {tag_str} |")
         md_lines.append("")
+
+    # Add Workflows Section
+    if WORKFLOWS_DIR.exists():
+        workflows = []
+        for wf_file in sorted(os.listdir(WORKFLOWS_DIR)):
+            if wf_file.endswith(".md"):
+                wf_path = WORKFLOWS_DIR / wf_file
+                meta = parse_skill_file(wf_path)
+                if meta:
+                    meta['path'] = f"workflows/{wf_file}"
+                    workflows.append(meta)
+
+        if workflows:
+            md_lines.append("## 📋 Workflow Index")
+            md_lines.append("")
+            md_lines.append("| Workflow | Description |")
+            md_lines.append("|----------|-------------|")
+            for wf in workflows:
+                name = wf.get('display_name', wf['path'])
+                path = wf['path']
+                desc = str(wf.get('description', '')).strip().replace('\n', ' ').replace('|', '\\|')
+                if len(desc) > 120:
+                    desc = desc[:117] + "..."
+                md_lines.append(f"| **[{name}]({path})** | {desc} |")
+            md_lines.append("")
 
     # Add Tools Section
     tools_dir = Path("tools")

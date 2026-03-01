@@ -77,6 +77,15 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[Red-Teaming](skills/red-teaming-tactics/SKILL.md)** | Adversarial stress-testing for security and logic.  Use to identify bypasses, edge-case failures, and "happy-path" bi... | `safety` `security` |
 | **[Secure](skills/secure-security/SKILL.md)** | Use when handling auth, user input, secrets, or API endpoints. Mandates trust-boundary audits. | `security` |
 
+## 📋 Workflow Index
+
+| Workflow | Description |
+|----------|-------------|
+| **[Lean Analysis Workflow](workflows/1-lean-analysis.md)** | Run a full Lean analysis on a document or topic using all 9 lean-tagged skills as analytical lenses |
+| **[Kaizen Sprint Workflow](workflows/2-kaizen-sprint.md)** | Run a full PDCA (Plan-Do-Check-Act) continuous improvement cycle on a recurring bug, friction point, or localized pro... |
+| **[TPS Architecture Review Workflow](workflows/3-tps-architecture-review.md)** | Run a heavy-duty system-level architectural review for major refactors, cross-domain integrations, or organizational ... |
+| **[Master Topic Refinement Workflow](workflows/4-master-topic-refinement.md)** | Execute a comprehensive, multi-stage refinement process on a topic using Story Interview, Lean Analysis, TPS Architec... |
+
 ## 🛠️ Tools Index
 
 > Standalone, low-level execution scripts. See the [Tools Management Strategy](skills/tools-management/SKILL.md).
