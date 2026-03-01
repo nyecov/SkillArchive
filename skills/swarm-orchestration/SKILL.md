@@ -1,6 +1,6 @@
 ---
 name: swarm-orchestration
-version: 1.0.0
+version: 1.1.0
 level: methodology
 description: 'Protocols for multi-agent coordination and delegation.  Ensures that
   specialized sub-agents are tasked precisely and their outputs are synthesized without
@@ -41,6 +41,7 @@ The Lead Agent is responsible for auditing and synthesizing the sub-agent's outp
 Ensure that all agents in the "Swarm" share a consistent view of the "True North" (the project goal).
 - **Action:** Broadcast major state changes or architectural pivots (Renraku) to all active sub-agents.
 - **Constraint:** Prevent "State Drift" where sub-agents work against stale or conflicting requirements.
+- **Integration:** Aligns with **Hō-Ren-Sō** for continuous reporting and state sharing across the system.
 
 ## Escalation & Halting
 
@@ -55,4 +56,10 @@ Ensure that all agents in the "Swarm" share a consistent view of the "True North
    - Delegate to the specialized Sub-Agent.
    - Monitor for "Muri (Overburden)" in the sub-agent's reasoning.
 3. **Verify:** Perform the **Wa (Harmony) Audit** on the returned output.
-4. **Output:** A synthesized, high-integrity update to the primary system.
+4. **Output:** A synthesized, high-integrity update to the primary system, documented via the Poka-yoke Output Template.
+
+## Poka-yoke Output Template
+
+When delegating a task to a sub-agent, the Lead Agent MUST output the delegation using the schema defined in the Poka-yoke Output Template.
+
+👉 **[Swarm Mission Brief Template](templates/mission-brief.md)**

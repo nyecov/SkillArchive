@@ -37,4 +37,24 @@ def validate_and_repair_skill(file_path: Path) -> RepairResult:
         file_path.write_text(new_content, encoding="utf-8")
         return RepairResult(True, "auto_corrected")
         
-    return RepairResult(False, "unknown")
+    return RepairResult(False, "validated")
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) < 2:
+        print("Usage: manage_skill_authoring.py <path_to_skill>")
+        sys.exit(1)
+    
+    path = Path(sys.argv[1])
+    if not path.exists():
+        print(f"Error: Path {path} does not exist.")
+        sys.exit(1)
+        
+    result = validate_and_repair_skill(path)
+    if result.was_repaired:
+        print(f"Skill repaired: {result.status}")
+    elif result.status == "unrecoverable":
+        print(f"Skill unrecoverable: {result.status}. Action: {result.recommended_action}")
+    else:
+        print(f"Skill valid: {result.status}")
+

@@ -1,6 +1,6 @@
 ---
 name: test-driven-development
-version: 1.0.0
+version: 1.1.0
 level: tactical
 description: 'Use when implementing any feature or bugfix, before writing implementation code. Enforces the strict Red-Green-Refactor loop.'
 category: engineering
@@ -49,4 +49,11 @@ Write the test first. Watch it fail. Write minimal code to pass. If you didn't w
 1. **Trigger:** Starting a new feature, bug fix, or behavior change.
 2. **Execute:** Write a failing test. Run it. Observe the failure. Write minimal code to pass. Run it. Observe the pass. Refactor.
 3. **Verify:** The test suite must be fully green after the Refactor phase.
-4. **Output:** A completed, tested, and cleanly refactored unit of code.
+4. **Output:** A completed, tested, and cleanly refactored unit of code, documented using the Poka-yoke Output Template.
+
+## Poka-yoke Output Template
+
+When a TDD cycle is complete, the agent MUST output the final verification using exactly the schema defined in the Poka-yoke Output Template.
+
+👉 **[TDD Cycle Verification Template](templates/poka-yoke-output.md)**
+
