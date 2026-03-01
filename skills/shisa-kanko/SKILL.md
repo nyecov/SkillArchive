@@ -1,6 +1,6 @@
 ---
 name: shisa-kanko
-version: 2.0.0
+version: 2.1.0
 level: methodology
 description: Use when executing code changes, tool calls, or multi-step tasks. Mandates
   pointing, calling, and verification.
@@ -59,6 +59,7 @@ Never execute a tool call without 'calling out' the expected outcome and the TDD
   - **Success Criteria:** What defines success.
   - **Verification Method (TDD):** The exact command/test that MUST pass.
 - **Constraint:** All execution MUST be preceded by this declaration. **Prefer writing the test or verification script BEFORE the implementation (TDD).**
+- **Integration:** Bridges to **Test-Driven Development (TDD)** ensuring that tests are prioritized before writing logic.
 
 ### 4. Empirical Validation (Delegate to Genchi Genbutsu)
 Confirm that the results of the execution match the logic declaration through direct observation.
@@ -76,4 +77,10 @@ Confirm that the results of the execution match the logic declaration through di
 1. **Trigger:** A Directive is received from the user.
 2. **Execute:** Follow the Phases A-C (Reflect -> Risk Assessment -> Deterministic Execution).
 3. **Verify:** Phase D (Validation + Vibe Audit).
-4. **Output:** A verified, high-integrity update and a Hōkoku (Report) to the user.
+4. **Output:** A verified, high-integrity update and a Hōkoku (Report) to the user, strictly adopting the format defined in the Poka-yoke Output Template.
+
+## Poka-yoke Output Template
+
+When performing the Pointing and Calling procedure, agents MUST output their isolation and logic statements using the schema defined in the Poka-yoke Output Template.
+
+[Shisa Kanko Declaration Template](templates/shisa-kanko-declaration.md)
