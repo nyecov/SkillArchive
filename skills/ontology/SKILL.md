@@ -1,6 +1,6 @@
 ---
 name: ontology
-version: 1.0.0
+version: 1.1.0
 description: 'Typed knowledge graph methodology for structured agent memory and composable
   actions.  Use to create, query, and enforce constraints across interconnected entities
   (Person, Project, Task, Event, Document).\'
@@ -55,12 +55,13 @@ Enforce logical rules and type constraints across the graph to prevent contradic
    - *If Retrieval:* Reject unstructured text search. Traverse the target Entity backward through its directional Edges to determine root-cause interconnectivity.
    - *Parsing:* If triggered by unstructured human text, translate explicit Entities before processing.
 3. **Verify:** Assure no circular dependencies were injected during the state mutation and that every node touched maintains at least one valid outbound/inbound edge.
-4. **Output:** Render the strict YAML format defined in the `Ontology Output Template`.
+4. **Output:** Render the strict YAML format defined in the Poka-yoke Output Template.
 
-## Progressive Resources
+## Poka-yoke Output Template
 
-For the exact diagnostic output schema to use post-validation, read:
-👉 **[Ontology Output Template](templates/ontology-output-template.md)**
+When persisting entities or reporting on ontology extraction, the agent MUST use the schema defined in the Poka-yoke Output Template.
+
+[Ontology Output Template](templates/ontology-output-template.md)
 
 ## Relationship to MCP
 
