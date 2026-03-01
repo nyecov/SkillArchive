@@ -20,7 +20,8 @@
     "kubernetes",
     "leadership",
     "mcp",
-    "heijunka"
+    "heijunka",
+    "routing"
   ],
   "allowed_categories": [
     "methodology",
@@ -62,6 +63,7 @@
       "methodology",
       "optimization",
       "research",
+      "routing",
       "safety",
       "security",
       "testing"

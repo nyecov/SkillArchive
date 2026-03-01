@@ -26,7 +26,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 
 | Skill | Description | Tags |
 |-------|-------------|------|
-| **[Comprehend](skills/comprehend-understanding/SKILL.md)** | Use before debugging, extending, or shipping code the user cannot explain. Handles 4-level comprehension gates, rubbe... | `cognition` |
+| **[Comprehend](skills/comprehend-understanding/SKILL.md)** | Use before debugging, extending, or shipping code. Acts as a strict policy gate implementing Risk-Tiered comprehensio... | `cognition` `safety` `routing` `methodology` |
 | **[Deglaze](skills/deglaze-tactics/SKILL.md)** | Use when reviewing AI-generated solutions, validating user comprehension, or stress-testing proposals. Handles 5 cons... | `cognition` `safety` `methodology` |
 | **[Gemba](skills/gemba/SKILL.md)** | Use to establish a factual baseline of the codebase. Mandates direct observation before reasoning and enforces a stru... | `context` `methodology` `research` `lean` `TPS` |
 | **[Hansei](skills/hansei/SKILL.md)** | Use when a plan fails, a bug is found, or a post-mortem is needed. Mandates 5-Whys root-cause analysis. | `cognition` `methodology` `lean` `TPS` `kaizen` |
