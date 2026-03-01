@@ -1,6 +1,6 @@
 ---
 name: rag-strategy
-version: 1.0.0
+version: 1.1.0
 level: tactical
 description: 'Optimization of Retrieval-Augmented Generation.  Focuses on minimizing
   "Search Waste" (Motion Muda) by ensuring high-signal context retrieval and efficient
@@ -16,6 +16,8 @@ references:
   path: ../ontology/SKILL.md
 - name: Lean Foundations
   path: ../lean-foundations/SKILL.md
+- name: Context Heijunka Tool
+  path: ../../tools/context-heijunka/description.md
 ---
 
 # RAG Strategy
@@ -40,6 +42,13 @@ Ensure that retrieved context includes enough surrounding structure to be meanin
 Verify that the retrieved data actually answers the prompt before proceeding to implementation.
 - **Action:** Perform a "Relevance Check" on the retrieved context. Does it contain the symbols, logic, or docs needed for the task?
 - **Constraint:** If retrieval fails to provide the facts, do not "hallucinate" the missing data. Re-run the search with refined parameters.
+- **Integration:** Aligns with **Shisa Kanko** by empirically verifying the retrieved context before execution.
+
+### 4. Multi-Modal Ingestion (Tool Utilization)
+Do not limit context retrieval to just code or text files; utilize custom tooling to ingest rich context formats when required.
+- **Action:** Utilize the project's specific python tools (e.g., `youtube_transcript.py`, `pdf_tools.py`, `docx_tools.py`) to scrape, parse, and ingest non-text data formats into the reasoning window.
+- **Constraint:** ALWAYS pipe the output of these tools through the **Context Heijunka Chunker** (`context_chunker.py`) if the resulting raw text exceeds the 4k token limit.
+- **Integration:** Aligns with **Tools Management** to prioritize deterministic python scripts over hallucinated manual parsing.
 
 ## Escalation & Halting
 
@@ -54,4 +63,10 @@ Verify that the retrieved data actually answers the prompt before proceeding to 
    - Execute the RAG query (Search/Retrieval).
    - Filter and rank the results for relevance.
 3. **Verify:** Confirm the retrieved snippets provide the "True North" for the implementation.
-4. **Output:** A high-signal, de-noised context payload ready for **Shisa Kanko** processing.
+4. **Output:** A high-signal, de-noised context payload ready for **Shisa Kanko** processing, documented via the Poka-yoke Output Template.
+
+## Poka-yoke Output Template
+
+When retrieving external knowledge, the agent MUST output the completed manifest using the exact schema defined in the Poka-yoke Output Template to prevent context bloat and hallucination.
+
+[RAG Context Manifest Template](templates/rag-context-manifest.md)
