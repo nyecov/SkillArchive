@@ -1,8 +1,8 @@
 ---
 name: hansei
-version: 1.1.0
-description: Use when a plan fails, a bug is found, or a post-mortem is needed. Mandates
-  5-Whys root-cause analysis.
+version: 1.2.0
+level: methodology
+description: Use when a plan fails, a bug is found, or a post-mortem is needed. Mandates 5-Whys root-cause analysis.
 category: cognition
 tags:
 - cognition
@@ -27,8 +27,8 @@ references:
   path: ../lean-foundations/SKILL.md
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
-level: methodology
 ---
+
 # Hansei
 
 Hansei is the practice of looking back at a plan or action with a critical, objective eye to identify flaws, acknowledge mistakes, and develop improvement plans. In an agentic system, it serves as the cognitive engine for both proactive refinement and reactive debugging.
@@ -44,13 +44,12 @@ Before finalizing a plan, perform a critical review of the proposed reasoning to
 ### 2. Reactive Root Cause Analysis (The 5-Whys)
 When an execution fails or a Jidoka halt occurs, the agent MUST use the **5-Whys Protocol** to drill down to the fundamental cause.
 - **Action:** Ask "Why?" sequentially at least 5 times (or until the bedrock cause is reached).
-- **Format:**
-  1. Why did X happen? (Direct cause)
-  2. Why did [1] happen? (Indirect cause)
-  3. Why did [2] happen? (Systemic cause)
-  4. Why did [3] happen? (Architectural cause)
-  5. Why did [4] happen? (Root cause)
-- **Constraint:** DO NOT settle for "User error" or "AI hallucination" as a root cause. Find the missing context, ambiguous prompt, or structural flaw that allowed the error.
+- **Constraint:** DO NOT settle for "User error" or "AI hallucination" as a root cause. Find the missing context, ambiguous prompt, or structural flaw that allowed the error. YOU MUST output the reasoning using the following strict template:
+  > **1.** Direct Cause: `<reason>`
+  > **2.** Indirect Cause: `<reason>`
+  > **3.** Systemic Cause: `<reason>`
+  > **4.** Architectural Cause: `<reason>`
+  > **5.** Root Cause: `<reason>`
 - **Integration:** Directly supports the **Jidoka** halt protocol.
 
 ### 3. Improvement Synthesis
@@ -67,6 +66,6 @@ Translate every reflection into an actionable improvement for the current or fut
 ## Implementation Workflow
 
 1. **Trigger:** Initiated during planning (Shisa Kanko Phase A) or after an execution failure.
-2. **Execute:** Critically analyze the draft or failure to identify assumptions and logic flaws.
-3. **Verify:** Confirm the reflection identifies specific, actionable root causes.
-4. **Output:** A refined plan, a diagnostic report, or a Kaizen proposal.
+2. **Execute:** Critically analyze the draft or failure to identify assumptions and logic flaws. Apply the strict 5-Whys template constraint if reactive.
+3. **Verify:** Confirm the reflection identifies specific, actionable root causes and not generalized blame.
+4. **Output:** A formatted 5-Whys text block delivered as a diagnostic report, Kaizen proposal, or Sōdan request.

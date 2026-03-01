@@ -1,9 +1,8 @@
 ---
 name: ho-ren-so
-version: 1.1.0
-description: Use when reporting progress, broadcasting state changes, or escalating
-  ambiguous or blocked decisions to a human operator. Handles structured reporting,
-  factual notifications, and consultation-with-options formats.\
+version: 1.2.0
+level: methodology
+description: Use when reporting progress, broadcasting state changes, or escalating ambiguous or blocked decisions to a human operator. Handles structured reporting, factual notifications, and consultation-with-options formats.
 category: methodology
 tags:
 - communication
@@ -27,8 +26,8 @@ references:
   path: ../lean-foundations/SKILL.md
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
-level: methodology
 ---
+
 # Hō-Ren-Sō
 
 Hō-Ren-Sō ensures that information flows smoothly across the system, preventing silos and ambiguity. In an agentic architecture, it provides the structured formats for routine operational updates and critical safety escalations.
@@ -50,8 +49,11 @@ Inform the user and sub-agents of environmental changes or system state facts wi
 ### 3. Sōdan (Decision Consultation)
 Seek authorization or a decision when encountering an ambiguous, blocked, or high-risk situation.
 - **Action:** Present the problem, the **Hansei** root-cause analysis, and a set of actionable options for the user.
-- **Constraint:** NEVER silently fail. Every **Jidoka** halt MUST be accompanied by a Sōdan request.
-- **Integration:** Acts as the communication vehicle for **Jidoka** halts and **Jidoka** trips.
+- **Constraint:** Never format a Sōdan request like a routine Hōkoku update. You MUST use the following explicit format:
+  - **[HALT REASON]:** The specific contradiction, ambiguity, or failure.
+  - **[ROOT CAUSE]:** The Hansei reflection on why it occurred.
+  - **[OPTIONS]:** A numbered list of mutually exclusive paths forward.
+- **Integration:** Acts as the communication vehicle for **Jidoka** halts and trips.
 
 ## Escalation & Halting
 
@@ -60,7 +62,7 @@ Seek authorization or a decision when encountering an ambiguous, blocked, or hig
 
 ## Implementation Workflow
 
-1. **State Tracking:** Maintain a clear log of what has been reported (Hōkoku) and shared (Renraku) to prevent spamming the operator.
-2. **Ambiguity & Block Trigger:** If a decision branch has >1 viable path, or if a Jidoka halt is triggered, immediately switch to the Sōdan (Consultation) protocol.
-3. **Structured Escalation:** When consulting, always present the problem (the Poka-yoke violation or KYT hazard), the Hansei reflection, and proposed options for the human to choose from.
-4. **Feedback Integration:** Incorporate human advice into the current state and resume the workflow.
+1. **Trigger:** The agent completes a task phase, encounters a state change, or hits an ambiguity/blocker requiring a Jidoka halt.
+2. **Execute:** Select the appropriate tier (Hōkoku for status, Renraku for facts, Sōdan for consultation). If Sōdan, strictly apply the formatted template constraint.
+3. **Verify:** Ensure the message does not spam the operator with redundant information and clearly differentiates between a status log and a request for action.
+4. **Output:** A formatted message delivered to the user via the `notify_user` tool or equivalent output channel.
