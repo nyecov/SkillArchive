@@ -17,8 +17,10 @@ references:
   path: ../ontology/SKILL.md
 - name: shisa-kanko
   path: ../shisa-kanko/SKILL.md
-- name: genchi-genbutsu
+- name: Genchi-Genbutsu
   path: ../genchi-genbutsu/SKILL.md
+- name: Gemba Report Template
+  path: ./templates/gemba-report-template.md
 requires:
 - rag-strategy
 - ontology
@@ -56,14 +58,5 @@ Every discovery MUST be verified as a "Current Reality" (Genchi Genbutsu).
    - Execute the chosen strategy to gather the facts.
    - Cross-reference with the `genchi-genbutsu` mandate to ensure raw proof is captured if necessary.
 3. **Verify:** Read the bytes/data to explicitly confirm reality. Ensure no hallucinated paths or logic exist in your working memory.
-4. **Output:** A high-signal factual foundation for the **shisa-kanko** plan. You MUST output the following exact template:
-
-```markdown
-### Gemba Discovery Report
-- **[OBSERVED FILES]:** 
-  - `[list of absolute paths read]`
-- **[KEY FACTS]:** 
-  - `[bulleted list of verifiable data points]`
-- **[DISCREPANCIES]:** 
-  - `[none / or specifically detail contradictions between expectations and reality]`
-```
+4. **Output:** A high-signal factual foundation for the **shisa-kanko** plan. You MUST output the `Gemba Discovery Report`.
+[Gemba Report Template](./templates/gemba-report-template.md)

@@ -23,6 +23,8 @@ references:
   path: ../ship-production/SKILL.md
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
+- name: Anchor Template
+  path: ./templates/anchor-template.md
 level: tactical
 ---
 
@@ -58,34 +60,8 @@ Update anchors intentionally, not as a side effect of a feature implementation.
 ## Implementation Strategy
 
 ### The ANCHOR.md Template
-When executing this skill to establish architecture, generate `ANCHOR.md` at the project root using precisely this template:
-
-```markdown
-# Architectural Anchors (Sovereign Decisions)
-
-*Current as of: [Date]*
-
-## 1. Domain: State Management
-- **Decision:** [e.g., Redux Toolkit]
-- **Rationale:** [Brief reason]
-- **Constraint:** [e.g., No local component state for shared data]
-
-## 2. Domain: Authentication
-- **Decision:** [e.g., JWT via HTTP-only Cookies]
-- **Rationale:** [Brief reason]
-
-## 3. Domain: Data Fetching & Caching
-- **Decision:** [e.g., React Query]
-- **Rationale:** [Brief reason]
-
-## 4. Domain: API Design
-- **Decision:** [e.g., RESTful, snake_case payloads]
-- **Rationale:** [Brief reason]
-
-## 5. Domain: File Structure Pattern
-- **Decision:** [e.g., Feature-based routing (Next.js App router conventions)]
-- **Rationale:** [Brief reason]
-```
+When executing this skill to establish architecture, generate `ANCHOR.md` at the project root using the standard template:
+[Anchor Template](./templates/anchor-template.md)
 
 ## Execution Flow
 

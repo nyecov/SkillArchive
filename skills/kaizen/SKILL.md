@@ -27,6 +27,8 @@ references:
   path: ../vsm/SKILL.md
 - name: Skill Authoring Management
   path: ../skill-authoring-management/SKILL.md
+- name: Kaizen Report Template
+  path: ./templates/kaizen-report-template.md
 ---
 
 # Kaizen
@@ -67,24 +69,5 @@ If an experiment is successful, permanently update the skill documentation or sy
 
 ## Poka-yoke Output Template
 
-When the Kaizen sprint concludes successfully, output the findings exclusively using this exact Markdown format:
-
-```markdown
-# Kaizen Sprint Report: [Issue/Process Name]
-
-## 1. The Anomaly (Genchi Genbutsu & Hansei)
-- **Observed Behavior:** [Facts]
-- **Root Cause (5-Whys):** [Bedrock Cause]
-
-## 2. The Solution (Kaizen & Poka-yoke)
-- **Hypothesis:** [If X then Y]
-- **Interlock:** [The deterministic guardrail]
-
-## 3. The Evidence (Shisa Kanko)
-- **Baseline vs New State:** [Metric shift]
-- **Verification Result:** PASS / FAIL
-
-## 4. The Standard (Yokoten)
-- **New Standard Operating Procedure:** [What was permanently updated]
-- **Horizontal Targets:** [Where else this applies]
-```
+When the Kaizen sprint concludes successfully, output the findings exclusively using the standard format:
+[Kaizen Report Template](./templates/kaizen-report-template.md)

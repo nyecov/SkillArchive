@@ -14,6 +14,8 @@ references:
   url: https://platform.claude.com/cookbook/
 - name: Clawhub (Skills)
   url: https://clawhub.ai/skills?sort=downloads
+- name: Research Report Template
+  path: ./templates/research-report-template.md
 requires:
 - skill-authoring-management
 ---
@@ -53,16 +55,5 @@ Maintain transparency and traceability by documenting the origins of synthesized
     - Browse the `Claude Cookbook` for architectural patterns related to the task.
     - Analyze the external skill (Is it procedural? What tools does it use? What are the edge cases?).
 3. **Verify:** Confirm the extracted logic resolves the user's need and does not rely on unavailable bespoke external tools.
-4. **Output:** You MUST stop modifying the file system and output the following exact template to be handed off to the authoring process:
-
-```markdown
-### External Research Report
-- **[SOURCE LINKS]:** 
-  - `[URLs to Clawhub/Cookbook/etc.]`
-- **[CORE LOGIC EXTRACTED]:** 
-  - `[The underlying procedural pattern, abstracted from specific foreign code]`
-- **[IDENTIFIED EDGE CASES]:** 
-  - `[Failure modes handled by the external source]`
-- **[TOOL DEPENDENCIES]:** 
-  - `[Required tool classes the pattern relies upon]`
-```
+4. **Output:** You MUST stop modifying the file system and output the `External Research Report` to be handed off to the authoring process.
+[Research Report Template](./templates/research-report-template.md)

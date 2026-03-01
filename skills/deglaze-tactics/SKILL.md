@@ -24,6 +24,8 @@ references:
   path: ../ship-production/SKILL.md
 - name: Hansei (Self-reflection)
   path: ../hansei/SKILL.md
+- name: Deglaze Report Template
+  path: ./templates/deglaze-report-template.md
 level: tactical
 ---
 
@@ -61,18 +63,5 @@ Identify "glaze" by watching for red flags like jargon, vague gestures, or "The 
 1. **Trigger:** A new solution is proposed, or AI-generated code is accepted, requiring formal comprehension verification.
 2. **Execute:** Apply the five constraint pressure techniques (Compression, Deletion, Adversary, Explain-to-Junior, Rollback).
 3. **Verify:** Confirm the user or the AI explicitly defends the solution against all five tests with concrete reasoning.
-4. **Output:** The agent MUST output the following `Deglaze Pressure Report` markdown template to formally clear the verification gate.
-
-```markdown
-### Deglaze Pressure Report
-- **[COMPRESSION TEST]:**
-  - `[Can the core mechanism be explained in one clear sentence?]`
-- **[DELETION TEST]:**
-  - `[What 20% of the code/logic can be removed without breaking the core value?]`
-- **[ADVERSARY TEST]:**
-  - `[How would a malicious actor or severe edge case break this?]`
-- **[EXPLAIN-TO-JUNIOR TEST]:**
-  - `[Explain the most complex part using only common terminology.]`
-- **[ROLLBACK TEST]:**
-  - `[What is the exact, step-by-step procedure to undo this implementation?]`
-```
+4. **Output:** The agent MUST output the `Deglaze Pressure Report` to formally clear the verification gate.
+[Deglaze Report Template](./templates/deglaze-report-template.md)

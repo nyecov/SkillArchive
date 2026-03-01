@@ -12,6 +12,8 @@ references:
     path: ../story-interview/SKILL.md
   - name: Shisa Kanko (Master Workflow)
     path: ../shisa-kanko/SKILL.md
+  - name: Workflow Report Template
+    path: ./templates/workflow-report-template.md
 ---
 
 # Workflow Management
@@ -44,16 +46,5 @@ Workflows are structurally and procedurally distinct from skills, despite sharin
 
 ## Poka-yoke Output Template
 
-When the `manage_workflows.py` script validates or repairs a workflow, the agent MUST format its diagnostic report using exactly this Markdown schema:
-
-```markdown
-# Workflow Validation Report: [Workflow Name]
-
-## 1. Action Taken
-- **Status:** [validated | auto_corrected | unrecoverable]
-- **Script Finding:** [Description of what the python script changed or verified]
-
-## 2. Next Steps
-- [ ] [e.g., Save and commit the file]
-- [ ] [e.g., Invoke Story Interview to rebuild unrecoverable logic]
-```
+When the `manage_workflows.py` script validates or repairs a workflow, the agent MUST format its diagnostic report using the standard schema:
+[Workflow Report Template](./templates/workflow-report-template.md)

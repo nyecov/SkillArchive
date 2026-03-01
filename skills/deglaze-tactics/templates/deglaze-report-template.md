@@ -1,0 +1,11 @@
+### Deglaze Pressure Report
+- **[COMPRESSION TEST]:**
+  - `[Can the core mechanism be explained in one clear sentence?]`
+- **[DELETION TEST]:**
+  - `[What 20% of the code/logic can be removed without breaking the core value?]`
+- **[ADVERSARY TEST]:**
+  - `[How would a malicious actor or severe edge case break this?]`
+- **[EXPLAIN-TO-JUNIOR TEST]:**
+  - `[Explain the most complex part using only common terminology.]`
+- **[ROLLBACK TEST]:**
+  - `[What is the exact, step-by-step procedure to undo this implementation?]`

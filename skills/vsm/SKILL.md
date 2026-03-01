@@ -28,6 +28,8 @@ references:
   path: ../lean-foundations/SKILL.md
 - name: Kaizen (Continuous Improvement)
   path: ../kaizen/SKILL.md
+- name: VSM Report Template
+  path: ./templates/vsm-report-template.md
 level: technical
 ---
 # Value Stream Mapping
@@ -68,25 +70,5 @@ Design and propose an optimized architectural flow that maximizes deterministic 
 
 ## Poka-yoke Output Template
 
-When the VSM analysis is complete, the agent MUST format its findings using exactly this Markdown schema:
-
-```markdown
-# Value Stream Map: [Process/System Name]
-
-## 1. Current State Diagnostics
-- **Context/Tokens:** [Where is the highest context consumption?]
-- **Compute/Time:** [Where are the slowest reasoning phases?]
-- **Jidoka Faults:** [Where do halts cluster?]
-
-## 2. Bottlenecks & Muda Identification
-- **Structural Waste 1:** [Description of over-processing or friction]
-- **Structural Waste 2:** [...]
-
-## 3. Future State Proposal
-[A concise narrative description of the optimized flow.]
-- **Step 1:** [New/Optimized Step]
-- **Step 2:** [...]
-
-## 4. Associated Hazards (KYT Required)
-- **KYT Note:** Before implementation, a hazard prediction pass MUST be run on [Specific point of friction/destructiveness].
-```
+When the VSM analysis is complete, the agent MUST format its findings using the standard schema:
+[VSM Report Template](./templates/vsm-report-template.md)
