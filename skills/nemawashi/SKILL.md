@@ -1,6 +1,6 @@
 ---
 name: nemawashi
-version: 1.0.0
+version: 1.1.0
 description: Use before suggesting major refactors or architectural changes. Mandates
   impact analysis and A3 proposals.
 category: methodology
@@ -30,14 +30,6 @@ Nemawashi is the practice of quietly laying the foundation for a change. In agen
 
 ### 2. Strategic Consensus (The A3 Proposal)
 - **Action:** Present findings to the user using the **A3 Proposal format** to secure alignment.
-- **A3 Structure:**
-  1. **Background:** Context of the proposed change.
-  2. **Current Condition:** What is the state of the code now (Gemba facts).
-  3. **Goal:** The desired outcome.
-  4. **Analysis:** Why the change is necessary (Hansei/5-Whys).
-  5. **Countermeasures:** The specific implementation steps (Shisa Kanko intent).
-  6. **Plan:** Sequence of execution.
-  7. **Follow-up:** How we will verify success (Genchi Genbutsu).
 - **Constraint:** Do not proceed with high-risk refactors until the A3 "Foundation" is acknowledged by the user.
 - **Integration:** Feeds directly into **Ho-Ren-So** (Sōdan) for structured decision-making.
 
@@ -54,4 +46,10 @@ Nemawashi is the practice of quietly laying the foundation for a change. In agen
    - Evaluate potential side effects on state or performance.
    - Formulate a "Foundation Report" (Proposed Strategy + Impact Analysis).
 3. **Verify:** User confirms the approach (Consensus).
-4. **Output:** A de-risked Strategy ready for surgical execution.
+4. **Output:** A de-risked Strategy ready for surgical execution, documented via the Poka-yoke Output Template.
+
+## Poka-yoke Output Template
+
+When proposing a major refactor or architectural change, the agent MUST format the proposal using the exact schema defined in the Poka-yoke Output Template.
+
+[A3 Proposal Template](templates/a3-proposal.md)
