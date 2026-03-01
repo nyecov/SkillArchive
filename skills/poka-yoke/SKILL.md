@@ -1,6 +1,6 @@
 ---
 name: poka-yoke
-version: 1.1.0
+version: 1.2.0
 description: Use when designing validation gates, enforcing schemas, or preventing
   invalid tool calls. Handles deterministic guardrails, prerequisite interlocks, and
   state machine constraints.\
@@ -63,4 +63,10 @@ Ensure all 'prerequisites' are physically present before acting.
 1. **Trigger:** A tool call is initiated or a state transition is requested.
 2. **Execute:** Run all deterministic checks (Schema, State, Prerequisites).
 3. **Verify:** Confirm all checks passed with 100% confidence.
-4. **Output:** Allow the action to proceed or trigger the Jidoka halt.
+4. **Output:** Allow the action to proceed or trigger the Jidoka halt, documenting the validation via the Poka-yoke Output Template.
+
+## Poka-yoke Output Template
+
+When establishing or triggering an interlock constraint, the agent MUST output the schema check or dependency verification using the exact schema defined in the Poka-yoke Output Template.
+
+[Poka-yoke Interlock Declaration Template](templates/poka-yoke-interlock.md)
