@@ -1,6 +1,6 @@
 ---
 name: red-teaming-tactics
-version: 1.0.0
+version: 1.1.0
 level: tactical
 description: 'Adversarial stress-testing for security and logic.  Use to identify
   bypasses, edge-case failures, and "happy-path" biases in proposed implementations.\'
@@ -54,4 +54,10 @@ A vulnerability is only "fixed" once its Proof of Vulnerability (reproduction sc
    - Formulate 2-3 attack vectors.
    - Attempt the bypass (The Red-Teaming Pass).
 3. **Verify:** Use the PoV script to confirm the vulnerability and its subsequent fix.
-4. **Output:** A hardened implementation and a summary of the defeated attack vectors.
+4. **Output:** A hardened implementation and a summary of the defeated attack vectors, documented via the Poka-yoke Output Template.
+
+## Poka-yoke Output Template
+
+When verifying the proof of vulnerability (PoV) and attack vectors, the agent MUST output the completed report using the exact schema defined in the Poka-yoke Output Template.
+
+[Red-Teaming PoV Template](templates/red-teaming-pov.md)
