@@ -19,36 +19,15 @@ references:
   path: ../kaizen/SKILL.md
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
+- name: Lean Glossary
+  path: ./references/lean-glossary.md
+- name: 5S Validation Report Template
+  path: ./templates/lean-5s-output.md
 level: methodology
 ---
 # Lean Foundations
 
 Lean focuses on maximizing deterministic output value while minimizing computational, temporal, and cognitive waste. This is achieved through identifying the **3 Ms** (Mura, Muri, Muda) and maintaining a disciplined workspace with the **5S** framework.
-
-## The 3 Ms: The Trio of Inefficiency
-
-1.  **Mura (Unevenness):** Inconsistency in workflow, logic, or output.
-2.  **Muri (Overburden):** Pushing the model or context window beyond its optimal limits.
-3.  **Muda (Waste):** Activities that consume resources without adding value.
-
-## The 7 Wastes of Agentic Workflows (Muda)
-
-Agents MUST actively monitor and eliminate these common wastes:
-1. **Over-generation:** Writing more code than is strictly necessary (e.g., adding "just-in-case" features).
-2. **Waiting:** Stalling on slow API calls without parallelizing tasks.
-3. **Transportation (Context Bloat):** Pushing unnecessarily large context windows, causing hallucinations.
-4. **Over-processing:** Using complex reasoning for tasks that simple deterministic scripts or regex could solve.
-5. **Inventory (Unused Data):** Storing intermediate state or variables never consumed by the final execution.
-6. **Motion (Navigational Waste):** Endless searching through directories due to imprecise initial pointing.
-7. **Defects (Hallucinations):** Producing incorrect outputs that require rework. This is the worst form of waste.
-
-## The 5S Framework for Agentic Workspaces
-
-1.  **Seiri (Sort):** Distinguish between necessary and unnecessary files/context. Delete logs and trial scripts.
-2.  **Seiton (Set in Order):** A place for everything. Follow established project structures.
-3.  **Seiso (Shine):** Clean the workspace. Remove "dead code" and outdated comments.
-4.  **Seiketsu (Standardize):** Use templates (`skill-template.md`) and consistent naming.
-5.  **Shitsuke (Sustain):** Perform regular **Hansei** to ensure the standards are maintained.
 
 ## Core Mandates
 
@@ -75,11 +54,19 @@ Maintain a high-signal, low-noise environment through constant sorting, ordering
 ## Escalation & Halting
 
 - **Jidoka:** If **Muri** leads to repeated hallucinations or a "Defect" is detected, trigger an immediate Jidoka halt.
-- **Hō-Ren-Sō:** Use the Renraku (Fact) protocol to inform the user when major 5S operations are performed.
+- **Hō-Ren-Sō:** Escalate to the user before deleting *any* code or file during a 'Seiso' (Shine) operation if that file is located outside of a designated temporary workspace (e.g., `.gemini/tmp/`) and lacks verified redundancy.
 
 ## Implementation Workflow
 
-1. **Trigger:** Start of a new session or a major task.
-2. **Execute:** Run the 3M check (Unevenness, Overburden, Waste) and apply the 5S steps.
-3. **Verify:** Confirm the workspace is organized, lean, and within model limits.
-4. **Output:** A stabilized, high-signal workspace ready for precise engineering.
+1. **Trigger:** Start of a new session, major context bloat is detected, or a core architectural change requires workspace stabilization.
+2. **Execute:** Execute the 3M diagnostic (identify Unevenness, Overburden, Waste) and sequentially process the workspace through the 5S steps (Sort, Set in Order, Shine, Standardize, Sustain).
+3. **Verify:** Confirm the workspace is organized, confirm context tokens are reduced, and verify no critical files outside temporary boundaries were illegally altered/deleted.
+4. **Output:** Render the validation state using the `5S Validation Report Template`.
+
+## Progressive Resources
+
+For detailed definitions of the 3 Ms, the 7 Wastes, and the 5S Framework, read:
+👉 **[Lean Glossary](references/lean-glossary.md)**
+
+For the exact diagnostic output schema to use post-validation, read:
+👉 **[5S Validation Report Template](templates/lean-5s-output.md)**

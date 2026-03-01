@@ -2,7 +2,7 @@
 name: plan-with-files
 version: 1.0.0
 level: methodology
-description: 'Implements file-based planning to organize and track progress on complex tasks using persistent markdown files as working memory on disk.'
+description: 'Implements file-based planning to organize and track progress on complex tasks using persistent markdown files located in a dedicated temporary workspace directory (e.g. .gemini/tmp) to avoid root bloat.'
 category: cognition
 tags: [methodology, context, cognition]
 references:
@@ -21,9 +21,9 @@ Use persistent markdown files as your "working memory on disk." Context windows 
 ## Core Mandates
 
 ### 1. The Planning Triad
-- **Action:** Before starting ANY complex task, create three files in the project root: `task_plan.md` (phases, progress), `findings.md` (research, decisions), and `progress.md` (session log, test results).
-- **Constraint:** Never start a complex task (3+ steps) without a `task_plan.md`. Non-negotiable.
-- **Integration:** Aligns with **Ontology** by structuring memory, and **Lean Foundations** by eliminating the waste of forgetting.
+- **Action:** Before starting ANY complex task, create three files in a dedicated temporary workspace directory (e.g., `.gemini/tmp/` or the IDE Artifacts directory): `task_plan.md` (phases, progress), `findings.md` (research, decisions), and `progress.md` (session log, test results).
+- **Constraint:** Never start a complex task (3+ steps) without a `task_plan.md`. Never drop these files in the project root directory; if accidentally created there, relocate them immediately.
+- **Integration:** Aligns with **Ontology** by structuring memory, and **Lean Foundations** by eliminating the waste of forgetting while maintaining a clean 5S workspace.
 
 ### 2. The 2-Action Rule (Findings)
 - **Action:** After every 2 view, browser, or search operations, IMMEDIATELY save key findings to `findings.md`.
@@ -37,27 +37,18 @@ Use persistent markdown files as your "working memory on disk." Context windows 
 
 ### 4. Update After Act
 - **Action:** After completing any phase, update `task_plan.md` (status: pending → in_progress → complete) and log actions/errors in `progress.md`.
-- **Constraint:** Never leave the file state out-of-sync with the actual project state. 
-
-### 5. The 3-Strike Error Protocol
-- **Action:** 
-  - Attempt 1: Diagnose & fix. 
-  - Attempt 2: Try an alternative approach. Do not repeat the exact same failing action.
-  - Attempt 3: Broader rethink and update the plan. 
-  - After 3 failures: Escalate to user.
-- **Constraint:** Never repeat failures endlessly. Track what you tried and mutate the approach.
-- **Integration:** Triggers **Jidoka** after 3 strikes.
+- **Constraint:** Never leave the file state out-of-sync with the actual project state.
 
 ## Escalation & Halting
 
-- **Jidoka:** If you reach 3 failures on the same issue (3-Strike Error Protocol), halt and perform a broader rethink. Do not spin in loops.
-- **Hō-Ren-Sō:** Escalate to the human operator if the 3-Strike limit is reached or if the 5-Question Reboot Test fails (meaning you've lost track of the plan).
+- **Jidoka:** If you enter an error loop or fail repeatedly while using `plan-with-files`, immediately halt and delegate the error handling to the **Jidoka** skill. Do not rely on locally tracked retries.
+- **Hō-Ren-Sō:** Escalate to the human operator if the 5-Question Reboot Test fails (meaning you've lost track of the plan).
 
 ## Implementation Workflow
 
 1. **Trigger:** User requests a complex, multi-step task, research project, or architecture design.
 2. **Execute:** 
-   - Create the triad: `task_plan.md`, `findings.md`, `progress.md`.
+   - Create the triad in a temporary directory (e.g., `.gemini/tmp/`): `task_plan.md`, `findings.md`, `progress.md`.
    - Populate initial phases and goals.
    - Execute phase 1, applying the 2-Action Rule for research.
 3. **Verify:** Use the 5-Question Reboot Test: 

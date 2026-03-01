@@ -30,7 +30,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[Deglaze](skills/deglaze-tactics/SKILL.md)** | Use when reviewing AI-generated solutions, validating user comprehension, or stress-testing proposals. Handles 5 cons... | `cognition` `safety` `methodology` |
 | **[Gemba](skills/gemba/SKILL.md)** | Use to establish a factual baseline of the codebase. Mandates direct observation before reasoning. | `context` `methodology` `research` `lean` `TPS` |
 | **[Hansei](skills/hansei/SKILL.md)** | Use when a plan fails, a bug is found, or a post-mortem is needed. Mandates 5-Whys root-cause analysis. | `cognition` `methodology` `lean` `TPS` `kaizen` |
-| **[Plan with Files](skills/plan-with-files/SKILL.md)** | Implements file-based planning to organize and track progress on complex tasks using persistent markdown files as wor... | `methodology` `context` `cognition` |
+| **[Plan with Files](skills/plan-with-files/SKILL.md)** | Implements file-based planning to organize and track progress on complex tasks using persistent markdown files locate... | `methodology` `context` `cognition` |
 | **[RAG Strategy](skills/rag-strategy/SKILL.md)** | Optimization of Retrieval-Augmented Generation.  Focuses on minimizing "Search Waste" (Motion Muda) by ensuring high-... | `context` `optimization` |
 
 ### ⚙️ Engineering

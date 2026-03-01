@@ -11,6 +11,8 @@ tags:
 references:
 - name: MCP Integration Governance
   path: ../interface-governance/SKILL.md
+- name: Ontology Output Template
+  path: ./templates/ontology-output-template.md
 level: technical
 ---
 
@@ -42,22 +44,23 @@ Enforce logical rules and type constraints across the graph to prevent contradic
 
 ## Escalation & Halting
 
-- **Jidoka:** Trigger an autonomous halt if an entity creation request violates type constraints or if an edge would create a circular dependency in a DAG.
-- **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol if the ontology reveals conflicting facts from different sources or if the user asks for a structural change to the entity schema.
+- **Jidoka:** Trigger an autonomous halt immediately if an edge modification results in a circular dependency in a Directed Acyclic Graph (DAG) state, or if attempting to create an Entity without a strict type constraint.
+- **Hō-Ren-Sō:** Escalate to the human operator if the ontology reveals conflicting factual predicates from different sources, or if asked to drastically alter a pre-existing root schema.
 
 ## Implementation Workflow
 
-### Phase 1: Ingestion
-When the user provides new facts (e.g., *"Alice is the new lead for the Backend project"*):
-1. **Identify the Entities:** `Person: Alice`, `Project: Backend`.
-2. **Identify the Edge:** `OWNED_BY` (or `LEAD_BY`).
-3. **Persist the change:** Update the local graph state.
+1. **Trigger:** The workspace exposes new structured logic requiring persistence (Ingestion) or requests dependency impact analysis (Retrieval).
+2. **Execute:** 
+   - *If Ingestion:* Identify target Entities (e.g., `Person: Alice`), strictly type them, define directional Edges (`OWNED_BY`), and mutate the underlying graph state.
+   - *If Retrieval:* Reject unstructured text search. Traverse the target Entity backward through its directional Edges to determine root-cause interconnectivity.
+   - *Parsing:* If triggered by unstructured human text, translate explicit Entities before processing.
+3. **Verify:** Assure no circular dependencies were injected during the state mutation and that every node touched maintains at least one valid outbound/inbound edge.
+4. **Output:** Render the strict YAML format defined in the `Ontology Output Template`.
 
-### Phase 2: Retrieval
-When the user asks a complex dependency question (e.g., *"If I change the Auth module, what breaks?"*):
-1. Do not just use text search.
-2. Query the Knowledge Graph starting at the target entity.
-3. Traverse edges backward to report the exact interconnected cascade.
+## Progressive Resources
+
+For the exact diagnostic output schema to use post-validation, read:
+👉 **[Ontology Output Template](templates/ontology-output-template.md)**
 
 ## Relationship to MCP
 
