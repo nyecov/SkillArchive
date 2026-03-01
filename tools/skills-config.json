@@ -1,7 +1,39 @@
 {
-  "allowed_tags": [],
-  "allowed_categories": [],
-  "allowed_skills": [],
+  "allowed_tags": [
+    "methodology",
+    "safety",
+    "design",
+    "meta",
+    "cognition",
+    "engineering",
+    "architecture",
+    "security",
+    "debugging",
+    "testing",
+    "research",
+    "context",
+    "communication",
+    "optimization",
+    "TPS",
+    "kaizen",
+    "lean",
+    "kubernetes",
+    "leadership",
+    "mcp",
+    "heijunka",
+    "routing"
+  ],
+  "allowed_categories": [
+    "methodology",
+    "safety",
+    "cognition",
+    "engineering",
+    "architecture",
+    "meta"
+  ],
+  "allowed_skills": [
+    "shisa-kanko"
+  ],
   "_discovery_reference": {
     "HELP": "This section is auto-generated and serves as a reference for available options.",
     "available_categories": [

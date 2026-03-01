@@ -6,7 +6,9 @@ def run_script(script_name):
     print(f"🚀 Running: {script_name}")
     print(f"{'='*50}")
     
-    result = subprocess.run([sys.executable, script_name], capture_output=False)
+    import os
+    script_path = os.path.join("tools", script_name)
+    result = subprocess.run([sys.executable, script_path], capture_output=False)
     
     if result.returncode != 0:
         print(f"\n❌ [ERROR] {script_name} failed with exit code {result.returncode}.")

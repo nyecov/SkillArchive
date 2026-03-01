@@ -4,3 +4,5 @@ node_modules/
 **/.gemini/**
 .gemini/**
 .gemini/**/*
+__pycache__/
+.vscode/
