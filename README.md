@@ -37,7 +37,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 
 | Skill | Description | Tags |
 |-------|-------------|------|
-| **[Anchor](skills/anchor-coherence/SKILL.md)** | Use when starting a project, making architectural decisions, or when AI-suggested changes conflict with established p... | `design` |
+| **[Anchor](skills/anchor-coherence/SKILL.md)** | Use when starting a project, making architectural decisions, or when AI-suggested changes conflict with established p... | `design` `architecture` |
 | **[Isolate](skills/isolate-debugging/SKILL.md)** | Use when a bug is reported, unexpected behavior occurs, or a fix attempt has failed. Handles 5-step hypothesis-driven... | `debugging` |
 | **[Ship](skills/ship-production/SKILL.md)** | Use when code is "feature complete" and approaching deployment, or when verifying production readiness. Handles stagi... | `engineering` `safety` `methodology` |
 | **[Test-Driven Development](skills/test-driven-development/SKILL.md)** | Use when implementing any feature or bugfix, before writing implementation code. Enforces the strict Red-Green-Refact... | `engineering` `testing` `methodology` |
