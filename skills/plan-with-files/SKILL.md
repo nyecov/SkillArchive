@@ -1,6 +1,6 @@
 ---
 name: plan-with-files
-version: 1.0.0
+version: 1.1.0
 level: methodology
 description: 'Implements file-based planning to organize and track progress on complex tasks using persistent markdown files located in a dedicated temporary workspace directory (e.g. .gemini/tmp) to avoid root bloat.'
 category: cognition
@@ -38,6 +38,7 @@ Use persistent markdown files as your "working memory on disk." Context windows 
 ### 4. Update After Act
 - **Action:** After completing any phase, update `task_plan.md` (status: pending → in_progress → complete) and log actions/errors in `progress.md`.
 - **Constraint:** Never leave the file state out-of-sync with the actual project state.
+- **Integration:** Directly implements **Hansei** (Reflection) to continuously evaluate progress against the baseline plan.
 
 ## Escalation & Halting
 
@@ -57,4 +58,10 @@ Use persistent markdown files as your "working memory on disk." Context windows 
    - What's the goal? (Goal statement)
    - What have I learned? (findings.md)
    - What have I done? (progress.md)
-4. **Output:** Updated planning files and progress on the actual codebase.
+4. **Output:** Updated planning files and progress on the actual codebase, structured via the Poka-yoke Output Template.
+
+## Poka-yoke Output Template
+
+When initiating a complex task, the agent MUST structure the planning files using the exact schema defined in the Poka-yoke Output Template to prevent context drift and ensure standardization.
+
+[Planning Triad Template](templates/planning-triad.md)
