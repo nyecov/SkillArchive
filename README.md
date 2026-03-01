@@ -64,7 +64,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[Kodawari Craftsmanship](skills/kodawari-craftsmanship/SKILL.md)** | Use during any code modification or creation task as an always-active operating principle. Mandates the relentless pu... | `design` `methodology` `lean` `TPS` |
 | **[Lean Foundations](skills/lean-foundations/SKILL.md)** | Foundational Lean principles for stabilizing workflows through the 3 Ms (Mura, Muri, Muda) and the 5S framework. Focu... | `methodology` `optimization` `lean` `TPS` |
 | **[Nemawashi](skills/nemawashi/SKILL.md)** | Use before suggesting major refactors or architectural changes. Mandates impact analysis and A3 proposals. | `methodology` `lean` `TPS` |
-| **[Shisa Kanko](skills/shisa-kanko/SKILL.md)** | Use when executing code changes, tool calls, or multi-step tasks. Mandates pointing, calling, and verification. | `cognition` `communication` `methodology` `safety` `lean` `TPS` |
+| **[Shisa Kanko](skills/shisa-kanko/SKILL.md)** | Use when executing code changes, tool calls, or multi-step tasks. Mandates pointing, calling, and verification. | `methodology` `safety` `lean` `TPS` `cognition` `communication` `routing` |
 | **[Yokoten](skills/yokoten/SKILL.md)** | Horizontal deployment of knowledge and best practices.  Used to "broadcast" successful patterns or critical fixes fro... | `methodology` `lean` `TPS` `kaizen` |
 
 ### 🛡️ Safety

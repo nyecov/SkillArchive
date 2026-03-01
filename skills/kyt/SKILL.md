@@ -1,6 +1,7 @@
 ---
 name: kyt
-version: 1.2.0
+version: 1.3.0
+level: methodology
 description: Use before executing high-risk, destructive, or irreversible commands
   (rm, drop, reset). Mandates hazard prediction.
 category: safety
@@ -26,7 +27,8 @@ references:
   path: ../lean-foundations/SKILL.md
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
-level: methodology
+- name: KYT Hazard Matrix Template
+  path: ./templates/kyt-hazard-matrix.md
 requires:
 - poka-yoke
 ---
@@ -38,21 +40,21 @@ KYT (Kiken Yochi Training) is a systematic, multi-round protocol for identifying
 
 ### 1. Multi-Round Hazard Identification
 Perform a systematic, 4-round pre-mortem analysis on any plan involving high-risk or irreversible changes.
-- **Action:** Identify the Hazard, Determine Critical Danger Points, Establish Countermeasures, and Set Action Targets using the strict Poka-yoke Output Template provided below.
+- **Action:** Identify Hazard, Determine Critical Points, Establish Countermeasures, Set Action Targets.
 - **Constraint:** NEVER skip the KYT protocol for destructive commands (e.g., `rm`, `drop`, `reset`).
-- **Integration:** Directly informs the **Poka-yoke** design for the specific task.
+- **Integration:** Directly informs the **Poka-yoke** design for the task.
 
 ### 2. Critical Point Isolation
 Precisely identify the "Point of No Return" where a change becomes irreversible.
 - **Action:** Isolate the specific tool call or command that represents the core danger.
 - **Constraint:** Do not proceed with execution until a specific countermeasure is established for every identified critical point.
-- **Integration:** Feeds into **Shisa Kanko** "Precise Pointing" to ensure the danger zone is well-defined.
+- **Integration:** Mandates the input for **Shisa Kanko** "Precise Pointing".
 
-### 3. Countermeasure Synthesis (Poka-yoke)
-Design deterministic interlocks that make the identified hazard physically or logically impossible to trigger accidentally.
-- **Action:** Create "Pre-flight" checks (e.g., backup verification, environment validation) as mandatory interlocks.
-- **Constraint:** Avoid "soft" countermeasures like "be careful"; only use deterministic, verifiable interlocks.
-- **Integration:** This is the primary design engine for task-specific **Poka-yoke** constraints.
+### 3. Deterministic Countermeasure Synthesis
+Design safeguards that make the identified hazard logically or physically impossible.
+- **Action:** Create "Pre-flight" checks or setup commands (e.g., automated backups, environment locks).
+- **Constraint:** ONLY use deterministic, verifiable interlocks. "Human care" or "soft" warnings are strictly forbidden as countermeasures.
+- **Integration:** Primary design engine for **Poka-yoke** interlocks.
 
 ## Escalation & Halting
 
