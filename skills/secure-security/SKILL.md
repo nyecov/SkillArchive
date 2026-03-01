@@ -1,6 +1,6 @@
 ---
 name: secure-security
-version: 1.0.0
+version: 1.1.0
 level: tactical
 description: Use when handling auth, user input, secrets, or API endpoints. Mandates
   trust-boundary audits.
@@ -61,8 +61,8 @@ Minimize the risk of data leakage by filtering API responses and genericizing er
 - **Jidoka:** If a trust boundary violation is detected or secrets are found exposed in the frontend, trigger an immediate Jidoka halt.
 - **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol if authorization logic is ambiguous or if the "Three Questions" reveal high data-exposure risks.
 
-### 🔑 Secrets
-| ✗ Wrong | ✓ Right |
+### Secrets
+| Wrong | Right |
 |---------|--------|
 | API keys in frontend code | API keys in server environment variables |
 | Secrets in git repo | Secrets in .env (gitignored) or secret manager |
@@ -71,8 +71,8 @@ Minimize the risk of data leakage by filtering API responses and genericizing er
 
 **The test:** Search your codebase for your API key. If you find it in frontend code, it's exposed.
 
-### 🔐 Authentication
-| ✗ Wrong | ✓ Right |
+### Authentication
+| Wrong | Right |
 |---------|--------|
 | Tokens in localStorage | Tokens in httpOnly cookies |
 | Auth state in React only | Auth verified on every server request |
@@ -81,8 +81,8 @@ Minimize the risk of data leakage by filtering API responses and genericizing er
 
 **The test:** Open DevTools → Application → Local Storage. If you see auth tokens, they're stealable.
 
-### 🛡️ Authorization
-| ✗ Wrong | ✓ Right |
+### Authorization
+| Wrong | Right |
 |---------|--------|
 | Hide admin button in UI | Check permissions on server |
 | `if (user.role === 'admin')` in frontend | Permission check in API handler |
@@ -91,8 +91,8 @@ Minimize the risk of data leakage by filtering API responses and genericizing er
 
 **The test:** Can you access /admin by typing the URL directly? If yes, your auth is UI-only.
 
-### 📝 Input Validation
-| ✗ Wrong | ✓ Right |
+### Input Validation
+| Wrong | Right |
 |---------|--------|
 | Trust user input | Validate and sanitize everything |
 | Build SQL with string concat | Use parameterized queries |
@@ -103,8 +103,8 @@ Minimize the risk of data leakage by filtering API responses and genericizing er
 
 - **Integration:** Input validation is a **Poka-yoke** interlock — make invalid input physically impossible to process.
 
-### 📡 Data Exposure
-| ✗ Wrong | ✓ Right |
+### Data Exposure
+| Wrong | Right |
 |---------|--------|
 | Return full user object | Return only needed fields |
 | Log sensitive data | Redact passwords, tokens, PII |
@@ -129,20 +129,10 @@ API endpoint accepts user ID from URL without verifying the requester → change
 1. **Trigger:** Any feature that touches auth, data, or user input.
 2. **Three Questions:** Run the three questions against the feature.
 3. **Checklist:** Walk through the 5-domain security checklist.
-4. **Escalate:** Any unchecked box is a **KYT** hazard — establish a **Poka-yoke** countermeasure before shipping.
+4. **Output:** A verified security stance and an established Poka-yoke countermeasure before shipping, documented via the Poka-yoke Output Template.
 
-## Quick Reference
+## Poka-yoke Output Template
 
-```
-SECURITY CHECKLIST:
-□ Secrets in environment variables (not code)?
-□ Auth tokens in httpOnly cookies (not localStorage)?
-□ Permissions checked on SERVER (not just UI)?
-□ User input validated and sanitized?
-□ API responses filtered to necessary data?
-□ Errors don't expose internal details?
+When verifying the trust boundary, the agent MUST output the completed security checklist using the exact schema defined in the Poka-yoke Output Template.
 
-THE TRUST BOUNDARY:
-Everything from the browser is UNTRUSTED.
-Validate EVERYTHING on the server.
-```
+[Security Checklist Template](templates/security-checklist.md)
