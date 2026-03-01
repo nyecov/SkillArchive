@@ -18,15 +18,17 @@ Claiming work is complete without verification is dishonesty, not efficiency. Th
 
 ## Core Mandates
 
-### 1. The Iron Law of Verification
-- **Action:** BEFORE claiming any status, expressing satisfaction, or moving to the next task, you must identify the command that proves the claim, run it completely, and read the full output.
-- **Constraint:** NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE. Do not rely on "it should work", partial linters, or previous runs.
-- **Integration:** Directly integrates with **Shisa Kanko** (Point and Call) — you must point to the test results and call out the exact pass/fail state before proceeding.
+### 1. The Iron Law of Verification (Final Action Gate)
+The VERY LAST tool call before any completion claim, success report, or "Done" status MUST be a terminal verification command (`run_command` or `command_status`).
 
-### 2. Rationalization Prevention
-- **Action:** Stop and recognize red flags: "should work now", "just this once", "the linter passed so the build will".
-- **Constraint:** Do not substitute confidence or exhaustion for empirical evidence. If tests fail, do not claim the feature is "mostly done".
-- **Integration:** Functions as a **Poka-yoke** mechanism preventing the premature closing of a development loop.
+- **Constraint:** ANY file modification made after a verification run immediately invalidates all previous evidence. You MUST re-verify.
+- **Integration:** Directly integrates with **Shisa Kanko** (Point and Call) — you must quote the exact terminal success marker (e.g., "Exit code: 0").
+
+### 2. The Evidence Log (Standardization)
+Every major task MUST maintain a timecoded `verification_log.md` within the project root (or a designated logs directory).
+- **Action:** Standardize the audit trail by logging every final verification run with a timestamp, the command executed, and the quoted evidence.
+- **Constraint:** Do not rely on ephemeral console history. The log is the persistent proof of work.
+- **Integration:** Functions as a **Poka-yoke** mechanism preventing "Stale Evidence" errors.
 
 ## Escalation & Halting
 

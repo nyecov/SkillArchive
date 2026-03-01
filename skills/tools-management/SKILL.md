@@ -39,11 +39,12 @@ Before adopting an abstraction from the community or building your own, classify
 
 ## Core Mandates
 
-### 1. Architectural Classification
-Before adopting an abstraction, classify it as a Skill (Cognitive), Tool (Mechanized), or MCP (External/Stateful).
-- **Action:** Use the Classification Matrix to determine the appropriate storage location and format.
-- **Constraint:** NEVER create a high-level `SKILL.md` for a "thin wrapper" around a single CLI command or API call.
-- **Integration:** Directly impacts the **Skill of Skill Authoring** by defining the boundary of "Cognitive Procedures."
+### 1. Architectural Classification (The Blacklist)
+Before adopting or creating an abstraction, classify it as a Skill (Cognitive), Tool (Mechanized), or MCP (External/Stateful).
+- **Action:** Run `manage_tools.py audit` periodically to ensure no categorization drift has occurred.
+- **Constraint (Self-Purge):** ANY skill that identifies as a "thin wrapper" (simple script automation) is FORBIDDEN as a skill unless explicitly ordered by the user.
+- **Override Trigger:** If creating a mechanized skill via user order, you MUST include the tag `mechanized-override` in the `SKILL.md` frontmatter.
+- **Integration:** Directly impacts the **Skill of Skill Authoring** by defining the baseline of "Cognitive Procedures."
 
 ### 2. Tool Nesting & Scope
 Store mechanized scripts within the skill's folder if they are specific to a methodology, or in the global `tools/` directory if they are generally useful.
@@ -59,8 +60,8 @@ Delegate complex state management, external API access, or proprietary data hand
 
 ## Escalation & Halting
 
-- **Jidoka:** If a tool's complexity exceeds the limits of a local script (e.g., it starts requiring state management), trigger a Jidoka halt to evaluate migration to MCP.
-- **Hō-Ren-Sō:** Use the Hōkoku (Report) protocol to announce the addition of new mechanized tools to the project's capability set.
+- **Jidoka (Complexity Threshold):** If `manage_tools.py` reports > 15 scripts in a single skill, you MUST trigger a Jidoka halt to evaluate decomposition or migration to MCP. High-density skills require a "Complexity Warning" in their description.
+- **Hō-Ren-Sō:** Use the Hōkoku (Report) protocol to announce the results of the `manage_tools.py audit` to the user if anomalies are found.
 
 ## Implementation Workflow
 
