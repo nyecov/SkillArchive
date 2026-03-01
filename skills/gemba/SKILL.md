@@ -1,9 +1,8 @@
 ---
 name: gemba
-version: 1.1.0
+version: 1.2.0
 level: methodology
-description: Use to establish a factual baseline of the codebase. Mandates direct
-  observation before reasoning.
+description: Use to establish a factual baseline of the codebase. Mandates direct observation before reasoning and enforces a structured discovery report.
 category: cognition
 tags:
 - context
@@ -12,19 +11,22 @@ tags:
 - lean
 - TPS
 references:
-- name: RAG Strategy
+- name: rag-strategy
   path: ../rag-strategy/SKILL.md
-- name: Ontology
+- name: ontology
   path: ../ontology/SKILL.md
-- name: Shisa Kanko
+- name: shisa-kanko
   path: ../shisa-kanko/SKILL.md
+- name: genchi-genbutsu
+  path: ../genchi-genbutsu/SKILL.md
 requires:
 - rag-strategy
 - ontology
 ---
+
 # Gemba
 
-Gemba is the "Real Place." This skill mandates that the agent establish a verified factual baseline before any reasoning. It orchestrates three modes of discovery:
+Gemba is the "Real Place." This skill mandates that the agent establish a verified factual baseline before any reasoning. It orchestrates three modes of discovery and enforces a rigid output reporting structure to avoid assumptions.
 
 ## Core Mandates
 
@@ -39,7 +41,7 @@ Determine the optimal tool to satisfy an information need based on the scope of 
 ### 2. Fact Verification
 Every discovery MUST be verified as a "Current Reality" (Genchi Genbutsu).
 - **Action:** Read the actual content of the discovered file or record the tool's raw output.
-- **Constraint:** DO NOT rely on cached summaries or previous-turn assumptions.
+- **Constraint:** DO NOT rely on cached summaries or previous-turn assumptions. All discovery MUST culminate in a formal Gemba Discovery Report (see Workflow).
 
 ## Escalation & Halting
 
@@ -49,7 +51,19 @@ Every discovery MUST be verified as a "Current Reality" (Genchi Genbutsu).
 ## Implementation Workflow
 
 1. **Trigger:** A new task is received or a context gap is identified.
-2. **Select Mode:** Choose between Direct, RAG, or Ontology based on the information need.
-3. **Discover:** Execute the chosen strategy to gather the facts.
-4. **Verify:** Read the bytes/data to confirm reality.
-5. **Output:** A high-signal factual foundation for the **Shisa Kanko** plan.
+2. **Execute:** 
+   - Choose between Direct, RAG, or Ontology. 
+   - Execute the chosen strategy to gather the facts.
+   - Cross-reference with the `genchi-genbutsu` mandate to ensure raw proof is captured if necessary.
+3. **Verify:** Read the bytes/data to explicitly confirm reality. Ensure no hallucinated paths or logic exist in your working memory.
+4. **Output:** A high-signal factual foundation for the **shisa-kanko** plan. You MUST output the following exact template:
+
+```markdown
+### Gemba Discovery Report
+- **[OBSERVED FILES]:** 
+  - `[list of absolute paths read]`
+- **[KEY FACTS]:** 
+  - `[bulleted list of verifiable data points]`
+- **[DISCREPANCIES]:** 
+  - `[none / or specifically detail contradictions between expectations and reality]`
+```
