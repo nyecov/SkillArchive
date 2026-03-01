@@ -24,6 +24,11 @@ If any command or phase (Lean Analysis, Architecture Review, etc.) is triggered 
 3. Automatically pivot to **Phase 1: Story Interview**.
 4. Do NOT attempt to "guess" or "hallucinate" the logic to fill the vacuum.
 
+### Meta-Skill & Auxiliary Inspection (For Skills Only)
+If the target topic is an Agent Skill:
+1. **Holistic Context:** You MUST inspect the entire skill directory for auxiliary materials (e.g., `scripts/`, `templates/`, `references/`) to understand the full context before analysis.
+2. **Meta-Skill Alignment:** You MUST check your own active meta-skills (e.g., `skill-authoring-management`, `skill-creator`) to ensure the target skill aligns with the current "Gold Standard" of skill architecture.
+
 ## Execution Phases
 
 Run each phase sequentially. Only proceed to the next phase once the outputs of the current phase are fully realized and documented. **Phase 1 is the immutable Fact Baseline for the entire workflow.**
@@ -33,10 +38,10 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 ### Phase 1: Conceptual Verification (Story Interview)
 **Target:** `skills/story-interview` | **Goal:** Define and verify the core logic.
 
-1. **Initialize:** Trigger the `story-interview` skill on the raw topic.
-2. **Interrogate:** Apply Socratic questioning and Deglaze tactics to strip away assumptions. Force the topic into hard, verifiable edges.
+1. **Initialize:** Trigger the `story-interview` skill on the raw topic. Run `python scripts/manage_interview_state.py init` to start the deterministic state tracker.
+2. **Interrogate:** Apply Socratic questioning and Deglaze tactics to strip away assumptions. After every turn, update the state file using the exact CLI syntax defined in the `story-interview` skill.
 3. **Verify:** Ensure every requirement has a testable acceptance condition and all sad paths are identified.
-4. **Output:** A finalized **Development Story Document** containing the verified user value, core logic, constraints, and verification criteria.
+4. **Output:** Render the finalized **Development Story Document** via `manage_interview_state.py render` containing the verified user value, core logic, constraints, and verification criteria.
 
 ---
 

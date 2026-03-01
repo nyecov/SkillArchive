@@ -26,6 +26,7 @@ Write the test first. Watch it fail. Write minimal code to pass. If you didn't w
 ### 2. Verify RED (Watch It Fail)
 - **Action:** After writing the minimal test, you MUST run the test suite and confirm the test fails (not errors due to typos) because the feature is missing.
 - **Constraint:** NEVER skip watching the test fail. If the test passes immediately, you are testing existing behavior. Fix the test.
+- **AI Execution Constraint (Poka-yoke):** You MUST NOT write the test and the implementation in the same tool call or turn. You MUST output the `run_shell_command` test execution, observe the explicit failure log, and then write the implementation in a subsequent turn.
 - **Integration:** A critical **Shisa Kanko** step: observe the specific failure message before attempting a fix.
 
 ### 3. GREEN and REFACTOR

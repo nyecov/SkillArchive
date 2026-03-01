@@ -75,7 +75,10 @@ Once consensus is reached, serialize the agreed-upon requirements into a clear, 
    - **(Heijunka Step):** If the user provides a massive, multi-feature request, invoke `heijunka` to decompose it into distinct sub-stories first.
    - Run `python scripts/manage_interview_state.py init` to start the state machine.
    - Ask the user to state their core goal for the current sub-story in one sentence.
-   - Apply Deglaze questions iteratively. After every turn, run `python scripts/manage_interview_state.py update` and `advance` to record the extracted logic and edge cases.
+   - Apply Deglaze questions iteratively. After every turn, update the state file using the correct CLI syntax:
+     - To update text fields: `python scripts/manage_interview_state.py update <field> "<value>"` (Valid fields: `story_name`, `user_value`, `core_logic`)
+     - To append to lists: `python scripts/manage_interview_state.py update <field> "<value>" --list` (Valid fields: `edge_cases`, `verification_criteria`, `unresolved_questions`)
+     - To advance: `python scripts/manage_interview_state.py advance <phase>` (Valid phases: `defining_value`, `interrogating_logic`, `probing_edge_cases`, `ready_for_consensus`)
 3. **Verify:** Confirm with the user that all rough spots are resolved.
 4. **Output:** Run `python scripts/manage_interview_state.py render` to generate the final Poka-yoke Output Template and present it to the user.
 
