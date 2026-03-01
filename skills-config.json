@@ -1,6 +1,13 @@
 {
   "allowed_tags": [],
-  "allowed_categories": [],
+  "allowed_categories": [
+    "architecture",
+    "cognition",
+    "engineering",
+    "meta",
+    "methodology",
+    "safety"
+  ],
   "allowed_skills": [],
   "_discovery_reference": {
     "HELP": "This section is auto-generated and serves as a reference for available options.",
