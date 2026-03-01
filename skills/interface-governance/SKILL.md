@@ -1,6 +1,6 @@
 ---
 name: interface-governance
-version: 1.2.0
+version: 1.3.0
 level: technical
 description: Use when designing, building, auditing, testing, or consuming MCP servers and clients. Integrates API-Design-First principles and empirical evaluation protocols to ensure interfaces are optimized for LLM discoverability and reliability.
 category: architecture
@@ -39,25 +39,32 @@ The Model Context Protocol (MCP) is the open standard for connecting AI agents t
 ### 1. API-Design-First (Discoverability)
 Design the interface for the *consumer* (the LLM), not the *provider* (the underlying API).
 - **Action:** Define tool names and descriptions as "Triggers." Use semantic, verb-noun naming (e.g., `search_code_base` instead of `execute_grep`).
-- **Constraint:** NEVER expose raw, low-level system calls directly. Wrap them in "Agent-Friendly" abstractions.
+- **Constraint:** NEVER expose raw, low-level system calls directly. Wrap them in "Agent-Friendly" abstractions. NEVER create a "God Tool" that does everything via one generic command string; split into focused, single-purpose tools with typed schemas.
 - **Integration:** Directly reduces **Motion Muda** by making the right tool obvious to the agent.
 
 ### 2. Rigorous Schema Enforcement (The Poka-yoke)
 Every tool input and resource URI MUST follow a strict, documented JSON Schema.
 - **Action:** Define every parameter with `type`, `description`, and `required` status. Use enums and pattern constraints to restrict the LLM's "Hallucination Space."
-- **Constraint:** Untyped pass-throughs (e.g., `type: object` with no properties) are strictly prohibited.
+- **Constraint:** Untyped pass-throughs (e.g., `inputSchema: { type: "object" }` with no properties) are strictly prohibited. Every parameter must be defined with type and description.
 - **Integration:** Acts as an integration-level **Poka-yoke**.
 
 ### 3. Human-in-the-Loop Safeguards
 Explicitly mark and gate destructive operations to prevent unintended state changes.
 - **Action:** Set `destructiveHint: true` for any tool that modifies or deletes persistent data.
 - **Constraint:** NEVER auto-execute destructive tools without explicit human-in-the-loop (HITL) authorization.
+- **Integration:** Binds to **Hō-Ren-Sō** Sōdan protocol for authorization.
 
 ### 4. Empirical Verification (Evaluations)
-Building a server is not enough; it MUST be verified for LLM usability using the **Evaluation Protocol**.
-- **Action:** Create complex, multi-step questions that require the agent to autonomously discover and use the server's tools to solve them.
-- **Constraint:** Do not consider an MCP Server "complete" based solely on passing unit tests or manual CLI checks.
+Building a server is not enough; it MUST be verified for LLM usability using the Evaluation Protocol.
+- **Action:** Create complex, multi-step questions that require the agent to autonomously discover and use the server's tools to solve them (e.g., Search for an ID -> Fetch the details).
+- **Constraint:** Do not consider an MCP Server "complete" based solely on passing unit tests or manual CLI checks. If an agent fails the evaluation, do NOT fix the agent; fix the server's tool descriptions or schemas.
 - **Integration:** Implements **Genchi Genbutsu** (Go and See for Yourself).
+
+### 5. Lifecycle & Security Hardening
+Manage the data flowing through the governed interface to prevent catastrophic leaks.
+- **Action:** Validate all inputs against schemas and sanitize outputs.
+- **Constraint:** NEVER expose secrets or credentials through resource reads. Filter sensitive fields server-side before transmitting data to the LLM context.
+- **Integration:** Feeds directly into **CC Secure**.
 
 ## Escalation & Halting
 
@@ -66,36 +73,7 @@ Building a server is not enough; it MUST be verified for LLM usability using the
 
 ## Implementation Workflow
 
-### Phase 1: Server Design & Primitive Selection
-| Primitive | Use When | Example |
-|-----------|----------|---------|
-| **Tool** | Mutation or computation | `create_issue`, `query_database`, `send_email` |
-| **Resource** | Read-only context data | `file:///config.json`, `db://users/schema` |
-| **Prompt** | Interaction template | `code_review`, `summarize_document` |
-
-### Phase 2: Implementation (Schema & Descriptions)
-Every tool definition requires:
-- `name`: Unique, verb-noun identifier.
-- `description`: "Trigger" oriented (when to call it, not how it works).
-- `inputSchema`: Every parameter typed, documented, and required where applicable.
-- `annotations`: Behavioral hints (`readOnlyHint`, `destructiveHint`, etc.).
-
-### Phase 3: Empirical Evaluation (Testing)
-1. **Reconnaissance**: Explore the server using the MCP Inspector.
-2. **Evaluation Generation**: Create 5-10 complex, independent, read-only questions.
-3. **Question Design**: Design questions that require at least two sequential tool calls (e.g., Search for an ID -> Fetch the details).
-4. **Execution**: Run the questions with an agent. If the agent fails, do NOT fix the agent; fix the server's tool descriptions or schemas.
-
-### Phase 4: Lifecycle & Security Hardening
-- **Validate**: All inputs must undergo schema validation.
-- **Sanitize**: Strip sensitive data from outputs.
-- **HITL**: Gated authorization for destructive operations.
-
-## Anti-Patterns
-
-| Anti-Pattern | Symptom | Fix |
-|---|---|---|
-| **God tool** | One tool does everything via a `command` string | Split into focused, single-purpose tools with typed schemas |
-| **Untyped input** | `inputSchema: { type: "object" }` | Define every parameter with type and description |
-| **Missing evaluation** | Server "works" in unit tests but agent fails to use it | Run a full **Phase 3 Evaluation Protocol** |
-| **Secrets in resources**| Credentials exposed through resource reads | Filter sensitive fields server-side |
+1. **Trigger:** A new MCP server is being designed, an existing server requires an audit, or an agent is failing to reliably use a provided interface.
+2. **Execute:** Define Primitives (Tool, Resource, Prompt). Enforce rigid JSON schemas and semantic trigger descriptions for all interfaces. Filter sensitive outputs and gate destructive actions.
+3. **Verify:** Execute the **Phase 3 Evaluation Protocol**: Explore via MCP Inspector, generate 5-10 complex multi-step questions, and run them with an agent.
+4. **Output:** A verified, schema-rigid MCP interface and a documented evaluation report proving LLM usability.
