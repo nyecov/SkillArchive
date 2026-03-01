@@ -60,8 +60,8 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[Genchi Genbutsu](skills/genchi-genbutsu/SKILL.md)** | Use to "Go and See for Yourself." Mandates empirical verification of all hypotheses  and findings through direct exec... | `methodology` `research` `testing` `lean` `TPS` |
 | **[Heijunka](skills/heijunka/SKILL.md)** | Use to level the workload and prevent token/context spikes (Muri).  Handles the decomposition of massive tasks into m... | `methodology` `optimization` `lean` `TPS` |
 | **[Hō-Ren-Sō](skills/ho-ren-so/SKILL.md)** | Use when reporting progress, broadcasting state changes, or escalating ambiguous or blocked decisions to a human oper... | `communication` `methodology` `lean` `TPS` |
-| **[Kaizen](skills/kaizen/SKILL.md)** | Use when a recurring error, structural bottleneck, or workflow inefficiency is identified. Handles PDCA-based experim... | `methodology` `optimization` `lean` `TPS` `kaizen` |
-| **[Kodawari](skills/kodawari-craftsmanship/SKILL.md)** | Kodawari (Devoted Craftsmanship) for high-quality, self-documenting code. Mandates the relentless pursuit of perfecti... | `design` `methodology` `lean` `TPS` |
+| **[Kaizen](skills/kaizen/SKILL.md)** | Use when a recurring error, structural bottleneck, or workflow inefficiency is identified (either manually or via Han... | `methodology` `optimization` `lean` `TPS` `kaizen` |
+| **[Kodawari Craftsmanship](skills/kodawari-craftsmanship/SKILL.md)** | Use during any code modification or creation task as an always-active operating principle. Mandates the relentless pu... | `design` `methodology` `lean` `TPS` |
 | **[Lean Foundations](skills/lean-foundations/SKILL.md)** | Foundational Lean principles for stabilizing workflows through the 3 Ms (Mura, Muri, Muda) and the 5S framework. Focu... | `methodology` `optimization` `lean` `TPS` |
 | **[Nemawashi](skills/nemawashi/SKILL.md)** | Use before suggesting major refactors or architectural changes. Mandates impact analysis and A3 proposals. | `methodology` `lean` `TPS` |
 | **[Shisa Kanko](skills/shisa-kanko/SKILL.md)** | Use when executing code changes, tool calls, or multi-step tasks. Mandates pointing, calling, and verification. | `cognition` `communication` `methodology` `safety` `lean` `TPS` |
@@ -71,7 +71,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 
 | Skill | Description | Tags |
 |-------|-------------|------|
-| **[Jidoka](skills/jidoka/SKILL.md)** | Use when an abnormality, error, validation failure, or workflow loop occurs. Mandates an autonomous halt and root-cau... | `methodology` `safety` `lean` `TPS` |
+| **[Jidoka (Autonomation)](skills/jidoka/SKILL.md)** | Use when an abnormality occurs, an iteration threshold is breached, or before executing any action flagged by the Lay... | `methodology` `safety` `lean` `TPS` |
 | **[KYT](skills/kyt/SKILL.md)** | Use before executing high-risk, destructive, or irreversible commands (rm, drop, reset). Mandates hazard prediction. | `methodology` `safety` `lean` `TPS` |
 | **[Poka-yoke](skills/poka-yoke/SKILL.md)** | Use when designing validation gates, enforcing schemas, or preventing invalid tool calls. Handles deterministic guard... | `methodology` `safety` `lean` `TPS` |
 | **[Red-Teaming](skills/red-teaming-tactics/SKILL.md)** | Adversarial stress-testing for security and logic.  Use to identify bypasses, edge-case failures, and "happy-path" bi... | `safety` `security` |
