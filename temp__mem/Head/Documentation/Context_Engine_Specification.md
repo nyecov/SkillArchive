@@ -25,7 +25,8 @@ To ensure memories can iterate, move seamlessly, and be renamed without losing t
 - **UUIDv4 Identity:** Every single memory file (JSON, YAML, Markdown, TOON) MUST receive an immutable, unique Version 4 UUID upon creation.
 - **Fast Collision Check (The Registry Heuristic):** Even though UUIDv4 collisions are astronomically rare, the Go server must physically guarantee uniqueness. It maintains a lightweight, in-memory `map[string]filepath` of all active UUIDs loaded during engine boot (by scanning `.gemini/mem`). When generating a *new* UUID, the server performs a fast `O(1)` map lookup. If a collision is magically detected, it loops to generate a new one until absolute uniqueness is confirmed before writing to disk.
 - **Version Counter:** Every file must maintain a `version` integer that increments atomically upon any mutation by the server.
-- **Persistence Mechanism:** For JSON/YAML, this is injected as a root `__metadata` object. For Markdown/TOON, it is injected as standard header blocks. This UUID allows the system to securely track the conceptual identity of a memory artifact regardless of its physical filepath. Only physical file deletion by the user can destroy the memory artifact.
+- **Atomic Residency (TPS Reliability):** All state mutations MUST utilize an atomic write-and-rename pattern combined with `os.Sync()` (fsync) to guarantee data persistence during power failure or unexpected container halt.
+- **Persistence Mechanism:** For all memory tiers (Short/Middle/Long), this is injected as a root `__uuid` and `__version` pairing within a strictly standardized JSON schema.
 
 ---
 
@@ -34,17 +35,19 @@ To ensure memories can iterate, move seamlessly, and be renamed without losing t
 The engine acts as the final guardrail against agent hallucination and system context bloat. It handles errors natively:
 
 1. **State Corruption (Drive Failure/Human Error):**
-   - If the server cannot parse `current_session.json` or `ontology.yaml`, it will instantly rename the corrupted file to `.corrupted-[timestamp]` and initialize a blank state.
+   - If the server cannot parse `current_session.json` or `ontology.json`, it will instantly rename the corrupted file to `.corrupted-[timestamp]` and initialize a blank state.
    - It will return an explicit `ToolError` warning the agent of the reset.
 2. **Type/Enum Hallucinations & Query Feedback:**
    - LLM errors (like inventing random Edge Types) are inherently blocked by the MCP JSON Schema. The server returns standard `InvalidParams`, forcing the agent to retry with the correct Enum.
    - For malformed queries (e.g. failing to parse a specific TOON block), the server MUST return a rich, instructional `ToolError` message exactly outlining *why* the query failed and *how* the agent should correct it. Do not return empty strings or raw stack traces.
 3. **Automated Boot Diagnostics (Self-Check):**
-   - Upon container boot or reboot, the Go server MUST execute a complete schema verification sequence across all files in `.gemini/mem`. 
-   - It validates JSON/YAML structure, UUID constraints, and version integers. If a corruption or unauthorized circumvention is detected at boot, the server halts loading that specific file and outputs a detailed forensic log to `.gemini/mem/engine_diagnostics.log`.
+   - Upon container boot or reboot, the Go server MUST execute a complete schema verification sequence across all JSON memory files in `.gemini/mem`. 
+   - It validates JSON structure, UUID constraints, and version integers. If a corruption or unauthorized circumvention is detected at boot, the server halts loading that specific file and outputs a detailed forensic log to `.gemini/mem/engine_diagnostics.log`.
 4. **Concurrency (Race Conditions):**
-   - The Go server implements OS-level File Locking on memory files.
-   - **Timeout Heuristic:** If a lock exists for >5 seconds, the server assumes a previous crash, overrules the lock, and rewrites the state to prevent permanent deadlocks. Because this architecture explicitly prohibits multi-agent swarm environments, concurrent lock collisions are inherently invalid.
+   - The Go server implements OS-level file locking on individual memory files for granular mutation.
+   - **Singleton Residency Guard (Global Safeguard):** To prevent multiple server instances (e.g., zombie Docker containers) from corrupting the same volume, the engine implements a Global Singleton Guard. It acquires an exclusive lock on `.engine.instance.lock` and maintains a 5-second **Heartbeat**. 
+   - **Jidoka Halt:** Any secondary instance attempting to boot will fail immediately with a "Singleton Violation" error.
+   - **Forensic Takeover:** If a server starts and finds a lock older than 15 seconds (stale), it assumes a previous crash, logs a warning, and seizes ownership to ensure safe reboots.
 5. **The "Zip-Bomb" Guardrail:**
    - `ingest_context` executes a pre-read byte-stat. If a file exceeds a safe threshold (e.g., 5MB), it rejects the payload entirely.
 6. **Tiered Context Limits (The Infinite Growth Guardrail):**
@@ -112,7 +115,7 @@ Quickly retrieves the latest short-term memory array to regain situational aware
 ```
 
 ### 4.4. `commit_ontology_edge`
-Mutates the permanent `.gemini/mem/ontology.yaml` Directed Graph. Hierarchical edges fail if a cycle is created.
+Mutates the permanent `.gemini/mem/ontology.json` Directed Graph. Hierarchical edges fail if a cycle is created.
 ```json
 {
   "properties": {

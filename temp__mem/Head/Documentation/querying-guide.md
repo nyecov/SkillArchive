@@ -20,4 +20,4 @@ The `current_session.json` state cannot grow infinitely.
 ## 4. Ontology Resolution
 - **Hierarchical Edges:** `REQUIRES`, `DEPENDS_ON`, `OWNS`. These will fail if they create a cyclic loop (A -> B -> A).
 - **Non-Hierarchical Edges:** `REFERENCES`, `CONFLICTS_WITH`. Use these for bidirectional documentation loops or API cross-talk.
-- **Resolution:** If you trigger a Cycle Error legitimately, use `delete_ontology_edge` to destroy the outdated hierarchy rule creating the blockage before committing the new correct edge.
+- **Resolution:** If you trigger a Cycle Error legitimately, use `delete_ontology_edge` to destroy the outdated hierarchy rule creating the blockage before committing the new correct edge. The system utilizes `ontology.json` for high-integrity storage with atomic `Sync()` writes.

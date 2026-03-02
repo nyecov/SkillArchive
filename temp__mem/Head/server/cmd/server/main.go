@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
@@ -41,8 +43,23 @@ func main() {
 	// Run Poka-yoke Boot Diagnostics
 	if err := pokayoke.RunBootDiagnostics(); err != nil {
 		fmt.Fprintf(os.Stderr, "Boot Diagnostics Failed: %v\n", err)
-		// We log but do not strictly panic unless it's a structural container failure.
 	}
+
+	// Structural Singleton Check (Jidoka Halt)
+	if err := pokayoke.AcquireSingletonLock(); err != nil {
+		fmt.Fprintf(os.Stderr, "FATAL ERROR: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Handle Graceful Shutdown (Signal Intercept)
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-sigs
+		fmt.Fprintf(os.Stderr, "\n[SHUTDOWN] Signal received. Releasing singleton lock...\n")
+		pokayoke.ReleaseSingletonLock()
+		os.Exit(0)
+	}()
 
 	// Start the stdio server (This blocks indefinitely, serving JSON-RPC over stdin/stdout)
 	if err := server.ServeStdio(s); err != nil {

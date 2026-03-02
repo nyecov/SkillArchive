@@ -16,10 +16,13 @@ The suite covers four critical architectural pillars across 15 automated test ca
     - **Lock Competition**: Testing OS-level file locking and the 5-second "Overrule Heuristic."
 3.  **Ontology (Middle-term Memory)**
     - **DAG Cycle Rejection**: Preventing circular dependencies in hierarchical edges (`REQUIRES`, `OWNS`).
-    - **Transactional Integrity**: Ensuring a rejected edge does not corrupt the YAML state.
+    - **Transactional Integrity**: Ensuring a rejected edge does not corrupt the JSON state in `ontology.json`.
 4.  **Diagnostics (Boot Sequence)**
     - **Quarantine Logic**: Confirming that malformed or tampered files are moved to `.corrupted-[timestamp]` on boot.
     - **UUID Provenance**: Ensuring every memory artifact maintains a unique, registered identity.
+5.  **Operational Guardrails (Singleton)**
+    - **Jidoka Halt**: Verifying that secondary server instances are blocked from booting.
+    - **Stale Takeover**: Confirming the engine safely recovers from crashes by seizing stale locks.
 
 ---
 
