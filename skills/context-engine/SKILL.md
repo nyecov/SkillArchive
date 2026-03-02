@@ -1,4 +1,5 @@
 ---
+id: 919ca7c6-1f70-4b7a-acc4-6b825c968edd
 name: context-engine
 version: 1.0.0
 description: Use when required to retrieve information, learn codebase rules, read files over 4,000 tokens, or record short-term plans. This skill governs all agent memory operations via the MCP Server.
@@ -29,7 +30,6 @@ references:
 - name: Docker Compose Configuration
   path: ./docker-compose/docker-compose.yml
 ---
-
 # Context Engine
 
 This skill dictates how agents build, access, and maintain context. You **MUST** delegate all context and memory retrieval to the deterministic `Context Engine` MCP server tools.

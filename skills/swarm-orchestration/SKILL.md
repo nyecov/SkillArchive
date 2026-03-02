@@ -1,4 +1,5 @@
 ---
+id: c53ac703-b89d-4109-a7a7-d848129889f1
 name: swarm-orchestration
 version: 1.1.0
 level: methodology
@@ -18,7 +19,6 @@ references:
 - name: Kodawari Craftsmanship
   path: ../kodawari-craftsmanship/SKILL.md
 ---
-
 # Swarm Orchestration
 
 In complex systems, a single agent cannot maintain the necessary focus on all domains simultaneously. Swarm Orchestration provides the "Protocol of Handover" between a Lead Agent (**Shusa**) and specialized **Sub-Agents**. It ensures that delegation does not lead to fragmentation.

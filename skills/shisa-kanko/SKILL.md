@@ -1,4 +1,5 @@
 ---
+id: 0003d0ac-4a9c-4f40-ac57-c5940e072623
 name: shisa-kanko
 version: 2.2.0
 level: methodology

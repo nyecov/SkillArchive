@@ -1,4 +1,5 @@
 ---
+id: 765928b8-88e1-4f3b-9163-842e3b178779
 name: jidoka
 version: 2.0.0
 level: methodology
@@ -21,7 +22,6 @@ references:
 - name: Ho-Ren-So (Communication)
   path: ../ho-ren-so/SKILL.md
 ---
-
 # Jidoka (Autonomation)
 
 Jidoka is the ultimate safety mechanism in the agentic workflow. It acts physically as the **Andon Cord**, "Stopping the Line" to prevent the compounding of errors. Modernized Jidoka operates in a Dual-Layer architecture: acting as a swift reactive emergency brake when an error occurs, and a proactive circuit-breaker triggered only by deterministic physical heuristics.

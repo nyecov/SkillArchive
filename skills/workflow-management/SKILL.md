@@ -1,4 +1,5 @@
 ---
+id: 05a6d145-d60d-4101-a388-071649490a5b
 name: workflow-management
 version: 1.0.0
 level: methodology
@@ -15,7 +16,6 @@ references:
   - name: Workflow Report Template
     path: ./templates/workflow-report-template.md
 ---
-
 # Workflow Management
 
 Workflows are structurally and procedurally distinct from skills, despite sharing the Markdown medium. This skill acts as the Gold Standard enforcing mechanism for the `workflows/` directory, preventing bloat and ensuring high procedural standards.
@@ -44,8 +44,8 @@ Workflows are structurally and procedurally distinct from skills, despite sharin
 
 ## Implementation Workflow
 
-1. **Trigger:** A workflow in `.gemini/workflows/` is created or modified.
-2. **Execute:** Run the `manage_workflows.py` validation Python script against the file.
+1. **Trigger:** A workflow in `workflows/` is created or modified.
+2. **Execute:** Ensure a unique UUIDv4 `id` is present in the frontmatter. Run the `manage_workflows.py` validation Python script against the file.
 3. **Verify:** Check the output of the script to ensure the file was either validated or repaired (`auto_corrected`).
 4. **Output:** A standardized workflow document, or an escalated `story-interview` session.
 

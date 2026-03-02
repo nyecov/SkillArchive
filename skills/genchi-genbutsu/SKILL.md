@@ -1,4 +1,5 @@
 ---
+id: 03e24993-34f4-4ec3-9ea8-4d52077ba72c
 name: genchi-genbutsu
 version: 1.1.0
 level: methodology
@@ -16,7 +17,6 @@ references:
 - name: Poka-yoke (Mistake-proofing)
   path: ../poka-yoke/SKILL.md
 ---
-
 # Genchi Genbutsu
 
 Genchi Genbutsu means going to the source to find the facts. For an AI agent, this means **Dynamic Verification**. Don't just "think" the code works — run the code and see for yourself.

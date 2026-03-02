@@ -1,4 +1,5 @@
 ---
+id: 41452f57-2d76-4fdc-95bc-a4427f3be104
 name: kaizen
 version: 1.2.0
 level: methodology
@@ -30,7 +31,6 @@ references:
 - name: Kaizen Report Template
   path: ./templates/kaizen-report-template.md
 ---
-
 # Kaizen
 
 Kaizen is the commitment to constant, incremental evolution. While **Hansei** reflects on a specific mistake, Kaizen is the systemic application of that learning to permanently improve the standard operating procedure (SOP). It transforms isolated lessons into durable architectural upgrades.

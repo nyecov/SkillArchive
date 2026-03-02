@@ -1,4 +1,5 @@
 ---
+id: 8dea8b48-658e-4d46-bd01-42deef7c3b1a
 name: architectural-anchoring
 version: 1.1.0
 description: Use when starting a project, making architectural decisions, or when AI-suggested changes conflict with established patterns. Mandates the creation and enforcement of the ANCHOR.md artifact.
@@ -27,7 +28,6 @@ references:
   path: ./templates/anchor-template.md
 level: tactical
 ---
-
 # Anchor
 
 *Drift is the default. Coherence requires intention.*

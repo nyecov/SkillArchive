@@ -1,4 +1,5 @@
 ---
+id: d7891a5d-453a-4584-aaf7-83746f441203
 name: test-driven-development
 version: 1.1.0
 level: tactical
@@ -11,7 +12,6 @@ references:
   - name: Shisa Kanko (Master Workflow)
     path: ../shisa-kanko/SKILL.md
 ---
-
 # Test-Driven Development
 
 Write the test first. Watch it fail. Write minimal code to pass. If you didn't watch the test fail, you don't know if it tests the right thing. Violating the letter of the rules is violating the spirit of the rules.

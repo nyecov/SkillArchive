@@ -1,4 +1,5 @@
 ---
+id: c192c02e-01dd-4a33-8c87-cafec08487ce
 name: completion-verification
 version: 1.0.0
 level: methodology
@@ -11,7 +12,6 @@ references:
   - name: Poka-yoke (Mistake-proofing)
     path: ../poka-yoke/SKILL.md
 ---
-
 # Verification Before Completion
 
 Claiming work is complete without verification is dishonesty, not efficiency. This skill enforces the Iron Law: "Evidence before claims, always." It acts as a strict behavioral gate to prevent rationalization and ensure that success claims are rooted in empirical evidence.

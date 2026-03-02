@@ -1,7 +1,10 @@
 ---
-description: Procedural workflow to guide AI agents in discovering, verifying, and internalizing a skill from the Skill Archive library without hallucination.
+id: 11f0a108-7a56-4c4f-9e73-b7b5f00e5720
+name: ai-agent-skill-import
+version: 1.0.0
+level: methodology
+description: Procedure for synthesizing new agentic capabilities from an external repository into the local Skill Archive.
 ---
-
 # AI Agent Skill Import
 
 A deterministic procedure for an AI agent to correctly internalize a new skill from the Skill Archive library. It actively prevents hallucination, ensures all dependencies are verified in bulk, and provides a structured recovery path if the skill requires missing resources.

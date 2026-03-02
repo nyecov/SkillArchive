@@ -10,20 +10,30 @@ import re
 ROOT_DIR = "."
 SOURCE_SKILLS_DIR = os.path.join(ROOT_DIR, "skills")
 TARGET_SKILLS_DIR = os.path.join(ROOT_DIR, ".gemini", "skills")
-CONFIG_FILE = os.path.join(ROOT_DIR, "skills-config.json")
+CONFIG_FILE = os.path.join(ROOT_DIR, "local-agent-config.json")
 
 def create_symlink(source, target):
     """
     Creates a junction point (Windows) or a symlink (others).
     """
     if os.path.exists(target):
-        return # Already linked
+        try:
+            if platform.system() == "Windows":
+                if os.path.isdir(target):
+                    subprocess.run(['cmd', '/c', 'rmdir', target], check=True, capture_output=True)
+                else:
+                    os.unlink(target)
+            else:
+                os.unlink(target)
+        except Exception:
+            pass
+
     try:
         if platform.system() == "Windows":
             subprocess.run(['cmd', '/c', 'mklink', '/J', target, source], check=True, capture_output=True)
         else:
             os.symlink(source, target, target_is_directory=True)
-        print(f"  [OK] Linked: {os.path.basename(source)}")
+        print(f"  [OK] Linked: {os.path.basename(source)} -> {os.path.basename(target)}")
     except Exception as e:
         print(f"  [ERROR] Failed to link {os.path.basename(source)}: {e}")
 
@@ -36,48 +46,21 @@ def get_skill_metadata(skill_folder):
             content = f.read()
             fm_match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
             if fm_match:
-                return yaml.safe_load(fm_match.group(1))
-    except yaml.YAMLError:
-        pass
+                data = yaml.safe_load(fm_match.group(1))
+                if data:
+                    data['folder'] = skill_folder
+                    return data
     except Exception as e:
         print(f"Error parsing metadata for {skill_folder}: {e}")
     return None
 
-def resolve_dependencies(skill_folder, resolved_set):
-    if skill_folder in resolved_set:
-        return
-    
-    meta = get_skill_metadata(skill_folder)
-    if not meta:
-        return
-
-    resolved_set.add(skill_folder)
-    
-    # Check for explicit 'requires' list
-    requires = meta.get('requires', [])
-    for dep in requires:
-        # Dependency is a folder name
-        resolve_dependencies(dep, resolved_set)
-
 def main():
-    if not os.path.exists(CONFIG_FILE):
-        print(f"Config file not found at {CONFIG_FILE}")
-        return
-
-    with open(CONFIG_FILE, 'r') as f:
-        config = json.load(f)
-    
-    allowed_tags = set(config.get("allowed_tags", []))
-    allowed_categories = set(config.get("allowed_categories", []))
-    allowed_skills = set(config.get("allowed_skills", [])) # New: explicit skill pull
-
-    # KYT Safeguard: Prevent accidental directory wipes
-    # Ensure that TARGET_SKILLS_DIR unambiguously points to .gemini/skills
+    # KYT Safeguard
     safe_target = TARGET_SKILLS_DIR.replace('\\', '/')
     if not safe_target.endswith('.gemini/skills') and not safe_target.endswith('.gemini/skills/'):
-        raise ValueError(f"KYT Safeguard Error: Target directory '{TARGET_SKILLS_DIR}' is unsafe. It must explicitly target '.gemini/skills' to prevent accidental deletion of source files.")
+        raise ValueError(f"KYT Safeguard Error: Target directory '{TARGET_SKILLS_DIR}' is unsafe.")
 
-    # Clear target directory
+    # Clear target directory accurately
     if os.path.exists(TARGET_SKILLS_DIR):
         print(f"Clearing existing links in {TARGET_SKILLS_DIR}...")
         for item in os.listdir(TARGET_SKILLS_DIR):
@@ -85,6 +68,7 @@ def main():
             try:
                 if platform.system() == "Windows":
                     if os.path.isdir(item_path):
+                        # Junction points are directories, use rmdir
                         subprocess.run(['cmd', '/c', 'rmdir', item_path], check=True, capture_output=True)
                     else:
                         os.unlink(item_path)
@@ -98,31 +82,29 @@ def main():
     else:
         os.makedirs(TARGET_SKILLS_DIR, exist_ok=True)
 
-    # 1. Identify "Seed" Skills based on Tags/Categories/Explicit list
-    seed_skills = set()
+    # 1. Discover all skills with valid IDs
+    discovered_skills = {} # id -> meta
     for skill_folder in os.listdir(SOURCE_SKILLS_DIR):
         meta = get_skill_metadata(skill_folder)
-        if not meta: continue
-        
-        skill_tags = set(meta.get('tags', []))
-        skill_category = meta.get('category', '')
-        skill_name = meta.get('name', '')
+        if meta and meta.get('id') and meta.get('name'):
+            discovered_skills[meta['id']] = meta
 
-        if (skill_tags & allowed_tags) or (skill_category in allowed_categories) or (skill_name in allowed_skills):
-            seed_skills.add(skill_folder)
-
-    # 2. Recursively Resolve Dependencies
-    final_skills = set()
-    print("Resolving dependencies...")
-    for seed in seed_skills:
-        resolve_dependencies(seed, final_skills)
-
-    # 3. Create Links
-    print(f"Linking {len(final_skills)} skills...")
-    for skill in sorted(list(final_skills)):
-        source_path = os.path.join(SOURCE_SKILLS_DIR, skill)
-        target_path = os.path.join(TARGET_SKILLS_DIR, skill)
+    # 2. Link Skills by Name
+    print(f"Linking {len(discovered_skills)} skills...")
+    for skill_id, meta in discovered_skills.items():
+        folder_name = meta['folder']
+        skill_name = meta['name']
+        source_path = os.path.abspath(os.path.join(SOURCE_SKILLS_DIR, folder_name))
+        target_path = os.path.abspath(os.path.join(TARGET_SKILLS_DIR, skill_name))
         create_symlink(source_path, target_path)
+
+    # 3. Update discovery reference
+    if os.path.exists(CONFIG_FILE):
+        with open(CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+        config["synced_skills"] = {sid: m['name'] for sid, m in discovered_skills.items()}
+        with open(CONFIG_FILE, 'w') as f:
+            json.dump(config, f, indent=2)
 
 if __name__ == "__main__":
     main()

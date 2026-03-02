@@ -1,4 +1,5 @@
 ---
+id: c68385bd-8572-424a-a06e-f65d47a8894c
 name: external-synthesis
 version: 1.1.0
 level: methodology
@@ -19,7 +20,6 @@ references:
 requires:
 - skill-authoring-management
 ---
-
 # External Synthesis
 
 A skill for extending the internal knowledge base by discovering and analyzing established patterns from the global agent ecosystem. This skill acts strictly as a **Research Report Generator** and acts as the precursor to `skill-authoring-management`. 

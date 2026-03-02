@@ -1,4 +1,5 @@
 ---
+id: 8a0339cb-b549-4255-b690-f3d80b8ae81f
 name: skill-authoring-management
 version: 1.4.0
 description: 'Use when creating, reviewing, or managing agent skills.  Provides the
@@ -26,7 +27,6 @@ references:
   path: ./references/skill-spec-reference.md
 level: methodology
 ---
-
 # Skill Authoring Management
 
 A skill is not documentation; it is a **procedure**. This meta-skill codifies the "Gold Standard" for authoring and managing agentic capabilities. It ensures that skills are not just written, but are maintained as high-integrity, deterministic capability modules that scale with the system.
@@ -36,6 +36,7 @@ A skill is not documentation; it is a **procedure**. This meta-skill codifies th
 Every skill in the library MUST adhere to these structural and qualitative requirements:
 
 ### 1. Metadata (Frontmatter)
+- **id**: Mandatory UUIDv4 (e.g., `8dea8b48-658e-4d46-bd01-42deef7c3b1a`).
 - **name**: Lowercase, hyphenated (e.g., `cc-security-enforcement`).
 - **version**: Semantic versioning (e.g., `1.0.0`), incremented with every change.
 - **description**: Trigger-oriented. NOT a summary. States *when* to activate.
@@ -91,7 +92,7 @@ Optimize token costs by layering instructions and offloading large data.
 ## Implementation Workflow
 
 1. **Trigger:** A repeatable process is identified, or a skill needs maintenance.
-2. **Execute:** Scaffold from the `templates/skill-template.md`. Author or update content. Then, MUST run `python scripts/manage_skill_authoring.py <path_to_skill>`.
+2. **Execute:** Scaffold from the `templates/skill-template.md`. Generate a unique UUIDv4. Author or update content. Then, MUST run `python scripts/manage_skill_authoring.py <path_to_skill>`.
 3. **Verify:** Check the python script output. If the script repaired errors, log them. If it returned "unrecoverable", halt immediately.
 4. **Output:** Render the final compliance state using the Poka-yoke Output Template.
 

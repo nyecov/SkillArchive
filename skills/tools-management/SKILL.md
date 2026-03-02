@@ -1,4 +1,5 @@
 ---
+id: 28090166-9ed4-4ad5-afd7-0e8efa0f233c
 name: tools-management
 version: 1.0.0
 description: 'Use when deciding whether to implement an abstraction as a cognitive
@@ -17,7 +18,6 @@ references:
   path: ../skill-authoring-management/SKILL.md
 level: methodology
 ---
-
 # Tools Management
 
 The agent ecosystem is flooded with "skills" that are actually just low-level automation scripts, specific API wrappers, or framework-specific rules (e.g., "Playwright Tester", "Vercel React Guidelines", "PDF Generator"). 

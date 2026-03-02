@@ -10,6 +10,6 @@ When `manage_skill_authoring.py` runs against a completed skill, the agent MUST 
 - **Script Finding:** [Description of what missing headers the python script injected, if any]
 
 ## 2. Next Steps
-- [ ] [e.g., Proceed to run `manage_skills.py` orchestrator]
+- [ ] [e.g., Proceed to run `manage_repository.py` orchestrator]
 - [ ] [e.g., Invoke Story Interview to rebuild unrecoverable constraint logic]
 ```

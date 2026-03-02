@@ -1,7 +1,10 @@
 ---
+id: afa93019-798b-47e1-88f6-fc4087e02b74
+name: tps-architecture-review
+version: 1.0.0
+level: methodology
 description: Run a heavy-duty system-level architectural review for major refactors, cross-domain integrations, or organizational alignment.
 ---
-
 # TPS Architecture Review Workflow
 
 Execute a rigorous, system-level strategic evaluation based on the Toyota Production System (TPS). This workflow is designed for **System / Organization Level** planning — evaluating entire codebases, orchestrating massive refactors, or aligning multi-system architectures to the core product vision without breaking Harmony (Wa).

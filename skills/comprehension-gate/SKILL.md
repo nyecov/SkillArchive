@@ -1,4 +1,5 @@
 ---
+id: f6bb0176-a9c3-4694-b6c9-a8e86ee8f1fc
 name: comprehension-gate
 version: 1.1.0
 description: Use before debugging, extending, or shipping code. Acts as a strict policy gate implementing Risk-Tiered comprehension checks (conversational vs. Deglaze reporting) to prevent cognitive debt.
@@ -27,7 +28,6 @@ references:
   path: ../hansei/SKILL.md
 level: methodology
 ---
-
 # Comprehend
 
 *You can't fix what you can't explain. You can't extend what you don't understand.*

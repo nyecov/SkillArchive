@@ -1,4 +1,5 @@
 ---
+id: f7c9c83f-7333-46c2-a0a4-f43b8b577634
 name: red-teaming-tactics
 version: 1.1.0
 level: tactical
@@ -16,7 +17,6 @@ references:
 - name: Deglaze Tactics
   path: ../logic-deglazing/SKILL.md
 ---
-
 # Red-Teaming
 
 Red-teaming is the practice of viewing a system from the perspective of an adversary. While **KYT** identifies hazards and **Secure Security** provides checks, **Red-Teaming** actively attempts to circumvent those very protections. It is the final gate for ensuring that "Safety" is not just "Compliance."

@@ -1,4 +1,5 @@
 ---
+id: 60b3bfe6-d38c-455e-9b6e-0284d98d59c6
 name: gemba
 version: 1.2.0
 level: methodology
@@ -11,10 +12,8 @@ tags:
 - lean
 - TPS
 references:
-- name: rag-strategy
-  path: ../rag-strategy/SKILL.md
-- name: ontology
-  path: ../ontology/SKILL.md
+- name: context-engine
+  path: ../context-engine/SKILL.md
 - name: shisa-kanko
   path: ../shisa-kanko/SKILL.md
 - name: Genchi-Genbutsu
@@ -22,10 +21,8 @@ references:
 - name: Gemba Report Template
   path: ./templates/gemba-report-template.md
 requires:
-- rag-strategy
-- ontology
+- context-engine
 ---
-
 # Gemba
 
 Gemba is the "Real Place." This skill mandates that the agent establish a verified factual baseline before any reasoning. It orchestrates three modes of discovery and enforces a rigid output reporting structure to avoid assumptions.
@@ -36,8 +33,7 @@ Gemba is the "Real Place." This skill mandates that the agent establish a verifi
 Determine the optimal tool to satisfy an information need based on the scope of the project.
 - **Action:**
   - **Local/Direct (Gemba):** Reading known files (`read_file`).
-  - **Global/Sparse (RAG):** Searching the workspace for keywords/semantics (`rag-strategy`).
-  - **Structural/Relational (Ontology):** Querying the knowledge graph for dependencies (`ontology`).
+  - **Global/Structural/Session (Context Engine):** Using MCP tools for searching, graph querying, and findings (`context-engine`).
 - **Constraint:** NEVER guess a file path or a symbol's usage. 
 
 ### 2. Fact Verification
@@ -54,10 +50,9 @@ Every discovery MUST be verified as a "Current Reality" (Genchi Genbutsu).
 
 1. **Trigger:** A new task is received or a context gap is identified.
 2. **Execute:** 
-   - Choose between Direct, RAG, or Ontology. 
+   - Choose between Direct discovery or Context Engine query. 
    - Execute the chosen strategy to gather the facts.
    - Cross-reference with the `genchi-genbutsu` mandate to ensure raw proof is captured if necessary.
 3. **Verify:** Read the bytes/data to explicitly confirm reality. Ensure no hallucinated paths or logic exist in your working memory.
 4. **Output:** A high-signal factual foundation for the **shisa-kanko** plan. You MUST output the `Gemba Discovery Report`.
 [Gemba Report Template](./templates/gemba-report-template.md)
-

@@ -1,4 +1,5 @@
 ---
+id: 1fcd6ee2-5f6f-4993-8130-729cb1af5554
 name: shusa-leadership
 version: 1.1.0
 description: The Shusa (Chief Engineer) leadership model for technical ownership and

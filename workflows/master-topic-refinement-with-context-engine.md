@@ -1,13 +1,13 @@
 ---
-id: 3d240c28-7f93-4ef4-9236-a3b301495ab6
-name: master-topic-refinement
+id: 79f2c8d1-4b1a-4d9e-9b2c-8d1c6e4a2b3c
+name: master-topic-refinement-with-context-engine
 version: 1.0.0
 level: methodology
-description: A multi-phase refinement protocol to ensure a topic, documentation, or codebase reaches the highest level of Lean quality.
+description: A multi-phase refinement protocol enhanced by the Context Engine to ensure a topic, documentation, or codebase reaches the highest level of Lean quality.
 ---
-# Master Topic Refinement Workflow
+# Master Topic Refinement Workflow (with Context Engine)
 
-Execute a comprehensive, end-to-end refinement protocol on a complex topic, feature, or system. This workflow systematically chains together four critical processes — from initial conceptual verification to system-level architecture to continuous module-level improvement.
+Execute a comprehensive, end-to-end refinement protocol on a complex topic, feature, or system, leveraging the **Context Engine** for deep codebase comprehension and persistent session memory. This workflow systematically chains together four critical processes — from initial conceptual verification to system-level architecture to continuous module-level improvement.
 
 ## Input
 
@@ -18,7 +18,7 @@ The user provides:
 
 > [!IMPORTANT]
 > **Hallucination starts where verification ends.**
-> This workflow enforces a strict "Verification-First" architecture. All analysis performed in Phases 2, 3, and 4 MUST be derived exclusively from the Ground Truth established in Phase 1.
+> This workflow enforces a strict "Verification-First" architecture. All analysis performed in Phases 2, 3, and 4 MUST be derived exclusively from the Ground Truth established in Phase 1 and the architectural facts indexed by the Context Engine.
 
 ### Jidoka (Autonomous Halt)
 If any command or phase (Lean Analysis, Architecture Review, etc.) is triggered **WITHOUT a verified Development Story from Phase 1**, the agent MUST immediately invoke the **Jidoka Halt**:
@@ -38,13 +38,13 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 
 ---
 
-### Phase 1: Conceptual Verification (Story Interview)
-**Target:** `skills/story-interview` | **Goal:** Define and verify the core logic.
+### Phase 1: Conceptual Verification (Story Interview with Context Engine)
+**Target:** `skills/story-interview-with-context-engine` | **Goal:** Define and verify core logic using MCP memory.
 
-1. **Initialize:** Trigger the `story-interview` skill on the raw topic. Run `python scripts/manage_interview_state.py init` to start the deterministic state tracker.
-2. **Interrogate:** Apply Socratic questioning and Deglaze tactics to strip away assumptions. After every turn, update the state file using the exact CLI syntax defined in the `story-interview` skill.
-3. **Verify:** Ensure every requirement has a testable acceptance condition and all sad paths are identified.
-4. **Output:** Render the finalized **Development Story Document** via `manage_interview_state.py render` containing the verified user value, core logic, constraints, and verification criteria.
+1. **Initialize:** Trigger the `story-interview-with-context-engine` skill. Run `clear_session_state` to ensure a fresh scratchpad.
+2. **Interrogate:** Apply Socratic questioning and Deglaze tactics, cross-referencing with the Context Engine for architectural alignment. After every turn, update the session state using `log_session_finding` with the `[INTERVIEW_STATE]` header.
+3. **Verify:** Ensure every requirement has a testable acceptance condition and all sad paths are identified. Use the Context Engine to confirm findings against the codebase substrate.
+4. **Output:** Execute `read_session_state`, synthesize the `[INTERVIEW_STATE]` findings, and render the finalized **Development Story Document**.
 
 ---
 
@@ -52,7 +52,7 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 **Target:** `workflows/1-lean-analysis.md` | **Goal:** 360-degree analytical scan.
 
 1. **Analyze:** Feed the Development Story Document (from Phase 1) into the `1-lean-analysis.md` workflow.
-2. **Execute Lenses:** Run the topic through all 9 lean-tagged analytical lenses. **Constraint:** Use ONLY the verified logic and constraints defined in the Story. If a lens reveals a gap, escalate back to Phase 1.
+2. **Execute Lenses:** Run the topic through all 9 lean-tagged analytical lenses. **Constraint:** Use ONLY the verified logic and constraints defined in the Story and indexed in the Context Engine. If a lens reveals a gap, escalate back to Phase 1.
 3. **Output:** A comprehensive **Lean Analysis Report**, detailing bottlenecks, systemic waste, and a prioritized list of critical actions.
 
 ---
@@ -60,8 +60,8 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 ### Phase 3: System-Level Strategy (TPS Architecture Review)
 **Target:** `workflows/3-tps-architecture-review.md` | **Goal:** Structural alignment and safe rollout.
 
-1. **Evaluate:** Review the Critical Actions from Phase 2. Ensure they align with the overarching product vision.
-2. **Map Flow & Dependencies:** Run the `3-tps-architecture-review.md` workflow to map end-to-end flow, identify architectural bottlenecks, and map the cross-domain dependency footprint (Nemawashi).
+1. **Evaluate:** Review the Critical Actions from Phase 2. Ensure they align with the overarching product vision and the existing architectural anchors.
+2. **Map Flow & Dependencies:** Run the `3-tps-architecture-review.md` workflow to map end-to-end flow, identify architectural bottlenecks, and map the cross-domain dependency footprint (Nemawashi) using the Context Engine's graph tools.
 3. **Design Safeguards:** Establish system-wide Poka-yoke interlocks and Jidoka (Andon Cord) thresholds for any major changes.
 4. **Output:** A formal **TPS Architecture Proposal (A3)** outlining the future state, leveled rollout plan (Heijunka), and organizational guardrails.
 
@@ -72,7 +72,7 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 
 1. **Isolate:** Select a single module or skill identified in Phases 2 and 3.
 2. **Execute Pilot:** Perform a trial Kaizen Sprint or audit on this single target.
-3. **Verify Paths:** Ensure all scripts, templates, and directory paths (especially those containing spaces) are correctly handled.
+3. **Verify Paths:** Ensure all scripts, templates, and directory paths (especially those containing spaces) are correctly handled and verified via the Context Engine.
 4. **Output:** A verified "Operation Baseline." If the pilot reveals pathing friction, resolve the root cause before vertical scaling.
 
 ---
@@ -89,7 +89,7 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 
 ## Final Output: Master Refinement Dossier
 
-Compile the outputs of all four phases into a consolidated **Master Refinement Dossier**:
+Compile the outputs of all five phases into a consolidated **Master Refinement Dossier**:
 
 1. **The Verified Story:** (Output of Phase 1)
 2. **The Lean Audit:** (Output of Phase 2)
@@ -99,8 +99,6 @@ Compile the outputs of all four phases into a consolidated **Master Refinement D
 
 Save the dossier as an artifact in the brain directory and notify the user that the topic has been brought to the best possible level.
 
-
 ## Escalation & Halting
-- **Jidoka:** 
-- **Hō-Ren-Sō:** 
-
+- **Jidoka:** If logical or architectural contradictions persist, trigger a halt and revert to the latest verified anchor.
+- **Hō-Ren-Sō:** Use Sōdan (Consult) if the refinement reveals a need for a fundamental architectural pivot.

@@ -7,7 +7,7 @@ description: Mandatory "Iron Law" verification gate to be executed before any ta
 This workflow MUST be executed before claiming any task is "Done," "Fixed," or "Complete." It acts as a final Poka-yoke to prevent premature success claims.
 
 ## 1. Genchi Genbutsu (Go and See)
-Identify the exact terminal command(s) that prove the success of your objective (e.g., `npm test`, `python manage_skills.py`, `ls -R`).
+Identify the exact terminal command(s) that prove the success of your objective (e.g., `npm test`, `python manage_repository.py`, `ls -R`).
 
 1. **Execute:** Run the command in the terminal.
 2. **Read:** Completely read the output. Do not assume success based on exit code alone.

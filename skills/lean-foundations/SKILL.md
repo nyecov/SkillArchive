@@ -1,4 +1,5 @@
 ---
+id: 61902d22-0fbd-4968-b8ac-a8fe2f7b7ee4
 name: lean-foundations
 version: 1.2.0
 description: Foundational Lean principles for stabilizing workflows through the 3

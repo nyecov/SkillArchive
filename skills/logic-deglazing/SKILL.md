@@ -1,4 +1,5 @@
 ---
+id: 68035d72-7ce1-45fb-a3ff-b67b50518ec3
 name: logic-deglazing
 version: 1.1.0
 description: Use when reviewing AI-generated solutions, validating user comprehension, or stress-testing proposals. Handles 5 constraint-pressure techniques to generate a formal Deglaze Pressure Report.
@@ -28,7 +29,6 @@ references:
   path: ./templates/deglaze-report-template.md
 level: tactical
 ---
-
 # Deglaze
 
 *Strip the polish. Reveal the substrate.*

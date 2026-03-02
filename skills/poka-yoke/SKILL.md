@@ -1,4 +1,5 @@
 ---
+id: 1ac3405b-a2fa-4752-b866-55e4697a61e3
 name: poka-yoke
 version: 1.2.0
 description: Use when designing validation gates, enforcing schemas, or preventing

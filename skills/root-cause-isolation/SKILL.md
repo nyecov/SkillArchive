@@ -1,4 +1,5 @@
 ---
+id: 21733901-f490-4f5d-b9d3-7dc79b68d697
 name: root-cause-isolation
 version: 1.1.0
 level: tactical
@@ -26,7 +27,6 @@ references:
 - name: KYT (Hazard Prediction)
   path: ../kyt/SKILL.md
 ---
-
 # Isolate
 
 *You are a scientist, not a gambler.*

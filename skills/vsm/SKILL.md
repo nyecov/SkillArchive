@@ -1,4 +1,5 @@
 ---
+id: 5d639ab3-bb31-47f0-b00f-49624cd427a9
 name: vsm
 version: 1.1.0
 description: Use when diagnosing slow workflows, high token consumption, or unexplained

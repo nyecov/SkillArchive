@@ -1,7 +1,10 @@
 ---
-description: Run a full PDCA (Plan-Do-Check-Act) continuous improvement cycle on a recurring bug, friction point, or localized process.
+id: 28cd766d-18f4-436d-b8d4-59e6634a415a
+name: kaizen-sprint
+version: 1.0.0
+level: methodology
+description: 'Standardized procedure for a rapid Kaizen iteration focusing on a single, isolated module.'
 ---
-
 # Kaizen Sprint Workflow
 
 Execute a rigorous **Continuous Improvement** cycle to permanently fix recurring issues, architectural friction, or inefficient workflows at the **Module / Process Level**. This workflow transforms isolated lessons into durable, standardized upgrades.

@@ -6,7 +6,7 @@ import re
 # Paths
 ROOT_DIR = "."
 SOURCE_SKILLS_DIR = os.path.join(ROOT_DIR, "skills")
-CONFIG_FILE = os.path.join(ROOT_DIR, "skills-config.json")
+CONFIG_FILE = os.path.join(ROOT_DIR, "local-agent-config.json")
 
 def main():
     all_categories = set()

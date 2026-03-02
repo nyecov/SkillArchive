@@ -1,7 +1,10 @@
 ---
+id: 57608298-508b-4974-9c02-e25dfeb6f658
+name: lean-analysis
+version: 1.0.0
+level: methodology
 description: Run a full Lean analysis on a document or topic using all 9 lean-tagged skills as analytical lenses
 ---
-
 # Lean Analysis Workflow
 
 Systematically analyze a document, codebase, or topic through **all 9 lean-tagged skills**, producing a comprehensive Lean Analysis Report. Each phase applies a distinct analytical lens — from waste identification to strategic alignment.

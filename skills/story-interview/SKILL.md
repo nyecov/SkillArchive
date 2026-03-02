@@ -1,4 +1,5 @@
 ---
+id: 57fba13f-75fc-4442-a7c1-087bb81b1af3
 name: story-interview
 version: 1.0.0
 level: methodology
@@ -30,7 +31,6 @@ references:
 requires:
 - logic-deglazing
 ---
-
 # Development Story Interview
 
 This skill codifies the procedure for extracting, challenging, and solidifying user requirements into a robust development story through structured interrogation. Grounded in Lean principles, it actively combats "glaze" (superficial understanding) and Muda (waste from building the wrong thing) by forcing ideas into hard, verifiable edges before any code is written or documents are finalized.

@@ -1,4 +1,5 @@
 ---
+id: 69a38a0a-e7c6-424b-b578-f9020c6d56ea
 name: kodawari-craftsmanship
 version: 1.1.0
 level: methodology
@@ -17,7 +18,6 @@ references:
 - name: Shisa Kanko
   path: ../shisa-kanko/SKILL.md
 ---
-
 # Kodawari Craftsmanship
 
 **Kodawari** is the relentless pursuit of perfection in one's craft. In the context of agentic software engineering, it acts as the primary immune system against entropy, technical debt, and "Hybrid Rot." It ensures that every modification leaves the code self-documenting, cleaner, and architecturally harmonious, strictly bounded to prevent scope creep.

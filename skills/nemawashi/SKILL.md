@@ -1,4 +1,5 @@
 ---
+id: 8ba2f90a-e409-4550-8d99-698d390084e9
 name: nemawashi
 version: 1.1.0
 description: Use before suggesting major refactors or architectural changes. Mandates

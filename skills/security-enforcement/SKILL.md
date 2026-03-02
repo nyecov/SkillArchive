@@ -1,4 +1,5 @@
 ---
+id: 25524b3e-994c-42f7-b5e5-005b66449c5d
 name: security-enforcement
 version: 1.1.0
 level: tactical
@@ -29,7 +30,6 @@ references:
 requires:
 - red-teaming-tactics
 ---
-
 # Secure
 
 *You are the paranoid friend they need.*

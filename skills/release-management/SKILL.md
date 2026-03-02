@@ -1,4 +1,5 @@
 ---
+id: b84c7f92-0f43-4ed6-906a-75023d687388
 name: release-management
 version: 1.1.0
 description: 'Use when code is "feature complete" and approaching deployment, or when
@@ -30,7 +31,6 @@ references:
   path: ../vsm/SKILL.md
 level: tactical
 ---
-
 # Ship
 
 *The app isn't shipped until it's running reliably for users.*

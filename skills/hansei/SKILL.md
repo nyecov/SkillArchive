@@ -1,4 +1,5 @@
 ---
+id: 86ce8c1f-fd51-415c-a6ef-226baf72d9ea
 name: hansei
 version: 1.2.0
 level: methodology
@@ -28,7 +29,6 @@ references:
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
 ---
-
 # Hansei
 
 Hansei is the practice of looking back at a plan or action with a critical, objective eye to identify flaws, acknowledge mistakes, and develop improvement plans. In an agentic system, it serves as the cognitive engine for both proactive refinement and reactive debugging.

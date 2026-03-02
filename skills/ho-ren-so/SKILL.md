@@ -1,4 +1,5 @@
 ---
+id: 071a7c50-61c4-4c7c-8e58-f999aa03cd2a
 name: ho-ren-so
 version: 1.2.0
 level: methodology
@@ -27,7 +28,6 @@ references:
 - name: Value Stream Mapping (VSM)
   path: ../vsm/SKILL.md
 ---
-
 # Hō-Ren-Sō
 
 Hō-Ren-Sō ensures that information flows smoothly across the system, preventing silos and ambiguity. In an agentic architecture, it provides the structured formats for routine operational updates and critical safety escalations.
