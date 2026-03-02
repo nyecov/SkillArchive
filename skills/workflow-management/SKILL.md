@@ -10,7 +10,7 @@ references:
   - name: Skill Authoring Management
     path: ../skill-authoring-management/SKILL.md
   - name: Story Interview
-    path: ../story-interview/SKILL.md
+    path: ../interview/SKILL.md
   - name: Shisa Kanko (Master Workflow)
     path: ../shisa-kanko/SKILL.md
   - name: Workflow Report Template
@@ -40,14 +40,14 @@ Workflows are structurally and procedurally distinct from skills, despite sharin
 ## Escalation & Halting
 
 - **Jidoka:** If `manage_workflows.py` fails to auto-correct a file and returns an "unrecoverable" status, halt the current agentic process to prevent saving garbage data.
-- **Hō-Ren-Sō:** If a workflow is deemed unrecoverable, autonomously invoke the `story-interview` skill with the user to rebuild the workflow logic from scratch.
+- **Hō-Ren-Sō:** If a workflow is deemed unrecoverable, autonomously invoke the `interview` skill with the user to rebuild the workflow logic from scratch.
 
 ## Implementation Workflow
 
 1. **Trigger:** A workflow in `workflows/` is created or modified.
 2. **Execute:** Ensure a unique UUIDv4 `id` is present in the frontmatter. Run the `manage_workflows.py` validation Python script against the file.
 3. **Verify:** Check the output of the script to ensure the file was either validated or repaired (`auto_corrected`).
-4. **Output:** A standardized workflow document, or an escalated `story-interview` session.
+4. **Output:** A standardized workflow document, or an escalated `interview` session.
 
 ## Poka-yoke Output Template
 

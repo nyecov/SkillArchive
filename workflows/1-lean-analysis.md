@@ -40,7 +40,7 @@ Run each phase sequentially. For each phase, produce a short findings section (3
 ---
 
 ### Phase 2: Story Interview — Socratic Interrogation
-**Skill:** `story-interview` | **Lens:** Value & Assumptions
+**Skill:** `interview` | **Lens:** Value & Assumptions
 
 1. State the **core goal** of the document/topic in one sentence.
 2. Apply **Deglaze questioning**:

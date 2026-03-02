@@ -1,6 +1,6 @@
 {
-  "discovery_mode": "dynamic",
-  "comment": "discovery_mode 'dynamic' syncs everything discovered with a valid UUIDv4 ID and a unique name.",
+  "discovery_mode": "manual",
+  "comment": "discovery_mode 'manual' only syncs items explicitly listed in synced_skills and synced_workflows.",
   "synced_skills": {
     "8dea8b48-658e-4d46-bd01-42deef7c3b1a": "architectural-anchoring",
     "c192c02e-01dd-4a33-8c87-cafec08487ce": "completion-verification",
@@ -28,8 +28,7 @@
     "0003d0ac-4a9c-4f40-ac57-c5940e072623": "shisa-kanko",
     "1fcd6ee2-5f6f-4993-8130-729cb1af5554": "shusa-leadership",
     "8a0339cb-b549-4255-b690-f3d80b8ae81f": "skill-authoring-management",
-    "57fba13f-75fc-4442-a7c1-087bb81b1af3": "story-interview",
-    "f9b6e8a1-3c5d-4f7e-9a2b-8d1c6e4a2b3c": "story-interview-with-context-engine",
+    "f9b6e8a1-3c5d-4f7e-9a2b-8d1c6e4a2b3c": "interview",
     "c53ac703-b89d-4109-a7a7-d848129889f1": "swarm-orchestration",
     "d7891a5d-453a-4584-aaf7-83746f441203": "test-driven-development",
     "28090166-9ed4-4ad5-afd7-0e8efa0f233c": "tools-management",
@@ -42,8 +41,7 @@
     "28cd766d-18f4-436d-b8d4-59e6634a415a": "kaizen-sprint.md",
     "afa93019-798b-47e1-88f6-fc4087e02b74": "tps-architecture-review.md",
     "11f0a108-7a56-4c4f-9e73-b7b5f00e5720": "ai-agent-skill-import.md",
-    "79f2c8d1-4b1a-4d9e-9b2c-8d1c6e4a2b3c": "master-topic-refinement-with-context-engine.md",
-    "3d240c28-7f93-4ef4-9236-a3b301495ab6": "master-topic-refinement.md"
+    "79f2c8d1-4b1a-4d9e-9b2c-8d1c6e4a2b3c": "master-topic-refinement-with-context-engine.md"
   },
   "allowed_tags": [],
   "allowed_categories": [],

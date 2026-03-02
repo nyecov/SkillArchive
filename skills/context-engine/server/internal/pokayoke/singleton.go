@@ -114,7 +114,11 @@ func startHeartbeat(path string) {
 		now := time.Now()
 		if err := os.Chtimes(path, now, now); err != nil {
 			fmt.Fprintf(os.Stderr, "[HEARTBEAT ERROR] Failed to update singleton lock: %v\n", err)
+		} else {
+			// Read it back immediately to account for filesystem precision truncation
+			if updatedInfo, err := os.Stat(path); err == nil {
+				lastMod = updatedInfo.ModTime()
+			}
 		}
-		lastMod = now
 	}
 }

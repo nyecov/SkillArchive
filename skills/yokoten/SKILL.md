@@ -44,7 +44,7 @@ Propose a multi-file deployment plan for the recognized pattern.
 
 ## Escalation & Halting
 
-- **Jidoka (Boundary Halt):** If a target file requires fundamentally different logic, the Yokoten script MUST halt that specific deployment and invoke the `story-interview` skill to rebuild the logic with the user.
+- **Jidoka (Boundary Halt):** If a target file requires fundamentally different logic, the Yokoten script MUST halt that specific deployment and invoke the `interview` skill to rebuild the logic with the user.
 - **Jidoka (Failure Halt):** If local unit tests fail after a Yokoten change, the agent may attempt up to 2 autonomous corrections. After 2 consecutive failures, it MUST halt and require user input.
 - **Hō-Ren-Sō:** Use the Renraku (Fact) protocol to inform the user of the "Horizontal Discovery" and present the script's final diagnostic report.
 

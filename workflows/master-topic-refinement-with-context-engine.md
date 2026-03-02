@@ -39,9 +39,9 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 ---
 
 ### Phase 1: Conceptual Verification (Story Interview with Context Engine)
-**Target:** `skills/story-interview-with-context-engine` | **Goal:** Define and verify core logic using MCP memory.
+**Target:** `skills/interview` | **Goal:** Define and verify core logic using MCP memory.
 
-1. **Initialize:** Trigger the `story-interview-with-context-engine` skill. Run `clear_session_state` to ensure a fresh scratchpad.
+1. **Initialize:** Trigger the `interview` skill. Run `clear_session_state` to ensure a fresh scratchpad.
 2. **Interrogate:** Apply Socratic questioning and Deglaze tactics, cross-referencing with the Context Engine for architectural alignment. After every turn, update the session state using `log_session_finding` with the `[INTERVIEW_STATE]` header.
 3. **Verify:** Ensure every requirement has a testable acceptance condition and all sad paths are identified. Use the Context Engine to confirm findings against the codebase substrate.
 4. **Output:** Execute `read_session_state`, synthesize the `[INTERVIEW_STATE]` findings, and render the finalized **Development Story Document**.

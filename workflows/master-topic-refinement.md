@@ -39,10 +39,10 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 ---
 
 ### Phase 1: Conceptual Verification (Story Interview)
-**Target:** `skills/story-interview` | **Goal:** Define and verify the core logic.
+**Target:** `skills/interview` | **Goal:** Define and verify the core logic.
 
-1. **Initialize:** Trigger the `story-interview` skill on the raw topic. Run `python scripts/manage_interview_state.py init` to start the deterministic state tracker.
-2. **Interrogate:** Apply Socratic questioning and Deglaze tactics to strip away assumptions. After every turn, update the state file using the exact CLI syntax defined in the `story-interview` skill.
+1. **Initialize:** Trigger the `interview` skill on the raw topic. Run `python scripts/manage_interview_state.py init` to start the deterministic state tracker.
+2. **Interrogate:** Apply Socratic questioning and Deglaze tactics to strip away assumptions. After every turn, update the state file using the exact CLI syntax defined in the `interview` skill.
 3. **Verify:** Ensure every requirement has a testable acceptance condition and all sad paths are identified.
 4. **Output:** Render the finalized **Development Story Document** via `manage_interview_state.py render` containing the verified user value, core logic, constraints, and verification criteria.
 

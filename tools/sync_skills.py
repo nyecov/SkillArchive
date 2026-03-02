@@ -82,12 +82,24 @@ def main():
     else:
         os.makedirs(TARGET_SKILLS_DIR, exist_ok=True)
 
+    # 0. Load config to check discovery mode
+    discovery_mode = "dynamic"
+    synced_skill_ids = []
+    if os.path.exists(CONFIG_FILE):
+        with open(CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+            discovery_mode = config.get("discovery_mode", "dynamic")
+            synced_skill_ids = list(config.get("synced_skills", {}).keys())
+
     # 1. Discover all skills with valid IDs
     discovered_skills = {} # id -> meta
     for skill_folder in os.listdir(SOURCE_SKILLS_DIR):
         meta = get_skill_metadata(skill_folder)
         if meta and meta.get('id') and meta.get('name'):
-            discovered_skills[meta['id']] = meta
+            skill_id = meta['id']
+            if discovery_mode == "manual" and skill_id not in synced_skill_ids:
+                continue
+            discovered_skills[skill_id] = meta
 
     # 2. Link Skills by Name
     print(f"Linking {len(discovered_skills)} skills...")
@@ -98,8 +110,8 @@ def main():
         target_path = os.path.abspath(os.path.join(TARGET_SKILLS_DIR, skill_name))
         create_symlink(source_path, target_path)
 
-    # 3. Update discovery reference
-    if os.path.exists(CONFIG_FILE):
+    # 3. Update discovery reference if in dynamic mode
+    if discovery_mode == "dynamic" and os.path.exists(CONFIG_FILE):
         with open(CONFIG_FILE, 'r') as f:
             config = json.load(f)
         config["synced_skills"] = {sid: m['name'] for sid, m in discovered_skills.items()}

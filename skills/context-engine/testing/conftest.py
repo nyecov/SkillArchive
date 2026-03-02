@@ -38,6 +38,15 @@ async def mcp_server(test_workspace):
     """
     # Pre-boot lock clear with retry (Poka-yoke)
     lock_path = os.path.join(test_workspace, ".engine.instance.lock")
+    session_path = os.path.join(test_workspace, "current_session.json")
+    ontology_path = os.path.join(test_workspace, "ontology.json")
+    
+    # State reset to prevent leakage
+    if os.path.exists(session_path):
+        os.remove(session_path)
+    if os.path.exists(ontology_path):
+        os.remove(ontology_path)
+
     for _ in range(5):
         if os.path.exists(lock_path):
             try:
@@ -62,7 +71,7 @@ async def mcp_server(test_workspace):
             "--name", container_name,
             "-v", f"{os.path.abspath(WORKSPACE_ROOT)}:/workspace",
             "-e", "WORKSPACE_ROOT=/workspace",
-            "-e", "MEMORY_DIR=/workspace/temp__mem/Head/server/tests/staging",
+            "-e", "MEMORY_DIR=/workspace/temp__mem/Head/tests/staging",
             "context-engine-go:latest"
         ]
     )

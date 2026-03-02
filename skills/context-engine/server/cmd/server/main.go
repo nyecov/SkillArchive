@@ -56,6 +56,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "FATAL ERROR: %v\n", err)
 		os.Exit(1)
 	}
+	defer pokayoke.ReleaseSingletonLock()
 
 	// Handle Graceful Shutdown (Signal Intercept)
 	sigs := make(chan os.Signal, 1)

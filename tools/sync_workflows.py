@@ -66,6 +66,16 @@ def main():
         print(f"Source workflows directory not found at {SOURCE_WORKFLOWS_DIR}")
         return
 
+    # 0. Load config to check discovery mode
+    import json
+    discovery_mode = "dynamic"
+    synced_workflow_ids = []
+    if os.path.exists(CONFIG_FILE):
+        with open(CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+            discovery_mode = config.get("discovery_mode", "dynamic")
+            synced_workflow_ids = list(config.get("synced_workflows", {}).keys())
+
     # 1. Identify Workflow Files and their IDs
     print("Discovering workflows...")
     workflow_links = []
@@ -78,6 +88,10 @@ def main():
             if meta and meta.get('id') and meta.get('name'):
                 workflow_name = meta.get('name')
                 workflow_id = meta.get('id')
+                
+                if discovery_mode == "manual" and workflow_id not in synced_workflow_ids:
+                    continue
+                
                 target_filename = f"{workflow_name}.md"
                 workflow_links.append((source_path, target_filename))
                 discovered_workflow_ids[workflow_id] = target_filename
@@ -92,9 +106,8 @@ def main():
         abs_target = os.path.abspath(target_path)
         create_symlink(abs_source, abs_target)
 
-    # 3. Update discovery reference
-    if os.path.exists(CONFIG_FILE):
-        import json
+    # 3. Update discovery reference if in dynamic mode
+    if discovery_mode == "dynamic" and os.path.exists(CONFIG_FILE):
         with open(CONFIG_FILE, 'r') as f:
             config = json.load(f)
         config["synced_workflows"] = discovered_workflow_ids

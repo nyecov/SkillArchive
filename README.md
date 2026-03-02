@@ -59,8 +59,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 
 | Skill | Description | Tags |
 |-------|-------------|------|
-| **[Development Story Interview](skills/story-interview/SKILL.md)** | Use when a user requests feature scoping, requirements definition, or wants to plan a new development story, bugfix, ... | `methodology` `methodology` `lean` `cognition` `heijunka` |
-| **[Development Story Interview (with Context Engine)](skills/story-interview-with-context-engine/SKILL.md)** | Use when a user requests feature scoping or requirement definition specifically requiring the Context Engine for deep... | `methodology` `lean` `cognition` `heijunka` `context-engine` |
+| **[Development Story Interview](skills/interview/SKILL.md)** | Use when a user requests feature scoping, requirement definition, or planning a new idea. Applies Socratic questionin... | `methodology` `lean` `cognition` `heijunka` `context-engine` |
 | **[Genchi Genbutsu](skills/genchi-genbutsu/SKILL.md)** | Use to "Go and See for Yourself." Mandates empirical verification of all hypotheses and findings through direct execu... | `methodology` `research` `testing` `lean` `TPS` |
 | **[Heijunka](skills/heijunka/SKILL.md)** | Use to level the workload and prevent token/context spikes (Muri).  Handles the decomposition of massive tasks into m... | `methodology` `optimization` `lean` `TPS` |
 | **[Hō-Ren-Sō](skills/ho-ren-so/SKILL.md)** | Use when reporting progress, broadcasting state changes, or escalating ambiguous or blocked decisions to a human oper... | `communication` `methodology` `lean` `TPS` |
