@@ -13,8 +13,6 @@ async def run_diag():
     
     # Clean lock
     lock_path = os.path.join(staging_dir, ".engine.instance.lock")
-    if os.path.exists(lock_path):
-        os.remove(lock_path)
 
     server_params = StdioServerParameters(
         command="docker",

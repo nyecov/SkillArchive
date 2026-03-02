@@ -9,10 +9,7 @@ WORKSPACE_ROOT = "g:/Skill Archive"
 
 async def manual_server_boot(staging_dir):
     """Utility to boot the server and return the session for diagnostic checks."""
-    # Clean lock (Poka-yoke)
     lock_path = os.path.join(staging_dir, ".engine.instance.lock")
-    if os.path.exists(lock_path):
-        os.remove(lock_path)
 
     server_params = StdioServerParameters(
         command="docker",
@@ -33,9 +30,7 @@ async def manual_server_boot(staging_dir):
             # Just do one call to ensure boot diagnostics ran
             await session.call_tool("read_session_state", {})
             
-            # Close container but lock remains on host. Clean up lock.
-            if os.path.exists(lock_path):
-                os.remove(lock_path)
+            # Close container but lock remains on host. Wait for release.
             return True
 
 @pytest.mark.asyncio

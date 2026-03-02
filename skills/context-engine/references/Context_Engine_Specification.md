@@ -45,9 +45,8 @@ The engine acts as the final guardrail against agent hallucination and system co
    - It validates JSON structure, UUID constraints, and version integers. If a corruption or unauthorized circumvention is detected at boot, the server halts loading that specific file and outputs a detailed forensic log to `.gemini/mem/engine_diagnostics.log`.
 4. **Concurrency (Race Conditions):**
    - The Go server implements OS-level file locking on individual memory files for granular mutation.
-   - **Singleton Residency Guard (Global Safeguard):** To prevent multiple server instances (e.g., zombie Docker containers) from corrupting the same volume, the engine implements a Global Singleton Guard. It acquires an exclusive lock on `.engine.instance.lock` and maintains a 5-second **Heartbeat**. 
+   - **Singleton Residency Guard (Global Safeguard):** To prevent multiple server instances (e.g., zombie Docker containers) from corrupting the same volume, the engine implements a Global Singleton Guard. It acquires an exclusive cross-platform POSIX file lock (`.engine.instance.lock` via `gofrs/flock`) on the shared volume. This relies on the OS to guarantee mutual exclusion and automatically release the lock upon process termination (cleanly or via a crash), completely eliminating "stale lock" boot failures without the need for naive file-existence checks or wait intervals.
    - **Jidoka Halt:** Any secondary instance attempting to boot will fail immediately with a "Singleton Violation" error.
-   - **Forensic Takeover:** If a server starts and finds a lock older than 15 seconds (stale), it assumes a previous crash, logs a warning, and seizes ownership to ensure safe reboots.
 5. **The "Zip-Bomb" Guardrail:**
    - `ingest_context` executes a pre-read byte-stat. If a file exceeds a safe threshold (e.g., 5MB), it rejects the payload entirely.
 6. **Tiered Context Limits (The Infinite Growth Guardrail):**

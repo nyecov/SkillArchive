@@ -63,14 +63,24 @@ This skill dictates how agents build, access, and maintain context. You **MUST**
 
 ## MCP Client Configuration Standard
 
-For an agent to connect natively to this engine, its MCP configuration (e.g., `claude_desktop_config.json` or agent CLI config) MUST be set to execute the container via `stdio`. The baseline configuration is:
+For an agent to connect natively to this engine, its MCP configuration (e.g., `claude_desktop_config.json` or agent CLI config) MUST be set to execute the container via `stdio`. To eliminate "Cold Start" latency, the engine should be run in Daemon mode.
+
+**Windows (PowerShell):**
 ```json
 "context-engine": {
-  "command": "docker",
-  "args": ["run", "-i", "--rm", "-v", "<absolute_workspace_root>:/workspace", "-e", "WORKSPACE_ROOT=/workspace", "context-engine-go:latest"]
+  "command": "powershell",
+  "args": ["-NoProfile", "-Command", "& '<path_to_workspace>/.gemini/skills/context-engine/scripts/connect.ps1'"]
 }
 ```
-*Note: Depending on whether the system uses Ephemeral `docker run` or Persistent Daemon mode (`connect.ps1`), the configuration arguments may vary.*
+
+**macOS/Linux (Bash):**
+```json
+"context-engine": {
+  "command": "bash",
+  "args": ["<path_to_workspace>/.gemini/skills/context-engine/scripts/connect.sh"]
+}
+```
+*Note: If daemon mode is unavailable, the fallback ephemeral execution is `docker run -i --rm -v <workspace_root>:/workspace context-engine-go:latest`.*
 
 ## Implementation Workflow (Maturation)
 

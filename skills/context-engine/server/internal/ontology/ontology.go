@@ -6,17 +6,16 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/nyecov/context-engine/internal/registry"
 	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/nyecov/context-engine/internal/registry"
 )
 
 const (
 	GraphFilename = "ontology.json"
-	LockFilename  = ".ontology.lock"
-	MaxLockTime   = 5 * time.Second
 )
 
 var HierarchicalEdges = map[string]bool{
@@ -31,12 +30,18 @@ var NonHierarchicalEdges = map[string]bool{
 	"CONFLICTS_WITH": true,
 }
 
+var (
+	mu       sync.RWMutex
+	initOnce sync.Once
+	initErr  error
+)
+
 // Data structures mapping to JSON
 type OntologyGraph struct {
-	UUID        string              `json:"__uuid,omitempty"`
-	Version     int                 `json:"__version"`
-	LastUpdated string              `json:"last_updated"`
-	Entities    map[string][]Edge   `json:"entities"`
+	UUID        string            `json:"__uuid,omitempty"`
+	Version     int               `json:"__version"`
+	LastUpdated string            `json:"last_updated"`
+	Entities    map[string][]Edge `json:"entities"`
 }
 
 type Edge struct {
@@ -44,11 +49,25 @@ type Edge struct {
 	Target string `json:"target"`
 }
 
+func ensureInit() error {
+	initOnce.Do(func() {
+		initErr = InitStorage()
+	})
+	return initErr
+}
+
 // ------------------------------------------------------------------
 // MCP Handlers
 // ------------------------------------------------------------------
 
 func HandleCommitOntologyEdge(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	if err := ensureInit(); err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to init storage: %v", err)), nil
+	}
+
 	args, ok := request.Params.Arguments.(map[string]interface{})
 	if !ok {
 		return mcp.NewToolResultError("Arguments must be a JSON object"), nil
@@ -72,55 +91,49 @@ func HandleCommitOntologyEdge(ctx context.Context, request mcp.CallToolRequest) 
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Invalid edge_type: %s", edgeType)), nil
 	}
 
-	// Lock File
-	memDir := getMemoryDir()
-	lockPath := filepath.Join(memDir, LockFilename)
-	if err := acquireLock(lockPath); err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Could not acquire lock: %v", err)), nil
-	}
-	defer releaseLock(lockPath)
-
-	graphPath := filepath.Join(memDir, GraphFilename)
-	graph, err := loadOntologyState(graphPath)
-	if err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to load graph: %v", err)), nil
-	}
-
 	// Cycle Detection for Hierarchical Edges
 	if isHierarchical {
-		if detectCycle(graph, source, target) {
+		if detectCycle(globalGraph, source, target) {
 			return mcp.NewToolResultError(fmt.Sprintf("ToolError: DAG Cycle Violation. Committing %s -> %s -> %s creates a circular dependency. Halt and review architecture. Use delete_ontology_edge if refactoring existing logic.", source, edgeType, target)), nil
 		}
 	}
 
 	// Ensure Entity exists
-	if _, exists := graph.Entities[source]; !exists {
-		graph.Entities[source] = []Edge{}
+	if _, exists := globalGraph.Entities[source]; !exists {
+		globalGraph.Entities[source] = []Edge{}
 	}
-	
+
 	// Prevent duplicate edges
-	for _, e := range graph.Entities[source] {
+	for _, e := range globalGraph.Entities[source] {
 		if e.Type == edgeType && e.Target == target {
 			return mcp.NewToolResultText(fmt.Sprintf("Edge %s -> %s -> %s already exists. No mutation needed.", source, edgeType, target)), nil
 		}
 	}
 
-	graph.Entities[source] = append(graph.Entities[source], Edge{
-		Type:   edgeType,
-		Target: target,
+	// Mutate memory and append to WAL
+	applyWALEntry(globalGraph, WALEntry{
+		Action:    "ADD_EDGE",
+		Source:    source,
+		Type:      edgeType,
+		Target:    target,
+		Timestamp: time.Now().Format(time.RFC3339),
 	})
 
-	graph.Version++
-	graph.LastUpdated = time.Now().Format(time.RFC3339)
-
-	if err := saveOntologyState(graphPath, graph); err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to save graph: %v", err)), nil
+	if err := appendToWAL("ADD_EDGE", source, edgeType, target); err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to append to WAL: %v", err)), nil
 	}
 
 	return mcp.NewToolResultText(fmt.Sprintf("Successfully committed %s -> %s -> %s.", source, edgeType, target)), nil
 }
 
 func HandleDeleteOntologyEdge(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	if err := ensureInit(); err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to init storage: %v", err)), nil
+	}
+
 	args, ok := request.Params.Arguments.(map[string]interface{})
 	if !ok {
 		return mcp.NewToolResultError("Arguments must be a JSON object"), nil
@@ -138,50 +151,47 @@ func HandleDeleteOntologyEdge(ctx context.Context, request mcp.CallToolRequest) 
 		return mcp.NewToolResultError("target_entity is required"), nil
 	}
 
-	memDir := getMemoryDir()
-	lockPath := filepath.Join(memDir, LockFilename)
-	if err := acquireLock(lockPath); err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Could not acquire lock: %v", err)), nil
-	}
-	defer releaseLock(lockPath)
-
-	graphPath := filepath.Join(memDir, GraphFilename)
-	graph, err := loadOntologyState(graphPath)
-	if err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to load graph: %v", err)), nil
-	}
-
-	edges, exists := graph.Entities[source]
+	edges, exists := globalGraph.Entities[source]
 	if !exists {
 		return mcp.NewToolResultText(fmt.Sprintf("Source entity %s not found.", source)), nil
 	}
 
 	found := false
-	filtered := []Edge{}
 	for _, e := range edges {
 		if e.Type == edgeType && e.Target == target {
 			found = true
-			continue // skip deleting it by not appending
+			break
 		}
-		filtered = append(filtered, e)
 	}
 
 	if !found {
 		return mcp.NewToolResultText(fmt.Sprintf("Edge %s -> %s -> %s not found.", source, edgeType, target)), nil
 	}
 
-	graph.Entities[source] = filtered
-	graph.Version++
-	graph.LastUpdated = time.Now().Format(time.RFC3339)
+	// Mutate memory and append to WAL
+	applyWALEntry(globalGraph, WALEntry{
+		Action:    "DELETE_EDGE",
+		Source:    source,
+		Type:      edgeType,
+		Target:    target,
+		Timestamp: time.Now().Format(time.RFC3339),
+	})
 
-	if err := saveOntologyState(graphPath, graph); err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to save graph: %v", err)), nil
+	if err := appendToWAL("DELETE_EDGE", source, edgeType, target); err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to append to WAL: %v", err)), nil
 	}
 
 	return mcp.NewToolResultText(fmt.Sprintf("Successfully deleted %s -> %s -> %s.", source, edgeType, target)), nil
 }
 
 func HandleReadOntologyGraph(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	mu.RLock()
+	defer mu.RUnlock()
+
+	if err := ensureInit(); err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to init storage: %v", err)), nil
+	}
+
 	args, ok := request.Params.Arguments.(map[string]interface{})
 	if !ok {
 		return mcp.NewToolResultError("Arguments must be a JSON object"), nil
@@ -191,29 +201,16 @@ func HandleReadOntologyGraph(ctx context.Context, request mcp.CallToolRequest) (
 		return mcp.NewToolResultError("target_entity is required"), nil
 	}
 
-	memDir := getMemoryDir()
-	graphPath := filepath.Join(memDir, GraphFilename)
-	
-	bytes, err := os.ReadFile(graphPath)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return mcp.NewToolResultText("Knowledge graph is currently empty."), nil
-		}
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to read graph: %v", err)), nil
+	if len(globalGraph.Entities) == 0 {
+		return mcp.NewToolResultText("Knowledge graph is currently empty."), nil
 	}
 
-	// Parse to extract specific subtree
-	graph, err := loadOntologyState(graphPath)
-	if err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to load graph: %v", err)), nil
-	}
+	downstreamEdges, hasDownstream := globalGraph.Entities[targetEntity]
 
-	downstreamEdges, hasDownstream := graph.Entities[targetEntity]
-	
 	// Find all entities that target this entity (Upstream)
 	upstreamEdges := make(map[string][]string)
 	hasUpstream := false
-	for sourceName, edges := range graph.Entities {
+	for sourceName, edges := range globalGraph.Entities {
 		for _, e := range edges {
 			if e.Target == targetEntity {
 				upstreamEdges[sourceName] = append(upstreamEdges[sourceName], e.Type)
@@ -223,6 +220,8 @@ func HandleReadOntologyGraph(ctx context.Context, request mcp.CallToolRequest) (
 	}
 
 	if !hasDownstream && !hasUpstream {
+		// Dump current state as fallback context
+		bytes, _ := json.MarshalIndent(globalGraph, "", "  ")
 		return mcp.NewToolResultText(fmt.Sprintf("Entity '%s' not found in graph. Here is the entire raw graph for context:\n\n%s", targetEntity, string(bytes))), nil
 	}
 
@@ -264,7 +263,7 @@ func loadOntologyState(path string) (*OntologyGraph, error) {
 		os.Rename(path, corruptedPath)
 		return nil, fmt.Errorf("State format corruption detected. File quarantined to %s. Resetting state. Original error: %v", corruptedPath, err)
 	}
-	
+
 	// Registry Heuristic UUID injection & Registry Tracking
 	if graph.UUID == "" {
 		graph.UUID = registry.GenerateUniqueUUID(path)
@@ -280,35 +279,7 @@ func loadOntologyState(path string) (*OntologyGraph, error) {
 	return &graph, nil
 }
 
-func saveOntologyState(path string, graph *OntologyGraph) error {
-	bytes, err := json.MarshalIndent(graph, "", "  ")
-	if err != nil {
-		return err
-	}
-	
-	// Atomic write with Sync for TPS reliability
-	tmpPath := path + ".tmp"
-	f, err := os.OpenFile(tmpPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	if _, err := f.Write(bytes); err != nil {
-		return err
-	}
-	if err := f.Sync(); err != nil {
-		return err
-	}
-	f.Close()
-
-	return os.Rename(tmpPath, path)
-}
-
-// detectCycle returns true if adding an edge from source to target creates a cycle via hierarchical edges.
-// This executes a simple Depth First Search on the DAG.
 func detectCycle(graph *OntologyGraph, source, target string) bool {
-	// If the target *is* the source, immediate cycle.
 	if source == target {
 		return true
 	}
@@ -318,14 +289,13 @@ func detectCycle(graph *OntologyGraph, source, target string) bool {
 
 	dfs = func(current string) bool {
 		if current == source {
-			return true // We looped back to the source! Cycle detected.
+			return true
 		}
 		if visited[current] {
-			return false // Already checked this branch
+			return false
 		}
 		visited[current] = true
 
-		// Check all children of the current node
 		for _, edge := range graph.Entities[current] {
 			if HierarchicalEdges[edge.Type] {
 				if dfs(edge.Target) {
@@ -336,38 +306,7 @@ func detectCycle(graph *OntologyGraph, source, target string) bool {
 		return false
 	}
 
-	// We start the DFS from the target we are proposing to link TO.
-	// If the target traces deeply back to the source, then source->target creates a cycle.
 	return dfs(target)
-}
-
-// OS-Level Lock Helpers
-func acquireLock(lockPath string) error {
-	for i := 0; i < 60; i++ { // Try for 6 seconds total
-		info, err := os.Stat(lockPath)
-		if os.IsNotExist(err) {
-			goto TAKE_OWNERSHIP
-		}
-		if err == nil {
-			if time.Since(info.ModTime()) > MaxLockTime {
-				os.Remove(lockPath)
-				goto TAKE_OWNERSHIP
-			}
-		}
-		time.Sleep(100 * time.Millisecond)
-	}
-
-TAKE_OWNERSHIP:
-	file, err := os.OpenFile(lockPath, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0666)
-	if err != nil {
-		return fmt.Errorf("Could not write lock file. Unresolved concurrent access.")
-	}
-	file.Close()
-	return nil
-}
-
-func releaseLock(lockPath string) {
-	os.Remove(lockPath)
 }
 
 func getMemoryDir() string {

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 
 	"github.com/nyecov/context-engine/internal/registry"
@@ -19,6 +20,8 @@ const (
 	SoftLimitChars        = 8000
 	HardLimitChars        = 10000
 )
+
+var mu sync.Mutex
 
 type SessionEntry struct {
 	Timestamp string `json:"timestamp"`
@@ -39,6 +42,9 @@ type SessionState struct {
 // ------------------------------------------------------------------
 
 func HandleLogSessionFinding(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	mu.Lock()
+	defer mu.Unlock()
+
 	args, ok := request.Params.Arguments.(map[string]interface{})
 	if !ok {
 		return mcp.NewToolResultError("Arguments must be a JSON object"), nil
@@ -103,6 +109,9 @@ func HandleLogSessionFinding(ctx context.Context, request mcp.CallToolRequest) (
 }
 
 func HandleReadSessionState(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	mu.Lock()
+	defer mu.Unlock()
+
 	memDir := getMemoryDir()
 	statePath := filepath.Join(memDir, SessionFilename)
 	
@@ -118,6 +127,9 @@ func HandleReadSessionState(ctx context.Context, request mcp.CallToolRequest) (*
 }
 
 func HandleDeleteSessionFinding(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	mu.Lock()
+	defer mu.Unlock()
+
 	args, ok := request.Params.Arguments.(map[string]interface{})
 	if !ok {
 		return mcp.NewToolResultError("Arguments must be a JSON object"), nil
@@ -159,6 +171,9 @@ func HandleDeleteSessionFinding(ctx context.Context, request mcp.CallToolRequest
 }
 
 func HandleClearSessionState(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	mu.Lock()
+	defer mu.Unlock()
+
 	memDir := getMemoryDir()
 	lockPath := filepath.Join(memDir, LockFilename)
 	if err := acquireLock(lockPath); err != nil {

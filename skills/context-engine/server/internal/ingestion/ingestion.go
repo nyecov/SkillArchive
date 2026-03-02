@@ -36,11 +36,12 @@ func HandleIngestContext(ctx context.Context, request mcp.CallToolRequest) (*mcp
 
 	// Clean and join paths to prevent directory traversal
 	cleanPath := filepath.Clean(targetPath)
-	absPath := filepath.Join(workspaceRoot, cleanPath)
+	absPath := filepath.Clean(filepath.Join(workspaceRoot, cleanPath))
 
 	// Poka-yoke: Prevent traversal outside workspace
 	// Ensure absPath truly starts with workspaceRoot to prevent ../ escapes
-	if !strings.HasPrefix(absPath, workspaceRoot) {
+	workspacePrefix := filepath.Clean(workspaceRoot) + string(filepath.Separator)
+	if !strings.HasPrefix(absPath, workspacePrefix) && absPath != filepath.Clean(workspaceRoot) {
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Access Denied. Path %s attempts to traverse outside the workspace root.", targetPath)), nil
 	}
 

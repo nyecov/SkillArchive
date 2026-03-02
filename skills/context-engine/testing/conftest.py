@@ -36,7 +36,7 @@ async def mcp_server(test_workspace):
     Session-scoped fixture providing a connected MCP ClientSession.
     Keeps the container alive throughout the entire test run to eliminate cold-starts.
     """
-    # Pre-boot lock clear with retry (Poka-yoke)
+    # Pre-boot setup (Poka-yoke)
     lock_path = os.path.join(test_workspace, ".engine.instance.lock")
     session_path = os.path.join(test_workspace, "current_session.json")
     ontology_path = os.path.join(test_workspace, "ontology.json")
@@ -47,16 +47,6 @@ async def mcp_server(test_workspace):
     if os.path.exists(ontology_path):
         os.remove(ontology_path)
 
-    for _ in range(5):
-        if os.path.exists(lock_path):
-            try:
-                os.remove(lock_path)
-                print(f"\n[LOCK CLEARED] Pre-boot lock at {lock_path}")
-            except OSError:
-                print(f"\n[LOCK BUSY] Waiting for lock release at {lock_path}...")
-                await asyncio.sleep(1.0)
-        else:
-            break
     await asyncio.sleep(0.5)
 
     container_name = f"ce-test-{uuid.uuid4().hex[:8]}"
@@ -100,8 +90,5 @@ async def mcp_server(test_workspace):
         os.system(f"docker logs {container_name} > {os.path.join(test_workspace, 'last_container_error.log')} 2>&1")
         raise
     finally:
-        # Robustness: Clear singleton lock for next test
-        lock_path = os.path.join(test_workspace, ".engine.instance.lock")
-        if os.path.exists(lock_path):
-            os.remove(lock_path)
+        # Robustness: Give OS time to reap file handles
         await asyncio.sleep(0.2)

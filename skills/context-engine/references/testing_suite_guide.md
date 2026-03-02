@@ -26,7 +26,7 @@ The suite covers four critical architectural pillars across 15 automated test ca
 6.  **Memory Maturation (Lifecycle)**
     - **Creation -> Upgrade -> Prune**: Verifying the explicit promotion of volatile scratchpad items into the permanent ontology graph, followed by a surgical pruning of the scratchpad.
     - **Downgrade (Reversion)**: Verifying the deletion of an ontology edge to revert an outdated architectural rule back into the volatile state for re-evaluation.
-    - **After-Test Cleanup**: Validating the efficiency of bulk state truncation (`clear_session_state`) and the robust deletion of the `.engine.instance.lock` and storage volumes between boot cycles.
+    - **After-Test Cleanup**: Validating the efficiency of bulk state truncation (`clear_session_state`) and the robust release of the POSIX lock (`.engine.instance.lock`) and storage volumes between boot cycles.
 
 ---
 
