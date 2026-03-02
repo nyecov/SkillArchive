@@ -17,7 +17,6 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | Skill | Description | Tags |
 |-------|-------------|------|
 | **[Interface Governance](skills/interface-governance/SKILL.md)** | Use when designing, building, auditing, testing, or consuming MCP servers and clients. Integrates API-Design-First pr... | `architecture` `testing` `mcp` `methodology` |
-| **[Ontology](skills/ontology/SKILL.md)** | Typed knowledge graph methodology for structured agent memory and composable actions.  Use to create, query, and enfo... | `context` `design` |
 | **[Shusa](skills/shusa-leadership/SKILL.md)** | The Shusa (Chief Engineer) leadership model for technical ownership and product vision. Ensures that a single individ... | `design` `leadership` `methodology` `lean` `TPS` |
 | **[Swarm Orchestration](skills/swarm-orchestration/SKILL.md)** | Protocols for multi-agent coordination and delegation.  Ensures that specialized sub-agents are tasked precisely and ... | `communication` `design` `kubernetes` |
 | **[Value Stream Mapping](skills/vsm/SKILL.md)** | Use when diagnosing slow workflows, high token consumption, or unexplained latency in multi-step tasks. Handles curre... | `design` `methodology` `optimization` `lean` `TPS` |
@@ -30,8 +29,6 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[Deglaze](skills/logic-deglazing/SKILL.md)** | Use when reviewing AI-generated solutions, validating user comprehension, or stress-testing proposals. Handles 5 cons... | `cognition` `safety` `methodology` |
 | **[Gemba](skills/gemba/SKILL.md)** | Use to establish a factual baseline of the codebase. Mandates direct observation before reasoning and enforces a stru... | `context` `methodology` `research` `lean` `TPS` |
 | **[Hansei](skills/hansei/SKILL.md)** | Use when a plan fails, a bug is found, or a post-mortem is needed. Mandates 5-Whys root-cause analysis. | `cognition` `methodology` `lean` `TPS` `kaizen` |
-| **[Plan with Files](skills/plan-with-files/SKILL.md)** | Implements file-based planning to organize and track progress on complex tasks using persistent markdown files locate... | `methodology` `context` `cognition` |
-| **[RAG Strategy](skills/rag-strategy/SKILL.md)** | Optimization of Retrieval-Augmented Generation.  Focuses on minimizing "Search Waste" (Motion Muda) by ensuring high-... | `context` `optimization` |
 
 ### ⚙️ Engineering
 
@@ -42,6 +39,12 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[Ship](skills/release-management/SKILL.md)** | Use when code is "feature complete" and approaching deployment, or when verifying production readiness. Handles stagi... | `engineering` `safety` `methodology` |
 | **[Test-Driven Development](skills/test-driven-development/SKILL.md)** | Use when implementing any feature or bugfix, before writing implementation code. Enforces the strict Red-Green-Refact... | `engineering` `testing` `methodology` |
 | **[Verification Before Completion](skills/completion-verification/SKILL.md)** | Use when about to claim work is complete, fixed, or passing, before committing or creating PRs. Requires running veri... | `safety` `engineering` `debugging` |
+
+### 📌 Memory
+
+| Skill | Description | Tags |
+|-------|-------------|------|
+| **[Context Engine](skills/context-engine/SKILL.md)** | Use when required to retrieve information, learn codebase rules, read files over 4,000 tokens, or record short-term p... | `memory` `mcp` `rag` `state` |
 
 ### 🔄 Meta
 
@@ -57,6 +60,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | Skill | Description | Tags |
 |-------|-------------|------|
 | **[Development Story Interview](skills/story-interview/SKILL.md)** | Use when a user requests feature scoping, requirements definition, or wants to plan a new development story, bugfix, ... | `methodology` `methodology` `lean` `cognition` `heijunka` |
+| **[Development Story Interview (with Context Engine)](skills/story-interview-with-context-engine/SKILL.md)** | Use when a user requests feature scoping or requirement definition specifically requiring the Context Engine for deep... | `methodology` `lean` `cognition` `heijunka` `context-engine` |
 | **[Genchi Genbutsu](skills/genchi-genbutsu/SKILL.md)** | Use to "Go and See for Yourself." Mandates empirical verification of all hypotheses and findings through direct execu... | `methodology` `research` `testing` `lean` `TPS` |
 | **[Heijunka](skills/heijunka/SKILL.md)** | Use to level the workload and prevent token/context spikes (Muri).  Handles the decomposition of massive tasks into m... | `methodology` `optimization` `lean` `TPS` |
 | **[Hō-Ren-Sō](skills/ho-ren-so/SKILL.md)** | Use when reporting progress, broadcasting state changes, or escalating ambiguous or blocked decisions to a human oper... | `communication` `methodology` `lean` `TPS` |
@@ -82,10 +86,11 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | Workflow | Description |
 |----------|-------------|
 | **[Lean Analysis Workflow](workflows/1-lean-analysis.md)** | Run a full Lean analysis on a document or topic using all 9 lean-tagged skills as analytical lenses |
-| **[Kaizen Sprint Workflow](workflows/2-kaizen-sprint.md)** | Run a full PDCA (Plan-Do-Check-Act) continuous improvement cycle on a recurring bug, friction point, or localized pro... |
+| **[Kaizen Sprint Workflow](workflows/2-kaizen-sprint.md)** | Standardized procedure for a rapid Kaizen iteration focusing on a single, isolated module. |
 | **[TPS Architecture Review Workflow](workflows/3-tps-architecture-review.md)** | Run a heavy-duty system-level architectural review for major refactors, cross-domain integrations, or organizational ... |
-| **[AI Agent Skill Import](workflows/ai-agent-skill-import.md)** | Procedural workflow to guide AI agents in discovering, verifying, and internalizing a skill from the Skill Archive li... |
-| **[Master Topic Refinement Workflow](workflows/master-topic-refinement.md)** | Execute a comprehensive, multi-stage refinement process on a topic using Story Interview, Lean Analysis, TPS Architec... |
+| **[AI Agent Skill Import](workflows/ai-agent-skill-import.md)** | Procedure for synthesizing new agentic capabilities from an external repository into the local Skill Archive. |
+| **[Master Topic Refinement Workflow (with Context Engine)](workflows/master-topic-refinement-with-context-engine.md)** | A multi-phase refinement protocol enhanced by the Context Engine to ensure a topic, documentation, or codebase reache... |
+| **[Master Topic Refinement Workflow](workflows/master-topic-refinement.md)** | A multi-phase refinement protocol to ensure a topic, documentation, or codebase reaches the highest level of Lean qua... |
 
 ## 🛠️ Tools Index
 

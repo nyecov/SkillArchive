@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  context-engine:
+    # Build the image using the local multi-stage Dockerfile
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    # Give the image a clean name for local caching
+    image: context-engine-go:latest
+
+    # Volume Mapping
+    # Maps the host's actual workspace directory to /workspace inside the container.
+    # We use relative paths referencing the parent directory holding temp__mem,
+    # ensuring the MCP server has read/write access to the actual project files 
+    # and the specific .gemini/mem folder where state is persisted.
+    volumes:
+      - ../../:/workspace
+
+    # Environment Variables
+    environment:
+      # Tell the Go server exactly where the workspace root is inside the container
+      - WORKSPACE_ROOT=/workspace
+      # Tell the Go server exactly where to persist its JSON/YAML memory graphs
+      - MEMORY_DIR=/workspace/.gemini/mem
+
+    # MCP stdio requirements
+    # Since MCP uses Standard Input / Standard Output to communicate with the client,
+    # we must ensure Docker attaches these pipes cleanly and doesn't swallow them.
+    stdin_open: true # Equivalent to -i
+    tty: false # Crucial: Must be false for binary/JSON-RPC protocols over stdio
+
+    # The container should only run when the client explicitly invokes it,
+    # so we do not want Docker restarting it in the background as a daemon.
+    restart: "no"
+
+  context-engine-daemon:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    image: context-engine-go:latest
+    container_name: context-engine-daemon
+    volumes:
+      - ../../:/workspace
+    environment:
+      - WORKSPACE_ROOT=/workspace
+      - MEMORY_DIR=/workspace/.gemini/mem
+    stdin_open: true
+    tty: false
+    # In daemon mode, we keep the process alive
+    restart: unless-stopped
+    # Use a dummy command to keep it running if the server normally exits on stdin close
+    # However, since we want to exec into it, we can just run the server.
+    command: [ "/context-engine-server" ]
