@@ -17,8 +17,11 @@ RUN go mod tidy
 # Build the Go application statically
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o context-engine-server ./cmd/server
 
-# Final lightweight Stage
-FROM scratch
+# Final lightweight Stage — Alpine instead of scratch for debugging and process management
+FROM alpine:3.21
+
+# Install procps for pidof/pkill (used by connect scripts to kill orphaned processes)
+RUN apk add --no-cache procps
 
 # Copy the static binary from the builder stage
 COPY --from=builder /app/context-engine-server /context-engine-server

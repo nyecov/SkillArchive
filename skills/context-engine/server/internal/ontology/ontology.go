@@ -122,6 +122,9 @@ func HandleCommitOntologyEdge(ctx context.Context, request mcp.CallToolRequest) 
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to append to WAL: %v", err)), nil
 	}
 
+	// Trigger checkpoint if mutation threshold reached
+	maybeCheckpoint()
+
 	return mcp.NewToolResultText(fmt.Sprintf("Successfully committed %s -> %s -> %s.", source, edgeType, target)), nil
 }
 
@@ -179,6 +182,9 @@ func HandleDeleteOntologyEdge(ctx context.Context, request mcp.CallToolRequest) 
 	if err := appendToWAL("DELETE_EDGE", source, edgeType, target); err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to append to WAL: %v", err)), nil
 	}
+
+	// Trigger checkpoint if mutation threshold reached
+	maybeCheckpoint()
 
 	return mcp.NewToolResultText(fmt.Sprintf("Successfully deleted %s -> %s -> %s.", source, edgeType, target)), nil
 }
@@ -306,13 +312,4 @@ func detectCycle(graph *OntologyGraph, source, target string) bool {
 	}
 
 	return dfs(target)
-}
-
-func getMemoryDir() string {
-	dir := os.Getenv("MEMORY_DIR")
-	if dir == "" {
-		dir = "/workspace/.gemini/mem"
-	}
-	os.MkdirAll(dir, 0755)
-	return dir
 }

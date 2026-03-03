@@ -3,9 +3,12 @@ package ontology
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/nyecov/context-engine/internal/config"
 )
 
 type WALEntry struct {
@@ -16,10 +19,17 @@ type WALEntry struct {
 	Timestamp string `json:"timestamp"`
 }
 
+const (
+	// CheckpointThreshold defines how many WAL mutations accumulate before
+	// the in-memory graph is flushed to ontology.json and the WAL is truncated.
+	CheckpointThreshold = 10
+)
+
 var (
-	globalGraph *OntologyGraph
-	walFile     *os.File
-	isInit      bool
+	globalGraph    *OntologyGraph
+	walFile        *os.File
+	isInit         bool
+	mutationsSinceCheckpoint int
 )
 
 // InitStorage loads the baseline ontology and replays the WAL.
@@ -28,7 +38,7 @@ func InitStorage() error {
 		return nil
 	}
 
-	memDir := getMemoryDir()
+	memDir := config.GetMemoryDir()
 	graphPath := filepath.Join(memDir, GraphFilename)
 
 	// Load baseline graph
@@ -52,6 +62,7 @@ func InitStorage() error {
 	}
 	walFile = f
 	isInit = true
+	mutationsSinceCheckpoint = 0
 
 	return nil
 }
@@ -127,4 +138,72 @@ func appendToWAL(action, source, edgeType, target string) error {
 		return err
 	}
 	return walFile.Sync()
+}
+
+// maybeCheckpoint flushes the in-memory graph to ontology.json and truncates the WAL
+// when the mutation count exceeds CheckpointThreshold. This prevents unbounded WAL
+// growth and ensures the baseline snapshot stays current.
+func maybeCheckpoint() {
+	mutationsSinceCheckpoint++
+	if mutationsSinceCheckpoint < CheckpointThreshold {
+		return
+	}
+
+	memDir := config.GetMemoryDir()
+	graphPath := filepath.Join(memDir, GraphFilename)
+
+	if err := checkpoint(graphPath); err != nil {
+		fmt.Fprintf(os.Stderr, "[ONTOLOGY-CHECKPOINT] Warning: checkpoint failed: %v\n", err)
+		return
+	}
+
+	mutationsSinceCheckpoint = 0
+	fmt.Fprintf(os.Stderr, "[ONTOLOGY-CHECKPOINT] Graph flushed to %s. WAL truncated.\n", GraphFilename)
+}
+
+// checkpoint atomically writes the in-memory graph to ontology.json and truncates the WAL.
+func checkpoint(graphPath string) error {
+	// 1. Atomic write graph to disk via tmp + rename
+	bytes, err := json.MarshalIndent(globalGraph, "", "  ")
+	if err != nil {
+		return fmt.Errorf("marshal error: %v", err)
+	}
+
+	tmpPath := graphPath + ".tmp"
+	f, err := os.OpenFile(tmpPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	if err != nil {
+		return fmt.Errorf("tmp file error: %v", err)
+	}
+
+	if _, err := f.Write(bytes); err != nil {
+		f.Close()
+		return fmt.Errorf("write error: %v", err)
+	}
+	if err := f.Sync(); err != nil {
+		f.Close()
+		return fmt.Errorf("sync error: %v", err)
+	}
+	f.Close()
+
+	if err := os.Rename(tmpPath, graphPath); err != nil {
+		return fmt.Errorf("rename error: %v", err)
+	}
+
+	// 2. Truncate WAL (close, truncate, reopen for append)
+	if walFile != nil {
+		walFile.Close()
+	}
+
+	walPath := filepath.Join(config.GetMemoryDir(), "ontology.wal")
+	if err := os.Truncate(walPath, 0); err != nil {
+		return fmt.Errorf("WAL truncate error: %v", err)
+	}
+
+	wf, err := os.OpenFile(walPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		return fmt.Errorf("WAL reopen error: %v", err)
+	}
+	walFile = wf
+
+	return nil
 }

@@ -21,5 +21,15 @@ if ($IsRunning -ne "true") {
     }
 }
 
+# Kill any orphaned server process from a previous session to prevent
+# 15-second singleton lock contention on every agent reconnect.
+try {
+    docker exec $ContainerName sh -c 'kill $(pidof context-engine-server) 2>/dev/null' 2>$null
+    # Brief pause to allow lock file cleanup from graceful shutdown
+    Start-Sleep -Milliseconds 500
+} catch {
+    # No orphan found — clean state
+}
+
 # Execute the server binary inside the running container
 docker exec -i $ContainerName /context-engine-server

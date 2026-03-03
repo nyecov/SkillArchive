@@ -12,5 +12,10 @@ if [ "$(docker inspect -f '{{.State.Running}}' $CONTAINER 2>/dev/null)" != "true
     docker compose -f "$COMPOSE_FILE" up -d context-engine-daemon
 fi
 
+# Kill any orphaned server process from a previous session to prevent
+# 15-second singleton lock contention on every agent reconnect.
+docker exec "$CONTAINER" sh -c 'kill $(pidof context-engine-server) 2>/dev/null' 2>/dev/null || true
+sleep 0.5  # Brief pause to allow lock file cleanup from graceful shutdown
+
 # Execute the server binary inside the running container
 exec docker exec -i "$CONTAINER" /context-engine-server

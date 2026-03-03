@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/nyecov/context-engine/internal/config"
 )
 
 const (
@@ -21,6 +22,7 @@ const (
 var mu sync.Mutex
 
 // HandleAppendInterviewQA handles the logic for appending a TOON-formatted Q&A pair.
+// Note: Protected by the process-level singleton guard — no additional file lock needed.
 func HandleAppendInterviewQA(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	mu.Lock()
 	defer mu.Unlock()
@@ -49,7 +51,7 @@ func HandleAppendInterviewQA(ctx context.Context, request mcp.CallToolRequest) (
 	timestamp := time.Now().Format(time.RFC3339)
 	entry := fmt.Sprintf("\n[META: Timestamp: %s]\n%s", timestamp, qaPair)
 
-	memDir := getMemoryDir()
+	memDir := config.GetMemoryDir()
 	bankPath := filepath.Join(memDir, QABankFilename)
 
 	// Append to file
@@ -62,7 +64,7 @@ func HandleAppendInterviewQA(ctx context.Context, request mcp.CallToolRequest) (
 	if _, err := f.WriteString(entry); err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to write to QA bank: %v", err)), nil
 	}
-	
+
 	// Ensure it hits the disk for cross-container consistency
 	if err := f.Sync(); err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to sync QA bank to disk: %v", err)), nil
@@ -86,7 +88,7 @@ func HandleRetrieveInterviewPatterns(ctx context.Context, request mcp.CallToolRe
 		query = "" // Optional query
 	}
 
-	memDir := getMemoryDir()
+	memDir := config.GetMemoryDir()
 	bankPath := filepath.Join(memDir, QABankFilename)
 
 	file, err := os.Open(bankPath)
@@ -100,10 +102,6 @@ func HandleRetrieveInterviewPatterns(ctx context.Context, request mcp.CallToolRe
 
 	var resultBuilder strings.Builder
 	scanner := bufio.NewScanner(file)
-	
-	// Optional: Increase scanner buffer size if TOON blocks get extremely large
-	// buf := make([]byte, 0, 64*1024)
-	// scanner.Buffer(buf, 1024*1024)
 
 	var currentBlock strings.Builder
 	inBlock := false
@@ -127,7 +125,7 @@ func HandleRetrieveInterviewPatterns(ctx context.Context, request mcp.CallToolRe
 					resultBuilder.WriteString(currentBlock.String())
 				}
 			}
-			
+
 			// Reset for new block
 			currentBlock.Reset()
 			inBlock = true
@@ -189,13 +187,10 @@ func HandlePruneInterviewQA(ctx context.Context, request mcp.CallToolRequest) (*
 		}
 	}
 
-	memDir := getMemoryDir()
+	memDir := config.GetMemoryDir()
 	bankPath := filepath.Join(memDir, QABankFilename)
 	tempPath := bankPath + ".tmp"
 
-	// Acquire POSIX cross-container lock (reuse logic from pokayoke via main process context)
-	// Note: We don't call AcquireSingletonLock here because the server process already holds it.
-	
 	file, err := os.Open(bankPath)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -213,19 +208,19 @@ func HandlePruneInterviewQA(ctx context.Context, request mcp.CallToolRequest) (*
 
 	scanner := bufio.NewScanner(file)
 	writer := bufio.NewWriter(tempFile)
-	
+
 	var currentBlock []string
 	prunedCount := 0
 	keptCount := 0
-	
+
 	flushBlock := func() error {
 		if len(currentBlock) == 0 {
 			return nil
 		}
-		
+
 		blockText := strings.Join(currentBlock, "\n") + "\n"
 		shouldPrune := false
-		
+
 		// 1. Check Date
 		if !cutoff.IsZero() {
 			for _, line := range currentBlock {
@@ -239,14 +234,14 @@ func HandlePruneInterviewQA(ctx context.Context, request mcp.CallToolRequest) (*
 				}
 			}
 		}
-		
+
 		// 2. Check Query
 		if !shouldPrune && query != "" {
 			if strings.Contains(strings.ToLower(blockText), strings.ToLower(query)) {
 				shouldPrune = true
 			}
 		}
-		
+
 		if shouldPrune {
 			prunedCount++
 		} else {
@@ -284,14 +279,4 @@ func HandlePruneInterviewQA(ctx context.Context, request mcp.CallToolRequest) (*
 	}
 
 	return mcp.NewToolResultText(fmt.Sprintf("Pruning complete. Removed %d entries. %d entries remain in the Memory Bank.", prunedCount, keptCount)), nil
-}
-
-func getMemoryDir() string {
-	dir := os.Getenv("MEMORY_DIR")
-	if dir == "" {
-		dir = "/workspace/.gemini/mem"
-	}
-	// Ensure directory exists
-	os.MkdirAll(dir, 0755)
-	return dir
 }

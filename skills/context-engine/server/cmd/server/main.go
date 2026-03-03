@@ -25,7 +25,7 @@ func main() {
 
 	// Register Tool: ingest_context
 	registerIngestContextTool(s)
-	
+
 	// Register Tool: log_session_finding
 	registerLogSessionFindingTool(s)
 
@@ -68,19 +68,30 @@ func main() {
 	}
 	defer pokayoke.ReleaseSingletonLock()
 
-	// Handle Graceful Shutdown (Signal Intercept)
+	// Initialize the Heartbeat to prove we are alive and hold the lock.
+	// StartHeartbeat returns a channel that fires if the lock is lost.
+	heartbeatCtx, cancelHeartbeat := context.WithCancel(context.Background())
+	defer cancelHeartbeat()
+	heartbeatLost := pokayoke.StartHeartbeat(heartbeatCtx)
+
+	// Handle Graceful Shutdown from OS signals or heartbeat loss
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
-		<-sigs
-		fmt.Fprintf(os.Stderr, "\n[SHUTDOWN] Signal received. Releasing singleton lock...\n")
+		select {
+		case <-sigs:
+			fmt.Fprintf(os.Stderr, "\n[SHUTDOWN] Signal received. Canceling heartbeat and releasing singleton lock...\n")
+		case <-heartbeatLost:
+			fmt.Fprintf(os.Stderr, "\n[SHUTDOWN] Heartbeat lost. Initiating graceful shutdown to protect data integrity...\n")
+		}
+		cancelHeartbeat()
 		pokayoke.ReleaseSingletonLock()
 		os.Exit(0)
 	}()
 
 	// Start the stdio server (This blocks indefinitely, serving JSON-RPC over stdin/stdout)
 	if err := server.ServeStdio(s); err != nil {
-		panic(fmt.Sprintf("Failed to start Context Engine MCP Server: %v", err))
+		fmt.Fprintf(os.Stderr, "Context Engine MCP Server exited: %v\n", err)
 	}
 }
 

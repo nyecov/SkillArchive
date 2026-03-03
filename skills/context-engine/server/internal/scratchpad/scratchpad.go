@@ -9,19 +9,19 @@ import (
 	"sync"
 	"time"
 
+	"github.com/nyecov/context-engine/internal/config"
 	"github.com/nyecov/context-engine/internal/registry"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
 const (
-	SessionFilename       = "current_session.json"
-	LockFilename          = ".current_session.lock"
-	MaxLockDuration       = 5 * time.Second
-	SoftLimitChars        = 8000
-	HardLimitChars        = 10000
+	SessionFilename = "current_session.json"
+	SoftLimitChars  = 8000
+	HardLimitChars  = 10000
 )
 
-var mu sync.Mutex
+// RWMutex allows concurrent reads while ensuring exclusive writes.
+var mu sync.RWMutex
 
 type SessionEntry struct {
 	Timestamp string `json:"timestamp"`
@@ -60,14 +60,7 @@ func HandleLogSessionFinding(ctx context.Context, request mcp.CallToolRequest) (
 		return mcp.NewToolResultError("phase is required and must be one of: planning, execution, verification, blocked"), nil
 	}
 
-	// Wait for and acquire lock
-	memDir := getMemoryDir()
-	lockPath := filepath.Join(memDir, LockFilename)
-	if err := acquireLock(lockPath); err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Could not acquire file lock: %v", err)), nil
-	}
-	defer releaseLock(lockPath)
-
+	memDir := config.GetMemoryDir()
 	statePath := filepath.Join(memDir, SessionFilename)
 	state, err := loadSessionState(statePath)
 	if err != nil {
@@ -109,12 +102,13 @@ func HandleLogSessionFinding(ctx context.Context, request mcp.CallToolRequest) (
 }
 
 func HandleReadSessionState(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	mu.Lock()
-	defer mu.Unlock()
+	// Read lock — allows concurrent reads without blocking other readers
+	mu.RLock()
+	defer mu.RUnlock()
 
-	memDir := getMemoryDir()
+	memDir := config.GetMemoryDir()
 	statePath := filepath.Join(memDir, SessionFilename)
-	
+
 	bytes, err := os.ReadFile(statePath)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -140,13 +134,7 @@ func HandleDeleteSessionFinding(ctx context.Context, request mcp.CallToolRequest
 		return mcp.NewToolResultError("index (0-based) is required and must be a number"), nil
 	}
 
-	memDir := getMemoryDir()
-	lockPath := filepath.Join(memDir, LockFilename)
-	if err := acquireLock(lockPath); err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Could not acquire lock: %v", err)), nil
-	}
-	defer releaseLock(lockPath)
-
+	memDir := config.GetMemoryDir()
 	statePath := filepath.Join(memDir, SessionFilename)
 	state, err := loadSessionState(statePath)
 	if err != nil {
@@ -174,14 +162,9 @@ func HandleClearSessionState(ctx context.Context, request mcp.CallToolRequest) (
 	mu.Lock()
 	defer mu.Unlock()
 
-	memDir := getMemoryDir()
-	lockPath := filepath.Join(memDir, LockFilename)
-	if err := acquireLock(lockPath); err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Could not acquire lock: %v", err)), nil
-	}
-	defer releaseLock(lockPath)
-
+	memDir := config.GetMemoryDir()
 	statePath := filepath.Join(memDir, SessionFilename)
+
 	// Atomic reset
 	state := &SessionState{
 		UUID:        registry.GenerateUniqueUUID(statePath),
@@ -225,16 +208,6 @@ func saveSessionState(path string, state *SessionState) error {
 // Internal Helpers
 // ------------------------------------------------------------------
 
-func getMemoryDir() string {
-	dir := os.Getenv("MEMORY_DIR")
-	if dir == "" {
-		dir = "/workspace/.gemini/mem"
-	}
-	// Ensure directory exists
-	os.MkdirAll(dir, 0755)
-	return dir
-}
-
 func loadSessionState(path string) (*SessionState, error) {
 	bytes, err := os.ReadFile(path)
 	if err != nil {
@@ -267,34 +240,4 @@ func loadSessionState(path string) (*SessionState, error) {
 	}
 
 	return &state, nil
-}
-
-// acquireLock implements the deterministic Timeout Heuristic
-func acquireLock(lockPath string) error {
-	for i := 0; i < 60; i++ { // Try for 6 seconds total
-		info, err := os.Stat(lockPath)
-		if os.IsNotExist(err) {
-			goto TAKE_OWNERSHIP
-		}
-		
-		if err == nil {
-			if time.Since(info.ModTime()) > MaxLockDuration {
-				os.Remove(lockPath)
-				goto TAKE_OWNERSHIP
-			}
-		}
-		time.Sleep(100 * time.Millisecond)
-	}
-
-TAKE_OWNERSHIP:
-	file, err := os.OpenFile(lockPath, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0666)
-	if err != nil {
-		return fmt.Errorf("Could not write lock file. Unresolved concurrent access.")
-	}
-	file.Close()
-	return nil
-}
-
-func releaseLock(lockPath string) {
-	os.Remove(lockPath)
 }

@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/nyecov/context-engine/internal/config"
 )
 
 const (
@@ -16,7 +18,7 @@ const (
 
 // RunBootDiagnostics performs a complete schema/UUID validation sequence across all memory files.
 func RunBootDiagnostics() error {
-	memDir := getMemoryDir()
+	memDir := config.GetMemoryDir()
 	logPath := filepath.Join(memDir, DiagLogFile)
 
 	// We overwrite the old diagnostics log on every boot
@@ -29,7 +31,7 @@ func RunBootDiagnostics() error {
 	log := func(msg string) {
 		timestamp := time.Now().Format(time.RFC3339)
 		logFile.WriteString(fmt.Sprintf("[%s] %s\n", timestamp, msg))
-		fmt.Fprintf(os.Stderr, "[%s] %s\n", timestamp, msg) 
+		fmt.Fprintf(os.Stderr, "[%s] %s\n", timestamp, msg)
 	}
 
 	log("Starting Context Engine Boot Sequence.")
@@ -114,13 +116,4 @@ func quarantineFile(path string, logFunc func(string)) string {
 	os.Rename(path, corruptedPath)
 	logFunc(fmt.Sprintf("ACTION GUARANTEED: File quarantined to %s. State reset to empty on next tool call.", corruptedPath))
 	return corruptedPath
-}
-
-func getMemoryDir() string {
-	dir := os.Getenv("MEMORY_DIR")
-	if dir == "" {
-		dir = "/workspace/.gemini/mem"
-	}
-	os.MkdirAll(dir, 0755)
-	return dir
 }
