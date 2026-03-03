@@ -40,12 +40,17 @@ Analyze the retrieved TOON blocks (`[Q: ...]
 ## Implementation Workflow
 
 1. **Trigger:** User asks to "analyze interview patterns regarding [topic/general]."
-2. **Execute:** 
-   - Call `retrieve_interview_patterns` using the requested topic as the `query` (or empty string for general recent patterns).
+2. **Reconcile (Poka-yoke):** 
+   - Check for `.gemini/tmp/pending_interview_qa.toon`.
+   - If found, attempt to commit its contents into the main Memory Bank using `append_interview_qa` and delete the temp file.
+   - If the server remains offline, read the temp file directly and use it as "Shadow Context."
+3. **Execute:** 
+   - Call `retrieve_interview_patterns` using the requested topic as the `query` (or empty string for general recent patterns) to get historical context.
+   - Combine with any Shadow Context.
    - If truncation occurs, refine the query and call again.
    - Analyze the retrieved TOON blocks.
-3. **Verify:** Ensure the extracted patterns are actually actionable directives, not just observations.
-4. **Output:** Render a **Kaizen Guidance Report** summarizing the Anti-Patterns, Verified Patterns, and a Yokoten proposal for updating existing skills.
+4. **Verify:** Ensure the extracted patterns are actually actionable directives, not just observations.
+5. **Output:** Render a **Kaizen Guidance Report** summarizing the Anti-Patterns, Verified Patterns, and a Yokoten proposal for updating existing skills.
 
 ## Poka-yoke Output Template
 

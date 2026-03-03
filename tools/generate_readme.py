@@ -1,54 +1,64 @@
+"""
+README Generator Tool
+--------------------
+Automatically generates the root README.md by scanning all skills, 
+workflows, and tools. Groups skills by category and provides 
+an indexed table for high-level repository discovery.
+
+Usage: python tools/generate_readme.py
+"""
+
 import os
-import yaml
+import sys
+import logging
 import re
 from pathlib import Path
+from collections import defaultdict
+from repo_utils import setup_logging, get_frontmatter, atomic_write
 
-SKILLS_DIR = Path("skills")
-WORKFLOWS_DIR = Path("workflows")
-README_PATH = Path("README.md")
+# Initialize standardized logging
+log = setup_logging("readme_generator")
 
-def parse_skill_file(file_path):
-    with open(file_path, "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    # Extract frontmatter between ---
-    meta = {}
-    fm_match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
-    if fm_match:
-        try:
-            meta = yaml.safe_load(fm_match.group(1))
-        except yaml.YAMLError as e:
-            print(f"Error parsing YAML in {file_path}: {e}")
+def get_display_name(file_path: Path, meta: dict) -> str:
+    """Extracts H1 title or falls back to name from meta."""
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        title_match = re.search(r'^#\s+(.*)', content, re.MULTILINE)
+        if title_match:
+            return title_match.group(1).strip()
+    except Exception:
+        pass
+    return meta.get('name', file_path.stem.replace('-', ' ').title())
 
-    # Extract H1 title
-    title_match = re.search(r'^#\s+(.*)', content, re.MULTILINE)
-    if title_match:
-        meta['display_name'] = title_match.group(1).strip()
-    else:
-        meta['display_name'] = meta.get('name', file_path.stem.replace('-', ' ').title())
-        
-    return meta
+def generate_readme():
+    """Main README generation logic."""
+    skills_dir = Path("skills")
+    workflows_dir = Path("workflows")
+    tools_dir = Path("tools")
+    readme_path = Path("README.md")
 
-def main():
-    if not SKILLS_DIR.exists():
-        print("Skills directory not found!")
-        return
+    if not skills_dir.exists():
+        log.error("Skills directory not found!")
+        sys.exit(1)
 
     skills = []
+    log.info("Collecting skill metadata...")
     
-    # Collect all skill data
-    for skill_folder in sorted(os.listdir(SKILLS_DIR)):
-        skill_file = SKILLS_DIR / skill_folder / "SKILL.md"
+    for skill_folder in sorted(os.listdir(skills_dir)):
+        skill_file = skills_dir / skill_folder / "SKILL.md"
         if skill_file.is_file():
-            meta = parse_skill_file(skill_file)
+            meta = get_frontmatter(skill_file)
             if meta:
                 meta['folder'] = skill_folder
                 meta['path'] = f"skills/{skill_folder}/SKILL.md"
-                # Ensure tags exist as list
-                if 'tags' not in meta or not meta['tags']:
-                    meta['tags'] = []
-                elif isinstance(meta['tags'], str):
-                    meta['tags'] = [t.strip() for t in meta['tags'].split(',')]
+                meta['display_name'] = get_display_name(skill_file, meta)
+                
+                # Normalize tags
+                tags = meta.get('tags', [])
+                if isinstance(tags, str):
+                    tags = [t.strip() for t in tags.split(',')]
+                meta['tags'] = tags if isinstance(tags, list) else []
                 
                 if 'category' not in meta:
                     meta['category'] = 'Uncategorized'
@@ -56,10 +66,7 @@ def main():
                 skills.append(meta)
 
     # Group by Category
-    from collections import defaultdict
     grouped_skills = defaultdict(list)
-
-    # Dictionary of emojis for categories
     category_emojis = {
         'Architecture': '🏗️',
         'Cognition': '🧠',
@@ -73,7 +80,7 @@ def main():
         cat = str(skill.get('category', 'Uncategorized')).title()
         grouped_skills[cat].append(skill)
 
-    # Generate Markdown Content
+    # Start building Markdown
     md_lines = [
         "# 📚 Skill Archive",
         "",
@@ -85,6 +92,7 @@ def main():
         "|-----------|---------|",
         "| `skills/` | High-level cognitive methodologies and tactical frameworks (Markdown + YAML frontmatter). |",
         "| `tools/` | Low-level, standalone execution scripts (Bash/Python). |",
+        "| `workflows/`| Multi-step protocols for complex agent tasks. |",
         "| `templates/`| Standardized formatting templates for new skills. |",
         "",
         "## 📋 Skill Index",
@@ -101,28 +109,25 @@ def main():
         for skill in sorted(grouped_skills[category], key=lambda x: x.get('display_name', '')):
             name = skill.get('display_name', 'Unknown Skill')
             path = skill['path']
-            # Clean up description (remove newlines, escape pipes if any)
             desc = str(skill.get('description', '')).strip().replace('\n', ' ').replace('|', '\\|')
-            
-            # Truncate long descriptions for table readability
             if len(desc) > 120:
                 desc = desc[:117] + "..."
             
-            tags = skill.get('tags', [])
-            tag_str = " ".join([f"`{t}`" for t in tags])
-            
+            tag_str = " ".join([f"`{t}`" for t in skill.get('tags', [])])
             md_lines.append(f"| **[{name}]({path})** | {desc} | {tag_str} |")
         md_lines.append("")
 
-    # Add Workflows Section
-    if WORKFLOWS_DIR.exists():
+    # Workflow Index
+    if workflows_dir.exists():
+        log.info("Collecting workflow metadata...")
         workflows = []
-        for wf_file in sorted(os.listdir(WORKFLOWS_DIR)):
+        for wf_file in sorted(os.listdir(workflows_dir)):
             if wf_file.endswith(".md"):
-                wf_path = WORKFLOWS_DIR / wf_file
-                meta = parse_skill_file(wf_path)
+                wf_path = workflows_dir / wf_file
+                meta = get_frontmatter(wf_path)
                 if meta:
                     meta['path'] = f"workflows/{wf_file}"
+                    meta['display_name'] = get_display_name(wf_path, meta)
                     workflows.append(meta)
 
         if workflows:
@@ -139,9 +144,9 @@ def main():
                 md_lines.append(f"| **[{name}]({path})** | {desc} |")
             md_lines.append("")
 
-    # Add Tools Section
-    tools_dir = Path("tools")
+    # Tools Index
     if tools_dir.exists():
+        log.info("Collecting tools documentation...")
         md_lines.append("## 🛠️ Tools Index")
         md_lines.append("")
         md_lines.append("> Standalone, low-level execution scripts. See the [Tools Management Strategy](skills/tools-management/SKILL.md).")
@@ -155,24 +160,27 @@ def main():
                 desc_path = tool_path / "description.md"
                 desc_text = ""
                 if desc_path.exists():
-                    with open(desc_path, "r", encoding="utf-8") as f:
-                        lines = f.readlines()
-                        # try to get the first non-header line
-                        for line in lines:
-                            line = line.strip()
-                            if line and not line.startswith('#') and not line.startswith('**'):
-                                desc_text = line.replace('|', '\\|')
-                                break
+                    try:
+                        with open(desc_path, "r", encoding="utf-8") as f:
+                            for line in f:
+                                line = line.strip()
+                                if line and not line.startswith('#') and not line.startswith('**'):
+                                    desc_text = line.replace('|', '\\|')
+                                    break
+                    except Exception:
+                        pass
                 
                 md_lines.append(f"| **[{tool_folder}](tools/{tool_folder})** | {desc_text} |")
         md_lines.append("")
 
-    new_readme_content = "\n".join(md_lines)
-    
-    with open(README_PATH, "w", encoding="utf-8") as f:
-        f.write(new_readme_content)
-        
-    print(f"Successfully generated README.md with {len(skills)} skills.")
+    # Atomic Commit to README.md
+    log.info(f"Writing atomic update to {readme_path}...")
+    atomic_write(readme_path, "\n".join(md_lines))
+    log.info("README generation successful.")
 
 if __name__ == "__main__":
-    main()
+    try:
+        generate_readme()
+    except Exception as e:
+        log.critical(f"Unhandled exception during README generation: {e}", exc_info=True)
+        sys.exit(1)

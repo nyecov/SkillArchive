@@ -1,118 +1,127 @@
+"""
+Workflow Synchronization Tool
+----------------------------
+Synchronizes source workflows from /workflows into the .gemini/workflows directory
+using OS-native hard links (Windows) or symbolic links (Unix).
+
+Usage: python tools/sync_workflows.py
+"""
+
 import os
-import shutil
+import sys
+import json
+import logging
 import platform
 import subprocess
-import yaml
-import re
+from pathlib import Path
+from repo_utils import setup_logging, get_frontmatter, atomic_write
 
-# Paths
-ROOT_DIR = "."
-SOURCE_WORKFLOWS_DIR = os.path.join(ROOT_DIR, "workflows")
-TARGET_WORKFLOWS_DIR = os.path.join(ROOT_DIR, ".gemini", "workflows")
-CONFIG_FILE = os.path.join(ROOT_DIR, "local-agent-config.json")
+# Initialize standardized logging
+log = setup_logging("workflow_syncer")
 
-def create_symlink(source, target):
+def create_link(source: Path, target: Path):
     """
-    Creates a symbolic link for a file.
+    Creates a hard link (Windows) or a symlink (Unix).
     """
+    if target.exists() or target.is_symlink():
+        try:
+            target.unlink()
+        except Exception as e:
+            log.warning(f"Could not remove existing target {target}: {e}")
+
     try:
-        os.makedirs(os.path.dirname(target), exist_ok=True)
-        if os.path.exists(target) or os.path.islink(target):
-            os.unlink(target)
-            
         if platform.system() == "Windows":
             # Using 'mklink /H' for hard links which does not require admin rights.
-            subprocess.run(['cmd', '/c', 'mklink', '/H', target, source], check=True, capture_output=True)
+            subprocess.run(['cmd', '/c', 'mklink', '/H', str(target), str(source)], check=True, capture_output=True)
         else:
             os.symlink(source, target)
-        print(f"  [OK] Linked: {os.path.basename(source)} -> {os.path.basename(target)}")
+        log.info(f"  [LINKED] {source.name} -> {target.name}")
     except Exception as e:
-        print(f"  [ERROR] Linking {os.path.basename(source)}: {e}")
+        log.error(f"  [FAILED] Failed to link {source.name}: {e}")
 
-def get_workflow_meta(file_path):
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-            fm_match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
-            if fm_match:
-                return yaml.safe_load(fm_match.group(1))
-    except Exception as e:
-        print(f"  [ERROR] Parsing {file_path}: {e}")
-    return None
+def sync_workflows():
+    """Main synchronization loop."""
+    root_dir = Path(".")
+    source_dir = root_dir / "workflows"
+    target_dir = root_dir / ".gemini" / "workflows"
+    config_file = root_dir / "local-agent-config.json"
 
-def main():
     # KYT Safeguard
-    safe_target = TARGET_WORKFLOWS_DIR.replace('\\', '/')
-    if not safe_target.endswith('.gemini/workflows') and not safe_target.endswith('.gemini/workflows/'):
-        raise ValueError(f"KYT Safeguard Error: Target directory '{TARGET_WORKFLOWS_DIR}' is unsafe.")
+    if not str(target_dir).endswith(".gemini/workflows") and not str(target_dir).endswith(".gemini\\workflows"):
+        log.critical(f"KYT Safeguard: Target directory '{target_dir}' path is suspicious. Halting.")
+        sys.exit(1)
 
-    # Clear target directory
-    if os.path.exists(TARGET_WORKFLOWS_DIR):
-        print(f"Clearing existing links in {TARGET_WORKFLOWS_DIR}...")
-        for item in os.listdir(TARGET_WORKFLOWS_DIR):
-            item_path = os.path.join(TARGET_WORKFLOWS_DIR, item)
-            try:
-                if platform.system() == "Windows":
-                    # mklink /H creates hardlinks which appear as files
-                    os.unlink(item_path)
-                else:
-                    os.unlink(item_path)
-            except Exception as e:
-                print(f"  [ERROR] Could not delete {item}: {e}")
+    if not source_dir.exists():
+        log.error(f"Source workflows directory not found at {source_dir.absolute()}")
+        sys.exit(1)
+
+    # 1. Prepare Target Directory
+    if not target_dir.exists():
+        log.info(f"Creating missing target directory: {target_dir}")
+        target_dir.mkdir(parents=True, exist_ok=True)
     else:
-        os.makedirs(TARGET_WORKFLOWS_DIR, exist_ok=True)
+        log.info(f"Cleaning existing links in {target_dir}...")
+        for item in os.listdir(target_dir):
+            item_path = target_dir / item
+            try:
+                item_path.unlink()
+            except Exception as e:
+                log.warning(f"Failed to clear {item}: {e}")
 
-    if not os.path.exists(SOURCE_WORKFLOWS_DIR):
-        print(f"Source workflows directory not found at {SOURCE_WORKFLOWS_DIR}")
-        return
-
-    # 0. Load config to check discovery mode
-    import json
+    # 2. Load Config
     discovery_mode = "dynamic"
     synced_workflow_ids = []
-    if os.path.exists(CONFIG_FILE):
-        with open(CONFIG_FILE, 'r') as f:
-            config = json.load(f)
-            discovery_mode = config.get("discovery_mode", "dynamic")
-            synced_workflow_ids = list(config.get("synced_workflows", {}).keys())
+    if config_file.exists():
+        try:
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+                discovery_mode = config.get("discovery_mode", "dynamic")
+                synced_workflow_ids = list(config.get("synced_workflows", {}).keys())
+        except Exception as e:
+            log.warning(f"Could not read config file {config_file}: {e}")
 
-    # 1. Identify Workflow Files and their IDs
-    print("Discovering workflows...")
-    workflow_links = []
-    discovered_workflow_ids = {}
+    # 3. Discover Workflows
+    log.info(f"Discovering workflows (Mode: {discovery_mode})...")
+    active_workflows = {} # id -> target_filename
+    workflow_links = [] # list of (source, target_filename)
     
-    for f in os.listdir(SOURCE_WORKFLOWS_DIR):
+    for f in sorted(os.listdir(source_dir)):
         if f.endswith('.md'):
-            source_path = os.path.join(SOURCE_WORKFLOWS_DIR, f)
-            meta = get_workflow_meta(source_path)
-            if meta and meta.get('id') and meta.get('name'):
-                workflow_name = meta.get('name')
-                workflow_id = meta.get('id')
-                
+            source_path = source_dir / f
+            data = get_frontmatter(source_path)
+            
+            if data and data.get('id') and data.get('name'):
+                workflow_id = data['id']
                 if discovery_mode == "manual" and workflow_id not in synced_workflow_ids:
                     continue
                 
-                target_filename = f"{workflow_name}.md"
+                target_filename = f"{data['name']}.md"
                 workflow_links.append((source_path, target_filename))
-                discovered_workflow_ids[workflow_id] = target_filename
+                active_workflows[workflow_id] = target_filename
             else:
-                print(f"  [SKIP] Invalid metadata for {f}")
+                log.warning(f"  [SKIP] Invalid metadata in {f}")
 
-    # 2. Link Workflows
-    print(f"Linking {len(workflow_links)} workflows...")
-    for source_path, target_filename in workflow_links:
-        target_path = os.path.join(TARGET_WORKFLOWS_DIR, target_filename)
-        abs_source = os.path.abspath(source_path)
-        abs_target = os.path.abspath(target_path)
-        create_symlink(abs_source, abs_target)
+    # 4. Link Active Workflows
+    log.info(f"Linking {len(workflow_links)} active workflows...")
+    for src, target_filename in workflow_links:
+        dst = (target_dir / target_filename).resolve()
+        create_link(src.resolve(), dst)
 
-    # 3. Update discovery reference if in dynamic mode
-    if discovery_mode == "dynamic" and os.path.exists(CONFIG_FILE):
-        with open(CONFIG_FILE, 'r') as f:
-            config = json.load(f)
-        config["synced_workflows"] = discovered_workflow_ids
-        with open(CONFIG_FILE, 'w') as f:
-            json.dump(config, f, indent=2)
+    # 5. Update Config
+    if discovery_mode == "dynamic" and config_file.exists():
+        try:
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+            config["synced_workflows"] = active_workflows
+            atomic_write(config_file, json.dumps(config, indent=2))
+        except Exception as e:
+            log.error(f"Failed to update config discovery mapping: {e}")
+
+    log.info("Workflow synchronization complete.")
 
 if __name__ == "__main__":
-    main()
+    try:
+        sync_workflows()
+    except Exception as e:
+        log.critical(f"Unhandled exception during workflow sync: {e}", exc_info=True)
+        sys.exit(1)

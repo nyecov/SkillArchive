@@ -1,122 +1,140 @@
+"""
+Skill Synchronization Tool
+------------------------
+Synchronizes source skills from /skills into the .gemini/skills directory
+using OS-native symbolic links (junctions on Windows).
+Enforces the sovereign discovery of active skills by the agent.
+
+Usage: python tools/sync_skills.py
+"""
+
 import os
+import sys
 import json
-import yaml
-import shutil
+import logging
 import platform
 import subprocess
-import re
+import shutil
+from pathlib import Path
+from repo_utils import setup_logging, get_frontmatter
 
-# Paths
-ROOT_DIR = "."
-SOURCE_SKILLS_DIR = os.path.join(ROOT_DIR, "skills")
-TARGET_SKILLS_DIR = os.path.join(ROOT_DIR, ".gemini", "skills")
-CONFIG_FILE = os.path.join(ROOT_DIR, "local-agent-config.json")
+# Initialize standardized logging
+log = setup_logging("skill_syncer")
 
-def create_symlink(source, target):
+def create_link(source: Path, target: Path):
     """
-    Creates a junction point (Windows) or a symlink (others).
+    Creates a junction point (Windows) or a symlink (Unix).
     """
-    if os.path.exists(target):
+    if target.exists():
         try:
-            if platform.system() == "Windows":
-                if os.path.isdir(target):
-                    subprocess.run(['cmd', '/c', 'rmdir', target], check=True, capture_output=True)
-                else:
-                    os.unlink(target)
+            if platform.system() == "Windows" and target.is_dir():
+                # Junction points are directories, use rmdir via cmd
+                subprocess.run(['cmd', '/c', 'rmdir', str(target)], check=True, capture_output=True)
             else:
-                os.unlink(target)
-        except Exception:
-            pass
+                target.unlink()
+        except Exception as e:
+            log.warning(f"Could not remove existing target {target}: {e}")
 
     try:
         if platform.system() == "Windows":
-            subprocess.run(['cmd', '/c', 'mklink', '/J', target, source], check=True, capture_output=True)
+            # /J creates a directory junction
+            subprocess.run(['cmd', '/c', 'mklink', '/J', str(target), str(source)], check=True, capture_output=True)
         else:
             os.symlink(source, target, target_is_directory=True)
-        print(f"  [OK] Linked: {os.path.basename(source)} -> {os.path.basename(target)}")
+        log.info(f"  [LINKED] {source.name} -> {target.name}")
     except Exception as e:
-        print(f"  [ERROR] Failed to link {os.path.basename(source)}: {e}")
+        log.error(f"  [FAILED] Failed to link {source.name}: {e}")
 
-def get_skill_metadata(skill_folder):
-    skill_file = os.path.join(SOURCE_SKILLS_DIR, skill_folder, "SKILL.md")
-    if not os.path.exists(skill_file):
-        return None
-    try:
-        with open(skill_file, 'r', encoding='utf-8') as f:
-            content = f.read()
-            fm_match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
-            if fm_match:
-                data = yaml.safe_load(fm_match.group(1))
-                if data:
-                    data['folder'] = skill_folder
-                    return data
-    except Exception as e:
-        print(f"Error parsing metadata for {skill_folder}: {e}")
-    return None
+def sync_skills():
+    """Main synchronization loop."""
+    root_dir = Path(".")
+    source_dir = root_dir / "skills"
+    target_dir = root_dir / ".gemini" / "skills"
+    config_file = root_dir / "local-agent-config.json"
 
-def main():
-    # KYT Safeguard
-    safe_target = TARGET_SKILLS_DIR.replace('\\', '/')
-    if not safe_target.endswith('.gemini/skills') and not safe_target.endswith('.gemini/skills/'):
-        raise ValueError(f"KYT Safeguard Error: Target directory '{TARGET_SKILLS_DIR}' is unsafe.")
+    # KYT Safeguard: Prevent accidental deletion of system root
+    if not str(target_dir).endswith(".gemini/skills") and not str(target_dir).endswith(".gemini\\skills"):
+         log.critical(f"KYT Safeguard: Target directory '{target_dir}' path is suspicious. Halting.")
+         sys.exit(1)
 
-    # Clear target directory accurately
-    if os.path.exists(TARGET_SKILLS_DIR):
-        print(f"Clearing existing links in {TARGET_SKILLS_DIR}...")
-        for item in os.listdir(TARGET_SKILLS_DIR):
-            item_path = os.path.join(TARGET_SKILLS_DIR, item)
-            try:
-                if platform.system() == "Windows":
-                    if os.path.isdir(item_path):
-                        # Junction points are directories, use rmdir
-                        subprocess.run(['cmd', '/c', 'rmdir', item_path], check=True, capture_output=True)
-                    else:
-                        os.unlink(item_path)
-                else:
-                    if os.path.islink(item_path) or os.path.isfile(item_path):
-                        os.unlink(item_path)
-                    elif os.path.isdir(item_path):
-                        shutil.rmtree(item_path)
-            except Exception as e:
-                print(f"  [ERROR] Could not delete {item}: {e}")
+    if not source_dir.exists():
+        log.error(f"Source skills directory not found at {source_dir.absolute()}")
+        sys.exit(1)
+
+    # 1. Prepare Target Directory
+    if not target_dir.exists():
+        log.info(f"Creating missing target directory: {target_dir}")
+        target_dir.mkdir(parents=True, exist_ok=True)
     else:
-        os.makedirs(TARGET_SKILLS_DIR, exist_ok=True)
+        log.info(f"Cleaning existing links in {target_dir}...")
+        for item in os.listdir(target_dir):
+            item_path = target_dir / item
+            try:
+                if platform.system() == "Windows" and item_path.is_dir():
+                    subprocess.run(['cmd', '/c', 'rmdir', str(item_path)], check=True, capture_output=True)
+                else:
+                    item_path.unlink()
+            except Exception as e:
+                log.warning(f"Failed to clear {item}: {e}")
 
-    # 0. Load config to check discovery mode
+    # 2. Load Config
     discovery_mode = "dynamic"
     synced_skill_ids = []
-    if os.path.exists(CONFIG_FILE):
-        with open(CONFIG_FILE, 'r') as f:
-            config = json.load(f)
-            discovery_mode = config.get("discovery_mode", "dynamic")
-            synced_skill_ids = list(config.get("synced_skills", {}).keys())
+    if config_file.exists():
+        try:
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+                discovery_mode = config.get("discovery_mode", "dynamic")
+                synced_skill_ids = list(config.get("synced_skills", {}).keys())
+        except Exception as e:
+            log.warning(f"Could not read config file {config_file}: {e}")
 
-    # 1. Discover all skills with valid IDs
-    discovered_skills = {} # id -> meta
-    for skill_folder in os.listdir(SOURCE_SKILLS_DIR):
-        meta = get_skill_metadata(skill_folder)
-        if meta and meta.get('id') and meta.get('name'):
-            skill_id = meta['id']
+    # 3. Discover Skills
+    log.info(f"Discovering skills (Mode: {discovery_mode})...")
+    active_skills = {} # id -> meta
+    
+    for skill_folder in sorted(os.listdir(source_dir)):
+        skill_path = source_dir / skill_folder
+        if not skill_path.is_dir():
+            continue
+            
+        skill_file = skill_path / "SKILL.md"
+        data = get_frontmatter(skill_file)
+        
+        if data and data.get('id') and data.get('name'):
+            skill_id = data['id']
             if discovery_mode == "manual" and skill_id not in synced_skill_ids:
                 continue
-            discovered_skills[skill_id] = meta
+            active_skills[skill_id] = {
+                'name': data['name'],
+                'folder': skill_folder
+            }
 
-    # 2. Link Skills by Name
-    print(f"Linking {len(discovered_skills)} skills...")
-    for skill_id, meta in discovered_skills.items():
-        folder_name = meta['folder']
-        skill_name = meta['name']
-        source_path = os.path.abspath(os.path.join(SOURCE_SKILLS_DIR, folder_name))
-        target_path = os.path.abspath(os.path.join(TARGET_SKILLS_DIR, skill_name))
-        create_symlink(source_path, target_path)
+    # 4. Link Active Skills
+    log.info(f"Linking {len(active_skills)} active skills...")
+    for sid, info in active_skills.items():
+        src = (source_dir / info['folder']).resolve()
+        dst = (target_dir / info['name']).resolve()
+        create_link(src, dst)
 
-    # 3. Update discovery reference if in dynamic mode
-    if discovery_mode == "dynamic" and os.path.exists(CONFIG_FILE):
-        with open(CONFIG_FILE, 'r') as f:
-            config = json.load(f)
-        config["synced_skills"] = {sid: m['name'] for sid, m in discovered_skills.items()}
-        with open(CONFIG_FILE, 'w') as f:
-            json.dump(config, f, indent=2)
+    # 5. Update Config for Dynamic Discovery
+    if discovery_mode == "dynamic" and config_file.exists():
+        try:
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+            config["synced_skills"] = {sid: info['name'] for sid, info in active_skills.items()}
+            
+            # Using atomic write from repo_utils
+            from repo_utils import atomic_write
+            atomic_write(config_file, json.dumps(config, indent=2))
+        except Exception as e:
+            log.error(f"Failed to update config discovery mapping: {e}")
+
+    log.info("Skill synchronization complete.")
 
 if __name__ == "__main__":
-    main()
+    try:
+        sync_skills()
+    except Exception as e:
+        log.critical(f"Unhandled exception during skill sync: {e}", exc_info=True)
+        sys.exit(1)

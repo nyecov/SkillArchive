@@ -8,6 +8,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 |-----------|---------|
 | `skills/` | High-level cognitive methodologies and tactical frameworks (Markdown + YAML frontmatter). |
 | `tools/` | Low-level, standalone execution scripts (Bash/Python). |
+| `workflows/`| Multi-step protocols for complex agent tasks. |
 | `templates/`| Standardized formatting templates for new skills. |
 
 ## 📋 Skill Index
@@ -98,6 +99,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 
 | Tool | Description |
 |------|-------------|
+| **[__pycache__](tools/__pycache__)** |  |
 | **[context-heijunka](tools/context-heijunka)** | This tool implements the **Heijunka (Production Leveling)** and **Swarm Orchestration** principles to prevent LLM context overburden (Muri) when analyzing external repositories. |
 | **[docx-tools](tools/docx-tools)** | A Python automation script using `python-docx` to read and generate Word documents programmatically. |
 | **[git-worktree-setup](tools/git-worktree-setup)** | An automation bash script that streamlines the process of checking out a new feature branch in an isolated directory using Git Worktrees, followed by automated project setup. |
