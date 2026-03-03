@@ -46,12 +46,3 @@ func ReleaseSingletonLock() {
 		fmt.Fprintf(os.Stderr, "[SINGLETON] Lock released.\n")
 	}
 }
-
-func getMemoryDir() string {
-	dir := os.Getenv("MEMORY_DIR")
-	if dir == "" {
-		dir = "/workspace/.gemini/mem"
-	}
-	os.MkdirAll(dir, 0755)
-	return dir
-}

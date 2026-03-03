@@ -8,6 +8,11 @@ require (
 )
 
 require (
+	github.com/gofrs/flock v0.13.0 // indirect
+	golang.org/x/sys v0.37.0 // indirect
+)
+
+require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/google/uuid v1.6.0

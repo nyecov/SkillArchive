@@ -10,6 +10,7 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 	"github.com/nyecov/context-engine/internal/ingestion"
+	"github.com/nyecov/context-engine/internal/interview"
 	"github.com/nyecov/context-engine/internal/ontology"
 	"github.com/nyecov/context-engine/internal/pokayoke"
 	"github.com/nyecov/context-engine/internal/scratchpad"
@@ -45,6 +46,15 @@ func main() {
 
 	// Register Tool: read_ontology_graph
 	registerReadOntologyGraphTool(s)
+
+	// Register Tool: append_interview_qa
+	registerAppendInterviewQATool(s)
+
+	// Register Tool: retrieve_interview_patterns
+	registerRetrieveInterviewPatternsTool(s)
+
+	// Register Tool: prune_interview_qa
+	registerPruneInterviewQATool(s)
 
 	// Run Poka-yoke Boot Diagnostics
 	if err := pokayoke.RunBootDiagnostics(); err != nil {
@@ -167,5 +177,39 @@ func registerReadOntologyGraphTool(s *server.MCPServer) {
 
 	s.AddTool(tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		return ontology.HandleReadOntologyGraph(ctx, request)
+	})
+}
+
+func registerAppendInterviewQATool(s *server.MCPServer) {
+	tool := mcp.NewTool("append_interview_qa",
+		mcp.WithDescription("Appends a Socratic Q&A pair to the Interview Memory Bank using TOON format. MUST be used to log interview insights safely."),
+		mcp.WithString("toon_qa_pair", mcp.Required(), mcp.Description("The Q&A pair in strict TOON format, starting with [Q: ...] and ending with [A: ...].")),
+	)
+
+	s.AddTool(tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		return interview.HandleAppendInterviewQA(ctx, request)
+	})
+}
+
+func registerRetrieveInterviewPatternsTool(s *server.MCPServer) {
+	tool := mcp.NewTool("retrieve_interview_patterns",
+		mcp.WithDescription("Retrieves semantic chunks from the Interview Memory Bank. Uses a streaming parser to respect the 16k context window."),
+		mcp.WithString("query", mcp.Description("(Optional) Keyword or semantic string to filter the TOON blocks. If empty, retrieves the latest blocks.")),
+	)
+
+	s.AddTool(tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		return interview.HandleRetrieveInterviewPatterns(ctx, request)
+	})
+}
+
+func registerPruneInterviewQATool(s *server.MCPServer) {
+	tool := mcp.NewTool("prune_interview_qa",
+		mcp.WithDescription("Manually removes Q&A blocks from the Interview Memory Bank based on date or keyword. AT LEAST ONE parameter is required."),
+		mcp.WithString("before_date", mcp.Description("(Optional) Remove all entries older than this date. Format: RFC3339 (e.g. 2026-01-01T00:00:00Z).")),
+		mcp.WithString("query", mcp.Description("(Optional) Remove all entries matching this keyword or phrase.")),
+	)
+
+	s.AddTool(tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		return interview.HandlePruneInterviewQA(ctx, request)
 	})
 }

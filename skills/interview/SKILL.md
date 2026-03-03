@@ -63,6 +63,12 @@ Once consensus is reached, serialize the agreed-upon requirements into a clear, 
 - **Constraint:** The final document MUST strictly follow the template schema and only contain what was verified. No embellishment, no assumed features.
 - **Integration:** Serves as the direct input for **Test-Driven Development** and **Shisa Kanko** execution.
 
+### 5. Kaizen Ingestion (Continuous Learning)
+To ensure the system learns from structural logic debates, the core conflict of the interview must be permanently logged.
+- **Action (Primary):** After the final Development Document is approved, you MUST summarize the hardest question of the interview and the final agreed-upon answer into a strict TOON block (`[Q: ...]\n[A: ...]`). You MUST call the Context Engine `append_interview_qa` tool to commit this block to the permanent Memory Bank.
+- **Action (Fallback):** If the `append_interview_qa` tool returns an error (e.g., "Not connected"), gracefully degrade by saving the TOON block to a local `.gemini/tmp/pending_interview_qa.toon` file. Do not attempt to append to the master database natively, as this violates Poka-yoke lock safety.
+- **Integration:** Enables the `analyze-interview-patterns` workflow to perform system-wide Yokoten.
+
 ## Escalation & Halting
 
 - **Jidoka:** 
@@ -83,6 +89,7 @@ Once consensus is reached, serialize the agreed-upon requirements into a clear, 
      - *Fields to track: StoryName, UserValue, CoreLogic, EdgeCases (list), VerificationCriteria (list).*
 3. **Verify:** Confirm with the user that all rough spots are resolved.
 4. **Output:** Retrieve the `[INTERVIEW_STATE]` findings and render the final **Story Template**.
+5. **Ingest:** Formulate the most valuable Q&A pair from the session into a TOON block and execute `append_interview_qa`.
 
 ## Quick Reference
 
@@ -96,7 +103,7 @@ INTERVIEW READINESS CHECKLIST:
 □ No logical contradictions remain?
 
 If 2+ boxes unchecked → continue interview
-All boxes checked     → format Development Document
+All boxes checked     → format Development Document -> append_interview_qa
 ```
 
 ## Poka-yoke Output Template

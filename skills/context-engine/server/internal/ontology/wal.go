@@ -3,7 +3,6 @@ package ontology
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"time"
@@ -122,8 +121,7 @@ func appendToWAL(action, source, edgeType, target string) error {
 	if err != nil {
 		return err
 	}
-	bytes = append(bytes, '
-')
+	bytes = append(bytes, '\n')
 
 	if _, err := walFile.Write(bytes); err != nil {
 		return err

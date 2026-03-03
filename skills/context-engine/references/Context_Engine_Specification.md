@@ -170,6 +170,39 @@ Given a target entity, traverses the graph to return all established upstream an
 }
 ```
 
+### 4.9. `append_interview_qa`
+Appends a Socratic Q&A pair to the Interview Memory Bank. Uses POSIX volume locks and strictly requires TOON formatting.
+```json
+{
+  "properties": {
+    "toon_qa_pair": { "type": "string", "description": "The Q&A pair in strict TOON format, starting with [Q: ...] and ending with [A: ...]." }
+  },
+  "required": ["toon_qa_pair"]
+}
+```
+
+### 4.10. `retrieve_interview_patterns`
+Retrieves semantic chunks from the Interview Memory Bank. Uses a streaming parser to respect the 16k context window heuristic.
+```json
+{
+  "properties": {
+    "query": { "type": "string", "description": "(Optional) Keyword or semantic string to filter the TOON blocks. If empty, retrieves the latest blocks." }
+  },
+  "required": []
+}
+```
+
+### 4.11. `prune_interview_qa`
+Manually removes Q&A blocks from the Interview Memory Bank based on date or keyword. AT LEAST ONE parameter is required to prevent accidental bulk deletion.
+```json
+{
+  "properties": {
+    "before_date": { "type": "string", "description": "(Optional) Remove all entries older than this date. Format: RFC3339 (e.g. 2026-01-01T00:00:00Z)." },
+    "query": { "type": "string", "description": "(Optional) Remove all entries matching this keyword or phrase." }
+  },
+  "required": []
+}
+```
 
 ---
 
