@@ -138,27 +138,46 @@ async function loadGraph() {
         const response = await fetch('/api/graph');
         const data = await response.json();
 
-        // Convert to Vis format
-        const nodeSet = new Set();
-        const newNodes = [];
-        const newEdges = [];
+        if (!data) return;
+
+        const currentNodes = nodes.getIds();
+        const currentEdges = edges.getIds();
+        const newNodeIds = new Set();
+        const newEdgeIds = new Set();
+
+        const updates_nodes = [];
+        const updates_edges = [];
 
         data.forEach(edge => {
-            if (!nodeSet.has(edge.from)) {
-                newNodes.push({ id: edge.from, label: edge.from, group: edge.type });
-                nodeSet.add(edge.from);
+            const edgeId = `${edge.from}-${edge.to}-${edge.type}`;
+            newEdgeIds.add(edgeId);
+
+            if (!nodes.get(edge.from)) {
+                updates_nodes.push({ id: edge.from, label: edge.from, group: edge.type });
             }
-            if (!nodeSet.has(edge.to)) {
-                newNodes.push({ id: edge.to, label: edge.to }); // Target might not have a type yet
-                nodeSet.add(edge.to);
+            newNodeIds.add(edge.from);
+
+            if (!nodes.get(edge.to)) {
+                updates_nodes.push({ id: edge.to, label: edge.to });
             }
-            newEdges.push({ from: edge.from, to: edge.to, label: edge.type });
+            newNodeIds.add(edge.to);
+
+            if (!edges.get(edgeId)) {
+                updates_edges.push({ id: edgeId, from: edge.from, to: edge.to, label: edge.type });
+            }
         });
 
-        nodes.clear();
-        edges.clear();
-        nodes.add(newNodes);
-        edges.add(newEdges);
+        // Remove stale nodes/edges
+        const nodesToRemove = currentNodes.filter(id => !newNodeIds.has(id));
+        const edgesToRemove = currentEdges.filter(id => !newEdgeIds.has(id));
+
+        if (nodesToRemove.length > 0) nodes.remove(nodesToRemove);
+        if (edgesToRemove.length > 0) edges.remove(edgesToRemove);
+
+        // Batch updates
+        if (updates_nodes.length > 0) nodes.update(updates_nodes);
+        if (updates_edges.length > 0) edges.update(updates_edges);
+
     } catch (err) {
         console.error('Failed to load graph:', err);
     }

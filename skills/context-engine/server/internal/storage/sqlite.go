@@ -125,5 +125,42 @@ func createSchemas(d *sql.DB) error {
 		return err
 	}
 
+	// 4. Semantic Search FTS5 Virtual Table
+	_, err = tx.Exec(`
+		CREATE VIRTUAL TABLE IF NOT EXISTS ontology_fts USING fts5(
+			source_entity, 
+			target_entity, 
+			edge_type, 
+			content='ontology_edges', 
+			content_rowid='id'
+		)
+	`)
+	if err != nil {
+		return err
+	}
+
+	// 5. Triggers for Auto-Syncing FTS Table
+	_, err = tx.Exec(`
+		CREATE TRIGGER IF NOT EXISTS ontology_ai AFTER INSERT ON ontology_edges BEGIN
+			INSERT INTO ontology_fts(rowid, source_entity, target_entity, edge_type) 
+			VALUES (new.id, new.source_entity, new.target_entity, new.edge_type);
+		END;
+
+		CREATE TRIGGER IF NOT EXISTS ontology_ad AFTER DELETE ON ontology_edges BEGIN
+			INSERT INTO ontology_fts(ontology_fts, rowid, source_entity, target_entity, edge_type) 
+			VALUES ('delete', old.id, old.source_entity, old.target_entity, old.edge_type);
+		END;
+
+		CREATE TRIGGER IF NOT EXISTS ontology_au AFTER UPDATE ON ontology_edges BEGIN
+			INSERT INTO ontology_fts(ontology_fts, rowid, source_entity, target_entity, edge_type) 
+			VALUES ('delete', old.id, old.source_entity, old.target_entity, old.edge_type);
+			INSERT INTO ontology_fts(rowid, source_entity, target_entity, edge_type) 
+			VALUES (new.id, new.source_entity, new.target_entity, new.edge_type);
+		END;
+	`)
+	if err != nil {
+		return err
+	}
+
 	return tx.Commit()
 }

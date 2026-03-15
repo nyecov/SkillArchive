@@ -219,6 +219,53 @@ func HandleReadOntologyGraph(ctx context.Context, request mcp.CallToolRequest) (
 	return mcp.NewToolResultText(output), nil
 }
 
+func HandleSearchOntologySemantic(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	db, err := ensureDB()
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to init storage: %v", err)), nil
+	}
+
+	args, ok := request.Params.Arguments.(map[string]interface{})
+	if !ok {
+		return mcp.NewToolResultError("Arguments must be a JSON object"), nil
+	}
+	query, ok := args["query"].(string)
+	if !ok || query == "" {
+		return mcp.NewToolResultError("query is required and cannot be empty"), nil
+	}
+	if len(query) > 100 {
+		return mcp.NewToolResultError("query is too long"), nil
+	}
+
+	// We use parameterized queries to prevent SQL injection (Poka-yoke / KYT)
+	ftsQuery := `SELECT source_entity, target_entity, edge_type 
+	             FROM ontology_fts 
+	             WHERE ontology_fts MATCH ? ORDER BY rank LIMIT 10;`
+	
+	rows, err := db.QueryContext(ctx, ftsQuery, query)
+	if err != nil {
+		// If query is malformed for FTS5 syntax, gracefully return an empty set or error text rather than crashing
+		return mcp.NewToolResultText(fmt.Sprintf("Search failed or no matches found for '%s': %v", query, err)), nil
+	}
+	defer rows.Close()
+
+	var results []string
+	for rows.Next() {
+		var src, tgt, etype string
+		if err := rows.Scan(&src, &tgt, &etype); err == nil {
+			results = append(results, fmt.Sprintf("- %s -> [%s] -> %s", src, etype, tgt))
+		}
+	}
+
+	if len(results) == 0 {
+		return mcp.NewToolResultText(fmt.Sprintf("No semantic matches found for query: '%s'.", query)), nil
+	}
+
+	output := fmt.Sprintf("=== Semantic Search Results for: '%s' ===\n", query)
+	output += strings.Join(results, "\n")
+	return mcp.NewToolResultText(output), nil
+}
+
 // detectCycleInDB checks if inserting source -> target creates a cycle.
 // It checks if a path exists from target down to source.
 func detectCycleInDB(db *sql.DB, source, target string) (bool, error) {

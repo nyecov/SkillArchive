@@ -89,7 +89,6 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[Kaizen Sprint Workflow](workflows/2-kaizen-sprint.md)** | Standardized procedure for a rapid Kaizen iteration focusing on a single, isolated module. |
 | **[TPS Architecture Review Workflow](workflows/3-tps-architecture-review.md)** | Run a heavy-duty system-level architectural review for major refactors, cross-domain integrations, or organizational ... |
 | **[AI Agent Skill Import](workflows/ai-agent-skill-import.md)** | Procedure for synthesizing new agentic capabilities from an external repository into the local Skill Archive. |
-| **[Analyze Interview Patterns](workflows/analyze-interview-patterns.md)** | Use when requested to extract patterns, anti-patterns, or architectural guidance from the historical Interview Q&A me... |
 | **[Master Topic Refinement Workflow (with Context Engine)](workflows/master-topic-refinement-with-context-engine.md)** | A multi-phase refinement protocol enhanced by the Context Engine to ensure a topic, documentation, or codebase reache... |
 | **[Master Topic Refinement Workflow](workflows/master-topic-refinement.md)** | A multi-phase refinement protocol to ensure a topic, documentation, or codebase reaches the highest level of Lean qua... |
 
@@ -103,6 +102,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[context-heijunka](tools/context-heijunka)** | This tool implements the **Heijunka (Production Leveling)** and **Swarm Orchestration** principles to prevent LLM context overburden (Muri) when analyzing external repositories. |
 | **[docx-tools](tools/docx-tools)** | A Python automation script using `python-docx` to read and generate Word documents programmatically. |
 | **[git-worktree-setup](tools/git-worktree-setup)** | An automation bash script that streamlines the process of checking out a new feature branch in an isolated directory using Git Worktrees, followed by automated project setup. |
+| **[image-converter](tools/image-converter)** |  |
 | **[pdf-tools](tools/pdf-tools)** | A Python tool leveraging `PyMuPDF` (`fitz`) for fast, robust PDF manipulation. |
 | **[playwright-scaffold](tools/playwright-scaffold)** | A JavaScript automation script that injects a best-practice Playwright testing environment into any web project. |
 | **[xlsx-tools](tools/xlsx-tools)** | A Python script using `openpyxl` to extract data from Excel spreadsheets efficiently. |

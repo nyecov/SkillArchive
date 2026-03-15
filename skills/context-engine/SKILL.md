@@ -50,6 +50,7 @@ This skill dictates how agents build, access, and maintain context. You **MUST**
 ### 3. The Knowledge Graph (Long-Term Memory)
 - **Action (Upgrade):** Use `commit_ontology_edge` to harden architectural rules (e.g., "Module A REQUIRES Module B") out of your volatile scratchpad.
 - **Action (Downgrade):** Use `delete_ontology_edge` to refactor broken graph logic or resolve Cycle Erors. Move the discarded concepts back to the scratchpad if re-evaluation is needed.
+- **Action (Semantic Fallback):** If `read_ontology_graph` fails due to exact match failure, fallback to `search_ontology_semantic` to discover the exact node name using fuzzy/keyword searching.
 - **Constraint:** Hierarchical edges (`REQUIRES`, `DEPENDS_ON`, `OWNS`) cannot create circular dependencies.
 - **Integrity:** The system uses an embedded SQLite database (`engine.db`) in WAL mode to ensure atomic writes and safe concurrency across Swarm agents.
 

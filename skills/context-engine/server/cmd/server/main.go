@@ -57,6 +57,9 @@ func main() {
 	// Register Tool: read_ontology_graph
 	registerReadOntologyGraphTool(s)
 
+	// Register Tool: search_ontology_semantic
+	registerSearchOntologySemanticTool(s)
+
 	// Run Poka-yoke Boot Diagnostics
 	if err := pokayoke.RunBootDiagnostics(); err != nil {
 		fmt.Fprintf(os.Stderr, "Boot Diagnostics Failed: %v\n", err)
@@ -171,6 +174,17 @@ func registerReadOntologyGraphTool(s *server.MCPServer) {
 
 	s.AddTool(tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		return ontology.HandleReadOntologyGraph(ctx, request)
+	})
+}
+
+func registerSearchOntologySemanticTool(s *server.MCPServer) {
+	tool := mcp.NewTool("search_ontology_semantic",
+		mcp.WithDescription("Searches the Knowledge Graph for entities and relationships using fuzzy/semantic keyword matching. Use this when you forget the exact node name."),
+		mcp.WithString("query", mcp.Required(), mcp.Description("The search query (e.g., 'Redis cache', 'authentication').")),
+	)
+
+	s.AddTool(tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		return ontology.HandleSearchOntologySemantic(ctx, request)
 	})
 }
 
