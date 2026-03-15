@@ -203,12 +203,39 @@ main {
     margin-top: 2rem;
 }
 
-footer {
-    height: 30px;
-    padding: 0 2rem;
+/* Graph Legend */
+.legend-panel {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(20, 22, 28, 0.9);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    backdrop-filter: blur(10px);
+    font-size: 0.75rem;
+    color: var(--text-primary);
+    z-index: 10;
+}
+
+.legend-item {
     display: flex;
     align-items: center;
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-    border-top: 1px solid var(--border-color);
+    margin-bottom: 5px;
 }
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 8px;
+}
+
+.legend-color.node {
+    border-radius: 50%;
+}
+

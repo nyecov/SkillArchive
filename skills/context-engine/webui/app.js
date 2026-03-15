@@ -100,7 +100,7 @@ function initGraph() {
         nodes: {
             shape: 'dot',
             size: 20,
-            color: { background: '#1c1f26', border: '#00d2ff', highlight: { background: '#2a2f3a', border: '#00ff88' } },
+            color: { background: '#0055ff', border: '#00d2ff', highlight: { background: '#0044cc', border: '#00ff88' } },
             font: { color: '#ffffff', size: 14, face: 'Inter', strokeWidth: 3, strokeColor: '#0a0b0e' },
             borderWidth: 2,
             shadow: true
@@ -146,7 +146,7 @@ async function loadGraph() {
             IMPLEMENTS: '#00ff88',
             DEPENDS_ON: '#9d50bb',
             OWNS: '#ff9d00',
-            REFERENCES: '#666666'
+            REFERENCES: '#ff3366'
         };
 
         data.forEach(edge => {
@@ -169,9 +169,8 @@ async function loadGraph() {
                     id: edgeId, 
                     from: edge.from, 
                     to: edge.to, 
-                    label: edge.type,
-                    color: { color: eColor },
-                    font: { color: eColor, size: 10, strokeWidth: 2, strokeColor: '#0a0b0e' }
+                    title: edge.type,
+                    color: { color: eColor }
                 });
             }
         });
