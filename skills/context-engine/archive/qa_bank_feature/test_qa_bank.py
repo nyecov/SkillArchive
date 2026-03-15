@@ -14,11 +14,9 @@ async def test_append_interview_qa(test_workspace, mcp_server):
     assert not res.isError
     assert "Successfully appended" in res.content[0].text
 
-    bank_path = os.path.join(test_workspace, "interview_qa_bank.toon")
-    assert os.path.exists(bank_path)
-    
-    with open(bank_path, "r") as f:
-        content = f.read()
+    res_read = await mcp_server.call_tool("retrieve_interview_patterns", {})
+    assert not res_read.isError
+    content = res_read.content[0].text
         
     assert "[META: Timestamp:" in content
     assert "[Q: What is the core problem?]" in content

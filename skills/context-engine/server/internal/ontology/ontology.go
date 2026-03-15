@@ -2,19 +2,12 @@ package ontology
 
 import (
 	"context"
-	"encoding/json"
+	"database/sql"
 	"fmt"
-	"os"
-	"sync"
-	"time"
+	"strings"
 
-	"github.com/google/uuid"
 	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/nyecov/context-engine/internal/registry"
-)
-
-const (
-	GraphFilename = "ontology.json"
+	"github.com/nyecov/context-engine/internal/storage"
 )
 
 var HierarchicalEdges = map[string]bool{
@@ -29,30 +22,17 @@ var NonHierarchicalEdges = map[string]bool{
 	"CONFLICTS_WITH": true,
 }
 
-var (
-	mu       sync.RWMutex
-	initOnce sync.Once
-	initErr  error
-)
-
-// Data structures mapping to JSON
-type OntologyGraph struct {
-	UUID        string            `json:"__uuid,omitempty"`
-	Version     int               `json:"__version"`
-	LastUpdated string            `json:"last_updated"`
-	Entities    map[string][]Edge `json:"entities"`
-}
-
-type Edge struct {
-	Type   string `json:"type"`
-	Target string `json:"target"`
-}
-
-func ensureInit() error {
-	initOnce.Do(func() {
-		initErr = InitStorage()
-	})
-	return initErr
+// ensureDB ensures the database is initialized
+func ensureDB() (*sql.DB, error) {
+	db := storage.GetDB()
+	if db == nil {
+		d, err := storage.InitDB()
+		if err != nil {
+			return nil, err
+		}
+		return d, nil
+	}
+	return db, nil
 }
 
 // ------------------------------------------------------------------
@@ -60,10 +40,8 @@ func ensureInit() error {
 // ------------------------------------------------------------------
 
 func HandleCommitOntologyEdge(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	mu.Lock()
-	defer mu.Unlock()
-
-	if err := ensureInit(); err != nil {
+	db, err := ensureDB()
+	if err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to init storage: %v", err)), nil
 	}
 
@@ -90,49 +68,36 @@ func HandleCommitOntologyEdge(ctx context.Context, request mcp.CallToolRequest) 
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Invalid edge_type: %s", edgeType)), nil
 	}
 
-	// Cycle Detection for Hierarchical Edges
+	// Cycle Detection for Hierarchical Edges using Recursive CTE
 	if isHierarchical {
-		if detectCycle(globalGraph, source, target) {
+		hasCycle, err := detectCycleInDB(db, source, target)
+		if err != nil {
+			return mcp.NewToolResultError(fmt.Sprintf("ToolError: Cycle detection failed: %v", err)), nil
+		}
+		if hasCycle {
 			return mcp.NewToolResultError(fmt.Sprintf("ToolError: DAG Cycle Violation. Committing %s -> %s -> %s creates a circular dependency. Halt and review architecture. Use delete_ontology_edge if refactoring existing logic.", source, edgeType, target)), nil
 		}
 	}
 
-	// Ensure Entity exists
-	if _, exists := globalGraph.Entities[source]; !exists {
-		globalGraph.Entities[source] = []Edge{}
+	// Insert into SQLite
+	// ON CONFLICT DO NOTHING relies on the UNIQUE(source_entity, edge_type, target_entity) constraint
+	query := `INSERT INTO ontology_edges (source_entity, edge_type, target_entity) VALUES (?, ?, ?) ON CONFLICT DO NOTHING`
+	result, err := db.ExecContext(ctx, query, source, edgeType, target)
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Database insert failed: %v", err)), nil
 	}
 
-	// Prevent duplicate edges
-	for _, e := range globalGraph.Entities[source] {
-		if e.Type == edgeType && e.Target == target {
-			return mcp.NewToolResultText(fmt.Sprintf("Edge %s -> %s -> %s already exists. No mutation needed.", source, edgeType, target)), nil
-		}
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		return mcp.NewToolResultText(fmt.Sprintf("Edge %s -> %s -> %s already exists. No mutation needed.", source, edgeType, target)), nil
 	}
-
-	// Mutate memory and append to WAL
-	applyWALEntry(globalGraph, WALEntry{
-		Action:    "ADD_EDGE",
-		Source:    source,
-		Type:      edgeType,
-		Target:    target,
-		Timestamp: time.Now().Format(time.RFC3339),
-	})
-
-	if err := appendToWAL("ADD_EDGE", source, edgeType, target); err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to append to WAL: %v", err)), nil
-	}
-
-	// Trigger checkpoint if mutation threshold reached
-	maybeCheckpoint()
 
 	return mcp.NewToolResultText(fmt.Sprintf("Successfully committed %s -> %s -> %s.", source, edgeType, target)), nil
 }
 
 func HandleDeleteOntologyEdge(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	mu.Lock()
-	defer mu.Unlock()
-
-	if err := ensureInit(); err != nil {
+	db, err := ensureDB()
+	if err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to init storage: %v", err)), nil
 	}
 
@@ -153,47 +118,23 @@ func HandleDeleteOntologyEdge(ctx context.Context, request mcp.CallToolRequest) 
 		return mcp.NewToolResultError("target_entity is required"), nil
 	}
 
-	edges, exists := globalGraph.Entities[source]
-	if !exists {
-		return mcp.NewToolResultText(fmt.Sprintf("Source entity %s not found.", source)), nil
+	query := `DELETE FROM ontology_edges WHERE source_entity = ? AND edge_type = ? AND target_entity = ?`
+	res, err := db.ExecContext(ctx, query, source, edgeType, target)
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Database delete failed: %v", err)), nil
 	}
 
-	found := false
-	for _, e := range edges {
-		if e.Type == edgeType && e.Target == target {
-			found = true
-			break
-		}
-	}
-
-	if !found {
+	rowsAffected, _ := res.RowsAffected()
+	if rowsAffected == 0 {
 		return mcp.NewToolResultText(fmt.Sprintf("Edge %s -> %s -> %s not found.", source, edgeType, target)), nil
 	}
-
-	// Mutate memory and append to WAL
-	applyWALEntry(globalGraph, WALEntry{
-		Action:    "DELETE_EDGE",
-		Source:    source,
-		Type:      edgeType,
-		Target:    target,
-		Timestamp: time.Now().Format(time.RFC3339),
-	})
-
-	if err := appendToWAL("DELETE_EDGE", source, edgeType, target); err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to append to WAL: %v", err)), nil
-	}
-
-	// Trigger checkpoint if mutation threshold reached
-	maybeCheckpoint()
 
 	return mcp.NewToolResultText(fmt.Sprintf("Successfully deleted %s -> %s -> %s.", source, edgeType, target)), nil
 }
 
 func HandleReadOntologyGraph(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	mu.RLock()
-	defer mu.RUnlock()
-
-	if err := ensureInit(); err != nil {
+	db, err := ensureDB()
+	if err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to init storage: %v", err)), nil
 	}
 
@@ -206,110 +147,108 @@ func HandleReadOntologyGraph(ctx context.Context, request mcp.CallToolRequest) (
 		return mcp.NewToolResultError("target_entity is required"), nil
 	}
 
-	if len(globalGraph.Entities) == 0 {
+	// 1. Check if Graph is entirely empty
+	var count int
+	if err := db.QueryRowContext(ctx, `SELECT COUNT(*) FROM ontology_edges`).Scan(&count); err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: DB count failed: %v", err)), nil
+	}
+	if count == 0 {
 		return mcp.NewToolResultText("Knowledge graph is currently empty."), nil
 	}
 
-	downstreamEdges, hasDownstream := globalGraph.Entities[targetEntity]
+	// 2. Fetch Downstream
+	downQuery := `SELECT edge_type, target_entity FROM ontology_edges WHERE source_entity = ?`
+	downRows, err := db.QueryContext(ctx, downQuery, targetEntity)
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: DB downstream query failed: %v", err)), nil
+	}
+	defer downRows.Close()
 
-	// Find all entities that target this entity (Upstream)
-	upstreamEdges := make(map[string][]string)
-	hasUpstream := false
-	for sourceName, edges := range globalGraph.Entities {
-		for _, e := range edges {
-			if e.Target == targetEntity {
-				upstreamEdges[sourceName] = append(upstreamEdges[sourceName], e.Type)
-				hasUpstream = true
-			}
+	var downstreamEdges []string
+	for downRows.Next() {
+		var eType, eTarget string
+		if err := downRows.Scan(&eType, &eTarget); err == nil {
+			downstreamEdges = append(downstreamEdges, fmt.Sprintf("- [%s] -> %s", eType, eTarget))
 		}
 	}
 
-	if !hasDownstream && !hasUpstream {
-		// Dump current state as fallback context
-		bytes, _ := json.MarshalIndent(globalGraph, "", "  ")
-		return mcp.NewToolResultText(fmt.Sprintf("Entity '%s' not found in graph. Here is the entire raw graph for context:\n\n%s", targetEntity, string(bytes))), nil
+	// 3. Fetch Upstream
+	upQuery := `SELECT source_entity, edge_type FROM ontology_edges WHERE target_entity = ?`
+	upRows, err := db.QueryContext(ctx, upQuery, targetEntity)
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("ToolError: DB upstream query failed: %v", err)), nil
+	}
+	defer upRows.Close()
+
+	var upstreamEdges []string
+	for upRows.Next() {
+		var eSource, eType string
+		if err := upRows.Scan(&eSource, &eType); err == nil {
+			upstreamEdges = append(upstreamEdges, fmt.Sprintf("- %s -> [%s]", eSource, eType))
+		}
+	}
+
+	if len(downstreamEdges) == 0 && len(upstreamEdges) == 0 {
+		// Dump the whole graph as a fallback context since the entity wasn't found directly
+		dumpQuery := `SELECT source_entity, edge_type, target_entity FROM ontology_edges`
+		dumpRows, err := db.QueryContext(ctx, dumpQuery)
+		if err == nil {
+			defer dumpRows.Close()
+			var dump []string
+			for dumpRows.Next() {
+				var s, t, tar string
+				if err := dumpRows.Scan(&s, &t, &tar); err == nil {
+					dump = append(dump, fmt.Sprintf("%s -> [%s] -> %s", s, t, tar))
+				}
+			}
+			return mcp.NewToolResultText(fmt.Sprintf("Entity '%s' not found in graph. Here is the entire raw graph for context:\n\n%s", targetEntity, strings.Join(dump, "\n"))), nil
+		}
 	}
 
 	// Format specific payload
 	output := fmt.Sprintf("=== Knowledge Graph Local Vector for: %s ===\n", targetEntity)
-	if hasDownstream {
+	if len(downstreamEdges) > 0 {
 		output += "\nDownstream Dependencies (It relies on):\n"
-		for _, e := range downstreamEdges {
-			output += fmt.Sprintf("- [%s] -> %s\n", e.Type, e.Target)
-		}
+		output += strings.Join(downstreamEdges, "\n") + "\n"
 	}
-	if hasUpstream {
+	if len(upstreamEdges) > 0 {
 		output += "\nUpstream Dependencies (Relies on it):\n"
-		for source, types := range upstreamEdges {
-			for _, typ := range types {
-				output += fmt.Sprintf("- %s -> [%s]\n", source, typ)
-			}
-		}
+		output += strings.Join(upstreamEdges, "\n") + "\n"
 	}
+
 	return mcp.NewToolResultText(output), nil
 }
 
-func loadOntologyState(path string) (*OntologyGraph, error) {
-	bytes, err := os.ReadFile(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return &OntologyGraph{
-				UUID:     uuid.New().String(), // Generate on init
-				Version:  0,
-				Entities: make(map[string][]Edge),
-			}, nil
-		}
-		return nil, err
-	}
-
-	var graph OntologyGraph
-	if err := json.Unmarshal(bytes, &graph); err != nil {
-		corruptedPath := path + time.Now().Format(".corrupted-2006-01-02-15-04-05")
-		os.Rename(path, corruptedPath)
-		return nil, fmt.Errorf("State format corruption detected. File quarantined to %s. Resetting state. Original error: %v", corruptedPath, err)
-	}
-
-	// Registry Heuristic UUID injection & Registry Tracking
-	if graph.UUID == "" {
-		graph.UUID = registry.GenerateUniqueUUID(path)
-	} else {
-		if err := registry.RegisterUUID(graph.UUID, path); err != nil {
-			return nil, err
-		}
-	}
-	if graph.Entities == nil {
-		graph.Entities = make(map[string][]Edge)
-	}
-
-	return &graph, nil
-}
-
-func detectCycle(graph *OntologyGraph, source, target string) bool {
+// detectCycleInDB checks if inserting source -> target creates a cycle.
+// It checks if a path exists from target down to source.
+func detectCycleInDB(db *sql.DB, source, target string) (bool, error) {
 	if source == target {
-		return true
+		return true, nil
 	}
 
-	visited := make(map[string]bool)
-	var dfs func(current string) bool
+	query := `WITH RECURSIVE
+	  paths(node, visited) AS (
+	    SELECT target_entity, ',' || source_entity || ',' || target_entity || ','
+	    FROM ontology_edges
+	    WHERE source_entity = ? AND edge_type IN ('REQUIRES', 'IMPLEMENTS', 'DEPENDS_ON', 'OWNS')
+	    
+	    UNION ALL
+	    
+	    SELECT oe.target_entity, p.visited || oe.target_entity || ','
+	    FROM ontology_edges oe
+	    JOIN paths p ON oe.source_entity = p.node
+	    WHERE oe.edge_type IN ('REQUIRES', 'IMPLEMENTS', 'DEPENDS_ON', 'OWNS')
+	      AND instr(p.visited, ',' || oe.target_entity || ',') = 0
+	  )
+	SELECT 1 FROM paths WHERE node = ? LIMIT 1;`
 
-	dfs = func(current string) bool {
-		if current == source {
-			return true
-		}
-		if visited[current] {
-			return false
-		}
-		visited[current] = true
-
-		for _, edge := range graph.Entities[current] {
-			if HierarchicalEdges[edge.Type] {
-				if dfs(edge.Target) {
-					return true
-				}
-			}
-		}
-		return false
+	var found int
+	err := db.QueryRow(query, target, source).Scan(&found)
+	if err == sql.ErrNoRows {
+		return false, nil
 	}
-
-	return dfs(target)
+	if err != nil {
+		return false, err
+	}
+	return found == 1, nil
 }

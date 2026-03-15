@@ -51,4 +51,6 @@ services:
     restart: unless-stopped
     # Use a dummy command to keep it running if the server normally exits on stdin close
     # However, since we want to exec into it, we can just run the server.
+    ports:
+      - "127.0.0.1:6767:6767"
     command: [ "/context-engine-server" ]

@@ -21,11 +21,11 @@ The user provides:
 > This workflow enforces a strict "Verification-First" architecture. All analysis performed in Phases 2, 3, and 4 MUST be derived exclusively from the Ground Truth established in Phase 1 and the architectural facts indexed by the Context Engine.
 
 ### Jidoka (Autonomous Halt)
-If any command or phase (Lean Analysis, Architecture Review, etc.) is triggered **WITHOUT a verified Development Story from Phase 1**, the agent MUST immediately invoke the **Jidoka Halt**:
+If any command or phase (Lean Analysis, Architecture Review, etc.) is triggered **WITHOUT a verified Development Story from Phase 1**, or if a Context Engine tool is invoked **WITHOUT required schema parameters** (e.g., missing `phase` for `log_session_finding`), the agent MUST immediately invoke the **Jidoka Halt**:
 1. Stop all current analysis.
-2. Inform the user that the "Baseline Fact" is missing.
-3. Automatically pivot to **Phase 1: Story Interview**.
-4. Do NOT attempt to "guess" or "hallucinate" the logic to fill the vacuum.
+2. Inform the user of the missing baseline or malformed tool call.
+3. Automatically pivot to **Phase 1: Story Interview** or correct the tool call parameters.
+4. Do NOT attempt to "guess" or "hallucinate" logic or parameters.
 
 ### Meta-Skill & Auxiliary Inspection (For Skills Only)
 If the target topic is an Agent Skill:
@@ -39,12 +39,15 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 ---
 
 ### Phase 1: Conceptual Verification (Story Interview with Context Engine)
-**Target:** `skills/interview` | **Goal:** Define and verify core logic using MCP memory.
+**Target:** `skills/interview` | **Goal:** Define and verify core logic using MCP Context Engine tools.
 
 1. **Initialize:** Trigger the `interview` skill. Run `clear_session_state` to ensure a fresh scratchpad.
-2. **Interrogate:** Apply Socratic questioning and Deglaze tactics, cross-referencing with the Context Engine for architectural alignment. After every turn, update the session state using `log_session_finding` with the `[INTERVIEW_STATE]` header.
-3. **Verify:** Ensure every requirement has a testable acceptance condition and all sad paths are identified. Use the Context Engine to confirm findings against the codebase substrate.
-4. **Output:** Execute `read_session_state`, synthesize the `[INTERVIEW_STATE]` findings, and render the finalized **Development Story Document**.
+2. **Recall:** Call `read_ontology_graph` with a relevant query to check for historical context, prior interview overlaps, or established patterns in the Ontology Graph.
+3. **Interrogate:** Apply Socratic questioning and Deglaze tactics. Update the persistent Knowledge Graph using `commit_ontology_edge` for every finalized insight. Use `log_session_finding` with the `phase: "planning"` parameter for transient session notes.
+4. **Verify:** Ensure every requirement has a testable acceptance condition. Use `read_ontology_graph` to confirm findings against existing architectural dependencies.
+5. **Harden (Maturation):** Call `commit_ontology_edge` to move the high-level summary of the verified logic into the permanent Knowledge Graph.
+6. **Prune:** Execute `clear_session_state` to wipe the scratchpad before Phase 2.
+7. **Output:** Render the finalized **Development Story Document**.
 
 ---
 
@@ -52,18 +55,22 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 **Target:** `workflows/1-lean-analysis.md` | **Goal:** 360-degree analytical scan.
 
 1. **Analyze:** Feed the Development Story Document (from Phase 1) into the `1-lean-analysis.md` workflow.
-2. **Execute Lenses:** Run the topic through all 9 lean-tagged analytical lenses. **Constraint:** Use ONLY the verified logic and constraints defined in the Story and indexed in the Context Engine. If a lens reveals a gap, escalate back to Phase 1.
-3. **Output:** A comprehensive **Lean Analysis Report**, detailing bottlenecks, systemic waste, and a prioritized list of critical actions.
+2. **Execute Lenses:** Run the topic through all 9 lean-tagged analytical lenses. Record findings via `log_session_finding` with `phase: "planning"`.
+3. **Harden (Maturation):** Once the audit is complete, call `commit_ontology_edge` to archive the critical bottlenecks in the Knowledge Graph.
+4. **Prune:** Execute `clear_session_state`.
+5. **Output:** A comprehensive **Lean Analysis Report**.
 
 ---
 
 ### Phase 3: System-Level Strategy (TPS Architecture Review)
 **Target:** `workflows/3-tps-architecture-review.md` | **Goal:** Structural alignment and safe rollout.
 
-1. **Evaluate:** Review the Critical Actions from Phase 2. Ensure they align with the overarching product vision and the existing architectural anchors.
-2. **Map Flow & Dependencies:** Run the `3-tps-architecture-review.md` workflow to map end-to-end flow, identify architectural bottlenecks, and map the cross-domain dependency footprint (Nemawashi) using the Context Engine's graph tools.
-3. **Design Safeguards:** Establish system-wide Poka-yoke interlocks and Jidoka (Andon Cord) thresholds for any major changes.
-4. **Output:** A formal **TPS Architecture Proposal (A3)** outlining the future state, leveled rollout plan (Heijunka), and organizational guardrails.
+1. **Evaluate:** Review critical actions. Call `read_ontology_graph` to map existing structural anchors and end-to-end flow dependencies.
+2. **Map Flow:** Run `3-tps-architecture-review.md`. Record rollout steps using `log_session_finding` with `phase: "planning"`.
+3. **Design Safeguards:** Establish Poka-yoke interlocks.
+4. **Harden (Maturation):** Call `commit_ontology_edge` to link the new A3 strategy to the affected components in the Knowledge Graph.
+5. **Prune:** Execute `clear_session_state`.
+6. **Output:** A formal **TPS Architecture Proposal (A3)**.
 
 ---
 
@@ -80,10 +87,11 @@ Run each phase sequentially. Only proceed to the next phase once the outputs of 
 ### Phase 5: Module-Level Optimization (Kaizen Sprint)
 **Target:** `workflows/2-kaizen-sprint.md` | **Goal:** Targeted problem solving and standardization.
 
-1. **Target Friction:** Identify specific, localized friction points, recurring issues, or inefficiencies uncovered in Phases 2 and 3.
+1. **Target Friction:** Use `log_session_finding` with `phase: "execution"` to track Kaizen progress.
 2. **Execute PDCA:** For each targeted issue, run the `2-kaizen-sprint.md` workflow.
-3. **Root Cause & Fix:** Perform a 5-Whys drilldown (Hansei), implement a poka-yoke interlock, and verify the baseline improvement (Shisa Kanko).
-4. **Output:** One or more **Kaizen PDCA Reports**, standardizing the improvements horizontally (Yokoten) and bringing the module to peak efficiency.
+3. **Standardize (Yokoten):** Once fixed, call `commit_ontology_edge` with `edge_type: "IMPLEMENTS"` to record the new standard in the Knowledge Graph.
+4. **Prune:** Execute `clear_session_state`.
+5. **Output:** **Kaizen PDCA Reports**.
 
 ---
 

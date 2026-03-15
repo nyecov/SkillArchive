@@ -59,10 +59,4 @@ The engine does not "auto-promote" text. Memory navigation (maturation and downg
 
 ---
 
-## 4. Test Artifact Note (Benign Errors)
 
-Users may observe `RuntimeError: Attempted to exit cancel scope in a different task` in the test output.
-
-- **Status**: **Benign**.
-- **Cause**: This is a known race condition in `pytest-asyncio` / `AnyIO` during the teardown of Docker subprocesses on Windows. It occurs *after* the functional assertions have passed and the test loop is closing the standard streams. 
-- **Impact**: Zero impact on memory integrity or functional verification. All 15 functional assertions were successfully validated.

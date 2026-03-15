@@ -38,8 +38,8 @@ This skill dictates how agents build, access, and maintain context. You **MUST**
 
 ### 1. Mandatory Tool Usage
 - **Action:** You must ALWAYS use the `context-engine` MCP tools to observe files, document plans, and record facts.
-- **Constraint:** NEVER attempt to write notes directly to raw `.txt` or `.md` files in the `.gemini/mem` directory. Manual edits will be quarantined and reverted by boot-time diagnostics.
-- **Provenance:** All memory artifacts possess a unique UUIDv4. The server guarantees persistence across file moves and renames.
+- **Constraint:** NEVER attempt to write notes directly to raw files or the SQLite database (`engine.db`) in the `.gemini/mem` directory. Manual edits will be quarantined and reverted by boot-time diagnostics.
+- **Provenance:** All memory artifacts possess a unique identifier. The server guarantees persistence across file moves and renames.
 
 ### 2. The Scratchpad (Short-Term Memory)
 - **Action:** Use `log_session_finding` to record intent, discovered bugs, or phase changes (Memory Creation).
@@ -51,7 +51,7 @@ This skill dictates how agents build, access, and maintain context. You **MUST**
 - **Action (Upgrade):** Use `commit_ontology_edge` to harden architectural rules (e.g., "Module A REQUIRES Module B") out of your volatile scratchpad.
 - **Action (Downgrade):** Use `delete_ontology_edge` to refactor broken graph logic or resolve Cycle Erors. Move the discarded concepts back to the scratchpad if re-evaluation is needed.
 - **Constraint:** Hierarchical edges (`REQUIRES`, `DEPENDS_ON`, `OWNS`) cannot create circular dependencies.
-- **Integrity:** The system uses `ontology.json` with atomic `Sync()` writes. 
+- **Integrity:** The system uses an embedded SQLite database (`engine.db`) in WAL mode to ensure atomic writes and safe concurrency across Swarm agents.
 
 ### 4. Token-Safe Ingestion
 - **Action:** Use `ingest_context` to safely retrieve file chunks. It automatically token-caps the return to ~16,000 characters to protect your context window.

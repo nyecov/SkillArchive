@@ -37,8 +37,8 @@ async def test_memory_maturation_lifecycle(mcp_server):
     
     # Verify scratchpad is now empty (pruned)
     res_final = await mcp_server.call_tool("read_session_state", {})
-    state_final = json.loads(res_final.content[0].text)
-    assert len(state_final["findings"]) == 0
+    text = res_final.content[0].text
+    assert "currently empty" in text or '"findings": []' in text
     print("\n✅ Lifecycle Verified: Creation -> Upgrade -> Pruning successful.")
 
 @pytest.mark.asyncio
@@ -87,5 +87,6 @@ async def test_scratchpad_bulk_clear(mcp_server):
     
     # 3. Verify
     res2 = await mcp_server.call_tool("read_session_state", {})
-    assert len(json.loads(res2.content[0].text)["findings"]) == 0
+    text2 = res2.content[0].text
+    assert "currently empty" in text2 or '"findings": []' in text2
     print("\n✅ Bulk Clear Verified.")

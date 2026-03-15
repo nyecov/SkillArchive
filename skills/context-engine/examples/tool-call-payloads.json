@@ -1,0 +1,39 @@
+{
+    "examples": [
+        {
+            "tool": "ingest_context",
+            "payload": {
+                "target_path": "src/main.js",
+                "start_offset": 16000
+            }
+        },
+        {
+            "tool": "log_session_finding",
+            "payload": {
+                "finding_text": "The memory leak is isolated to the cyclic node reference in module X.",
+                "phase": "verification"
+            }
+        },
+        {
+            "tool": "commit_ontology_edge",
+            "payload": {
+                "source_entity": "AuthService",
+                "edge_type": "DEPENDS_ON",
+                "target_entity": "UserRepository"
+            }
+        },
+        {
+            "tool": "append_interview_qa",
+            "payload": {
+                "toon_qa_pair": "[Q: Why did we deprecate the old Auth module?]\n[A: It relied on legacy PBKDF2 hashing which was too slow for our TPS requirements, prompting the migration to Argon2.]"
+            }
+        },
+        {
+            "tool": "prune_interview_qa",
+            "payload": {
+                "before_date": "2025-01-01T00:00:00Z",
+                "query": "PBKDF2"
+            }
+        }
+    ]
+}

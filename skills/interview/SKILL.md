@@ -46,64 +46,64 @@ Treat every user proposal as a hypothesis. Shift the burden of proof to the user
 
 ### 2. Waste Eradication (Graceful Degradation)
 Socratic loops can cause severe context bloat (Transportation Waste). Do not rely solely on conversational history.
-- **Action (Primary):** Attempt to use the `context-engine` scratchpad tools (`log_session_finding`, `read_session_state`) to maintain the deterministic state of the interview.
-- **Action (Fallback):** If the `context-engine` tools return an error (e.g., "Not connected"), gracefully degrade by initializing and tracking the `[INTERVIEW_STATE]` in a local `.gemini/tmp/interview_state.json` file, or via strict, structured conversational summaries at the end of each turn.
+- **Action (Primary):** Use the `context-engine` tiered memory tools (`log_session_finding`, `commit_ontology_edge`) to maintain the deterministic state of the interview. Record volatile notes using `log_session_finding` with the `phase: "planning"` parameter.
+- **Action (Fallback):** If the `context-engine` tools return an error (e.g., "Not connected"), gracefully degrade by initializing and tracking the `[INTERVIEW_STATE]` in a local `.gemini/tmp/interview_state.json` file.
 - **Constraint:** NEVER proceed to the next phase without ensuring the significant requirements from the current phase are recorded deterministically.
 - **Integration:** Aligns with **Heijunka** to prevent Overburden and ensures universal availability.
 
 ### 3. Iterative Refinement
 Build the requirement incrementally through back-and-forth dialogue until both parties are completely satisfied with the logic and behavior.
-- **Action:** Use your state tracking method to regain context if the window is flushed. Validate the user's statements, point out remaining rough spots, and tighten one edge at a time.
+- **Action:** Regularly call `read_ontology_graph` to cross-reference current findings with historical patterns in the Ontology Graph.
+- **Maturation:** Once a core requirement is verified, "Harden" it into the permanent Knowledge Graph by calling `commit_ontology_edge`.
 - **Constraint:** Do NOT format the final development document until explicit consensus is reached that all edges are sharp and the logic is watertight.
 - **Integration:** Establishes a verified baseline before moving to execution or formal planning phases.
 
 ### 4. Standardized Output (Development Document)
 Once consensus is reached, serialize the agreed-upon requirements into a clear, actionable format.
 - **Action:** Generate a Development Document using the strict template provided at the bottom of this skill, populating it from the gathered state findings.
+- **Cleanup:** Execute `clear_session_state` after the document is finalized to minimize context window waste.
 - **Constraint:** The final document MUST strictly follow the template schema and only contain what was verified. No embellishment, no assumed features.
 - **Integration:** Serves as the direct input for **Test-Driven Development** and **Shisa Kanko** execution.
 
 ### 5. Kaizen Ingestion (Continuous Learning)
 To ensure the system learns from structural logic debates, the core conflict of the interview must be permanently logged.
-- **Action (Primary):** After the final Development Document is approved, you MUST summarize the hardest question of the interview and the final agreed-upon answer into a strict TOON block (`[Q: ...]\n[A: ...]`). You MUST call the Context Engine `append_interview_qa` tool to commit this block to the permanent Memory Bank.
-- **Action (Fallback):** If the `append_interview_qa` tool returns an error (e.g., "Not connected"), gracefully degrade by saving the TOON block to a local `.gemini/tmp/pending_interview_qa.toon` file. Do not attempt to append to the master database natively, as this violates Poka-yoke lock safety.
-- **Integration:** Enables the `analyze-interview-patterns` workflow to perform system-wide Yokoten.
+- **Action (Primary):** After the final Development Document is approved, summarize the session's defining insight into an architectural relationship and call `commit_ontology_edge`.
+- **Action (Fallback):** If the `commit_ontology_edge` tool returns an error, log the relationship to the scratchpad using `log_session_finding`.
 
 ## Escalation & Halting
 
 - **Jidoka:** 
-  - If logical contradictions persist through 3 probing attempts, invoke an autonomous halt to prevent garbage-in, garbage-out.
-  - **Memory Corruption:** If BOTH the `context-engine` and the local JSON file fallback fail, halt the interview and request user intervention to repair the workspace.
+  - If logical contradictions persist through 3 probing attempts, invoke an autonomous halt.
+  - **Tool Failure:** If `context-engine` returns a "Parameter Missing" error (e.g., missing `phase`), immediately halt and correct the tool call parameters.
 - **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol to propose a smaller, simpler MVP if the requested story is too complex.
 
 ## Implementation Workflow
 
-1. **Trigger:** The user requests a development story, feature scoping, requirement definition, or asks to plan a new idea.
+1. **Trigger:** The user requests a development story or feature scoping.
 2. **Execute:**
-   - **(Heijunka Step):** If the user provides a massive, multi-feature request, invoke `heijunka` to decompose it into distinct sub-stories first.
-   - **Initialize:** Attempt `clear_session_state`. If it fails, create/clear a local `.gemini/tmp/interview_state.json` file.
-   - **Interrogate:** Ask the user to state their core goal in one sentence.
-   - **Maturation:** Apply Deglaze questions iteratively. After every turn, update the session state via the active method (Context Engine or local JSON):
-     - `[INTERVIEW_STATE] Phase: <current_phase>`
-     - `[INTERVIEW_STATE] <Field>: <Value>`
-     - *Fields to track: StoryName, UserValue, CoreLogic, EdgeCases (list), VerificationCriteria (list).*
-3. **Verify:** Confirm with the user that all rough spots are resolved.
-4. **Output:** Retrieve the `[INTERVIEW_STATE]` findings and render the final **Story Template**.
-5. **Ingest:** Formulate the most valuable Q&A pair from the session into a TOON block and execute `append_interview_qa`.
+   - **(Initialize):** Call `clear_session_state`.
+   - **(Recall):** Call `read_ontology_graph` to identify if this topic overlaps with existing system logic.
+   - **(Interrogate):** Iterate logic. After every turn, update the Memory:
+     - Use `commit_ontology_edge` for stable, verified insights.
+     - Use `log_session_finding(phase: "planning")` for transient state notes.
+   - **(Maturation):** For every finalized requirement, call `commit_ontology_edge(edge_type: "REQUIRES")`.
+3. **Verify:** Confirm consensus on the final logic.
+4. **Output:** Render the final **Story Template**.
+5. **Pruning:** Call `clear_session_state` to reset the volatile buffer while retaining the stable database edits.
 
 ## Quick Reference
 
 ```
 INTERVIEW READINESS CHECKLIST:
 □ Core goal stated in one sentence?
-□ User value (who benefits and why) defined?
+□ Findings appended to Ontology Graph?
+□ Stable requirements matured to Ontology Table?
 □ All sad paths / failure states identified?
-□ Every "nice-to-have" challenged and justified or removed?
 □ Each requirement has a testable acceptance condition?
-□ No logical contradictions remain?
+□ Session state pruned after completion?
 
 If 2+ boxes unchecked → continue interview
-All boxes checked     → format Development Document -> append_interview_qa
+All boxes checked     → format Development Document
 ```
 
 ## Poka-yoke Output Template

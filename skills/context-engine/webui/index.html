@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Engine | Brainmap Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Load vis-network from CDN -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <header>
+        <div class="logo">
+            <span class="icon">🧠</span>
+            <h1>Context Engine<span>.v2</span></h1>
+        </div>
+        <div class="status-bar">
+            State: <span id="status-text" class="status-offline">Connecting...</span>
+        </div>
+    </header>
+
+    
+    <main>
+        <!-- Column 1: Short-term (Scratchpad) -->
+        <section id="scratchpad-panel" class="glass-panel">
+            <div class="panel-header">
+                <h2>Short-Term: Scratchpad</h2>
+            </div>
+            <div id="scratchpad-list" class="scroll-area">
+                <div class="loader">Loading session findings...</div>
+            </div>
+        </section>
+
+        <!-- Column 2: Middle-term (Ontology) -->
+        <section id="graph-panel" class="glass-panel">
+            <div class="panel-header">
+                <h2>Middle-Term: Brainmap</h2>
+                <button id="reset-view" class="btn-secondary">Reset View</button>
+            </div>
+            <div id="mynetwork"></div>
+        </section>
+
+        <!-- Column 3: Long-term (Ingestion) -->
+        <section id="ingestion-panel" class="glass-panel">
+            <div class="panel-header">
+                <h2>Long-Term: Ingestion History</h2>
+            </div>
+            <div id="ingestion-list" class="scroll-area">
+                <div class="loader">Loading ground-truth context...</div>
+            </div>
+        </section>
+    </main>
+
+
+    <footer>
+        <p>&copy; 2026 Context Engine Daemon | Built for Swarm Autonomy</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

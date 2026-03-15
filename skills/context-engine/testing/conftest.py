@@ -42,6 +42,9 @@ async def mcp_server(test_workspace):
     ontology_path = os.path.join(test_workspace, "ontology.json")
     
     # State reset to prevent leakage
+    db_path = os.path.join(test_workspace, "engine.db")
+    if os.path.exists(db_path):
+        os.remove(db_path)
     if os.path.exists(session_path):
         os.remove(session_path)
     if os.path.exists(ontology_path):
@@ -66,29 +69,42 @@ async def mcp_server(test_workspace):
         ]
     )
 
+    stdio_ctx = stdio_client(server_params)
+    session_ctx = None
     try:
-        async with stdio_client(server_params) as (read, write):
-            async with ClientSession(read, write) as session:
-                await asyncio.wait_for(session.initialize(), timeout=20.0)
-                
-                # Debug logger
-                log_path = os.path.join(test_workspace, "mcp_debug.log")
-                
-                original_call = session.call_tool
-                async def debug_call_tool(name, arguments=None):
-                    with open(log_path, "a") as f:
-                        f.write(f"\n[CALL] {name} {arguments}\n")
-                    res = await original_call(name, arguments)
-                    with open(log_path, "a") as f:
-                        f.write(f"[RES] isError={res.isError} content={res.content[0].text[:200] if res.content else 'None'}\n")
-                    return res
-                
-                session.call_tool = debug_call_tool
-                yield session
+        read, write = await stdio_ctx.__aenter__()
+        session_ctx = ClientSession(read, write)
+        session = await session_ctx.__aenter__()
+        
+        await asyncio.wait_for(session.initialize(), timeout=20.0)
+        
+        # Debug logger
+        log_path = os.path.join(test_workspace, "mcp_debug.log")
+        
+        original_call = session.call_tool
+        async def debug_call_tool(name, arguments=None):
+            with open(log_path, "a") as f:
+                f.write(f"\n[CALL] {name} {arguments}\n")
+            res = await original_call(name, arguments)
+            with open(log_path, "a") as f:
+                f.write(f"[RES] isError={res.isError} content={res.content[0].text[:200] if res.content else 'None'}\n")
+            return res
+        
+        session.call_tool = debug_call_tool
+        yield session
     except Exception as e:
         # Capture logs before container dies
         os.system(f"docker logs {container_name} > {os.path.join(test_workspace, 'last_container_error.log')} 2>&1")
         raise
     finally:
+        if session_ctx:
+            try:
+                await session_ctx.__aexit__(None, None, None)
+            except Exception:
+                pass
+        try:
+            await stdio_ctx.__aexit__(None, None, None)
+        except Exception:
+            pass
         # Robustness: Give OS time to reap file handles
         await asyncio.sleep(0.2)

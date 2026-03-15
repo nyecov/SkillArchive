@@ -26,5 +26,11 @@ RUN apk add --no-cache procps
 # Copy the static binary from the builder stage
 COPY --from=builder /app/context-engine-server /context-engine-server
 
+# Copy the static web assets
+COPY webui /webui
+
+# Expose the WebUI port
+EXPOSE 6767
+
 # Set the entrypoint to the compiled binary
 ENTRYPOINT ["/context-engine-server"]

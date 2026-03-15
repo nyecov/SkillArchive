@@ -22,11 +22,11 @@ It removes the cognitive load of memory management from the LLM, offloading it t
 
 ### 1.3 Memory Provenance (Identity & Tracking)
 To ensure memories can iterate, move seamlessly, and be renamed without losing their identity, all memory files generated or managed by the engine must adhere to strict Provenance tracking:
-- **UUIDv4 Identity:** Every single memory file (JSON, YAML, Markdown, TOON) MUST receive an immutable, unique Version 4 UUID upon creation.
+- **UUIDv4 Identity:** Every single memory artifact (Scratchpad note, Ontology Node, Interview Pattern) MUST receive an immutable, unique identifier.
 - **Fast Collision Check (The Registry Heuristic):** Even though UUIDv4 collisions are astronomically rare, the Go server must physically guarantee uniqueness. It maintains a lightweight, in-memory `map[string]filepath` of all active UUIDs loaded during engine boot (by scanning `.gemini/mem`). When generating a *new* UUID, the server performs a fast `O(1)` map lookup. If a collision is magically detected, it loops to generate a new one until absolute uniqueness is confirmed before writing to disk.
 - **Version Counter:** Every file must maintain a `version` integer that increments atomically upon any mutation by the server.
-- **Atomic Residency (TPS Reliability):** All state mutations MUST utilize an atomic write-and-rename pattern combined with `os.Sync()` (fsync) to guarantee data persistence during power failure or unexpected container halt.
-- **Persistence Mechanism:** For all memory tiers (Short/Middle/Long), this is injected as a root `__uuid` and `__version` pairing within a strictly standardized JSON schema.
+- **Atomic Residency (TPS Reliability):** All state mutations MUST utilize SQLite WAL mode combined with robust connection pooling to guarantee data persistence during power failure and support Swarm concurrency.
+- **Persistence Mechanism:** For all memory tiers (Short/Middle/Long), records are persisted in localized tables within `engine.db`.
 
 ---
 
@@ -35,22 +35,21 @@ To ensure memories can iterate, move seamlessly, and be renamed without losing t
 The engine acts as the final guardrail against agent hallucination and system context bloat. It handles errors natively:
 
 1. **State Corruption (Drive Failure/Human Error):**
-   - If the server cannot parse `current_session.json` or `ontology.json`, it will instantly rename the corrupted file to `.corrupted-[timestamp]` and initialize a blank state.
-   - It will return an explicit `ToolError` warning the agent of the reset.
+   - If the server detects a corrupt SQLite database file (`engine.db`), it will instantly fail `PRAGMA integrity_check` and quarantine the database.
+   - It will return an explicit `ToolError` warning the agent of the corruption.
 2. **Type/Enum Hallucinations & Query Feedback:**
    - LLM errors (like inventing random Edge Types) are inherently blocked by the MCP JSON Schema. The server returns standard `InvalidParams`, forcing the agent to retry with the correct Enum.
-   - For malformed queries (e.g. failing to parse a specific TOON block), the server MUST return a rich, instructional `ToolError` message exactly outlining *why* the query failed and *how* the agent should correct it. Do not return empty strings or raw stack traces.
+   - For malformed queries, the server MUST return a rich, instructional `ToolError` message exactly outlining *why* the query failed and *how* the agent should correct it. Do not return empty strings or raw stack traces.
 3. **Automated Boot Diagnostics (Self-Check):**
-   - Upon container boot or reboot, the Go server MUST execute a complete schema verification sequence across all JSON memory files in `.gemini/mem`. 
-   - It validates JSON structure, UUID constraints, and version integers. If a corruption or unauthorized circumvention is detected at boot, the server halts loading that specific file and outputs a detailed forensic log to `.gemini/mem/engine_diagnostics.log`.
-4. **Concurrency (Race Conditions):**
-   - The Go server implements OS-level file locking on individual memory files for granular mutation.
-   - **Singleton Residency Guard (Global Safeguard):** To prevent multiple server instances (e.g., zombie Docker containers) from corrupting the same volume, the engine implements a Global Singleton Guard. It acquires an exclusive cross-platform POSIX file lock (`.engine.instance.lock` via `gofrs/flock`) on the shared volume. This relies on the OS to guarantee mutual exclusion and automatically release the lock upon process termination (cleanly or via a crash), completely eliminating "stale lock" boot failures without the need for naive file-existence checks or wait intervals.
-   - **Jidoka Halt:** Any secondary instance attempting to boot will fail immediately with a "Singleton Violation" error.
+   - Upon container boot or reboot, the Go server MUST execute a complete schema verification sequence across the SQLite database `engine.db` in `.gemini/mem`. 
+   - It validates structural constraints via `PRAGMA integrity_check`. If a corruption or unauthorized circumvention is detected at boot, the server halts loading and outputs a detailed forensic log to `engine_diagnostics.log`.
+4. **Concurrency (Swarm Parallelism):**
+   - The Go server utilizes an embedded SQLite database in WAL (Write-Ahead-Log) mode.
+   - **Multi-Agent Orchestration:** Replacing the legacy single-file Lock, WAL mode native driver locks allow multiple Context Engines initiated by different LLM threads to safely coordinate against the single persistent `engine.db` concurrently.
 5. **The "Zip-Bomb" Guardrail:**
    - `ingest_context` executes a pre-read byte-stat. If a file exceeds a safe threshold (e.g., 5MB), it rejects the payload entirely.
 6. **Tiered Context Limits (The Infinite Growth Guardrail):**
-   - The volatile `current_session.json` state cannot grow infinitely without exceeding LLM context windows.
+   - The volatile scratchpad state cannot grow infinitely without exceeding LLM context windows.
    - **Soft Limit:** If the file exceeds 8,000 characters, the server appends a system warning instructing the agent to prune unused memory.
    - **Hard Limit (Jidoka Halt):** If the file exceeds 10,000 characters, the server actively rejects new write requests with a strict error, forcing the agent to prune state before proceeding.
 7. **Token Count Heuristic (Go Limitation Pivot):**
@@ -69,10 +68,10 @@ If the agent is not forced to use the engine, it will revert to standard file-re
 1. **The Orchestration Layer:** The engine is permanently bolted to the agent's core `system_instructions.txt` or `skills-config.json` configuration as a global, non-negotiable dependency.
 2. **The Methodology Layer (Shisa Kanko):** The master workflow `skills/shisa-kanko/SKILL.md` is updated to include a hard block: *"You MUST execute `read_session_state` and `log_session_finding` before engaging the pointing protocol."*
 3. **The Poka-yoke Layer (Obfuscation):** The legacy `rag-strategy`, `plan-with-files`, and `ontology` skills are **deleted**. The agent is left with NO alternative documentation on how to perform memory tasks except via the Context Engine MCP tools.
-4. **The Physical Guardrail (Circumvention Prevention):** Because `.gemini/mem` is a physical directory, an agent could theoretically use raw bash or python scripts to read/write the JSON files directly. To prevent this:
-   - **Environment Blacklisting:** The `.gemini/mem` directory MUST be added to the workspace's `.gitignore` and any agent-specific ignore files (e.g., `.cursorignore`, `.aiderignore`). This physically hides the memory files from the agent's semantic codebase search tools, while leaving the rest of the `.gemini` folder accessible for other agent operations.
+4. **The Physical Guardrail (Circumvention Prevention):** Because `.gemini/mem` is a physical directory, an agent could theoretically use raw bash or python scripts to read/write the databases directly. To prevent this:
+   - **Environment Blacklisting:** The `.gemini/mem` directory MUST be added to the workspace's `.gitignore` and any agent-specific ignore files (e.g., `.cursorignore`, `.aiderignore`).
    - **Procedural Hard-Block:** The `context-engine` skill explicitly declares native file manipulation on `.gemini/mem` as a Jidoka Violation.
-   - **Checksum / Schema Rejection:** If the agent *does* attempt to manually edit the memory JSON/YAML files, it will likely break the strict schemas or UUID/Version metadata tracking. The server's start-up audit will detect this manual tampering, quarantine the file, and wipe the edits, rendering manual LLM circumvention futile.
+   - **SQLite Corruption Guard:** If the agent *does* attempt to manually edit SQLite binaries directly, it will likely corrupt the WAL. The server's start-up audit will detect this via PRAGMA assertions, quarantine the DB, and restart the swarm, rendering LLM circumvention futile.
 
 ---
 
@@ -93,7 +92,7 @@ Ingests a file, safely chunking it using the 16,000-character heuristic. Nativel
 ```
 
 ### 4.2. `log_session_finding`
-Appends a single thought or decision to the volatile short-term scratchpad (`current_session.json`). Enforces a sliding-window array size limit.
+Appends a single thought or decision to the volatile short-term scratchpad database table. Enforces a sliding-window array size limit.
 ```json
 {
   "properties": {
@@ -134,7 +133,7 @@ Resets the volatile scratchpad, permanently deleting all short-term session find
 ```
 
 ### 4.6. `commit_ontology_edge`
-Mutates the permanent `.gemini/mem/ontology.json` Directed Graph. Hierarchical edges fail if a cycle is created.
+Mutates the permanent `.gemini/mem/engine.db` Directed Graph. Hierarchical edges fail if a cycle is created.
 ```json
 {
   "properties": {
@@ -170,41 +169,7 @@ Given a target entity, traverses the graph to return all established upstream an
 }
 ```
 
-### 4.9. `append_interview_qa`
-Appends a Socratic Q&A pair to the Interview Memory Bank. Uses POSIX volume locks and strictly requires TOON formatting.
-```json
-{
-  "properties": {
-    "toon_qa_pair": { "type": "string", "description": "The Q&A pair in strict TOON format, starting with [Q: ...] and ending with [A: ...]." }
-  },
-  "required": ["toon_qa_pair"]
-}
-```
 
-### 4.10. `retrieve_interview_patterns`
-Retrieves semantic chunks from the Interview Memory Bank. Uses a streaming parser to respect the 16k context window heuristic.
-```json
-{
-  "properties": {
-    "query": { "type": "string", "description": "(Optional) Keyword or semantic string to filter the TOON blocks. If empty, retrieves the latest blocks." }
-  },
-  "required": []
-}
-```
-
-### 4.11. `prune_interview_qa`
-Manually removes Q&A blocks from the Interview Memory Bank based on date or keyword. AT LEAST ONE parameter is required to prevent accidental bulk deletion.
-```json
-{
-  "properties": {
-    "before_date": { "type": "string", "description": "(Optional) Remove all entries older than this date. Format: RFC3339 (e.g. 2026-01-01T00:00:00Z)." },
-    "query": { "type": "string", "description": "(Optional) Remove all entries matching this keyword or phrase." }
-  },
-  "required": []
-}
-```
-
----
 
 ## 6. Persistent Operations (Daemon Mode)
 

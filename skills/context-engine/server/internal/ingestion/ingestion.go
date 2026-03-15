@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"github.com/nyecov/context-engine/internal/storage"
 
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -26,6 +27,13 @@ func HandleIngestContext(ctx context.Context, request mcp.CallToolRequest) (*mcp
 	targetPath, ok := args["target_path"].(string)
 	if !ok || targetPath == "" {
 		return mcp.NewToolResultError("target_path is required and must be a string"), nil
+	}
+
+	startOffset := 0
+	if offsetIntf, hasOffset := args["start_offset"]; hasOffset {
+		if offsetVal, ok := offsetIntf.(float64); ok {
+			startOffset = int(offsetVal)
+		}
 	}
 
 	// Resolve actual workspace path
@@ -70,6 +78,13 @@ func HandleIngestContext(ctx context.Context, request mcp.CallToolRequest) (*mcp
 
 	content := string(fileBytes)
 
+	if startOffset > 0 {
+		if startOffset >= len(content) {
+			return mcp.NewToolResultError(fmt.Sprintf("ToolError: start_offset %d is beyond file size %d", startOffset, len(content))), nil
+		}
+		content = content[startOffset:]
+	}
+
 	// Apply Optional Query Targeting filter if provided
 	queryInterFace, hasQuery := args["query"]
 	if hasQuery {
@@ -83,12 +98,26 @@ func HandleIngestContext(ctx context.Context, request mcp.CallToolRequest) (*mcp
 	// Apply Strict Context Truncation Heuristic
 	if len(content) > MaxReturnChars {
 		truncated := content[:MaxReturnChars]
-		warning := fmt.Sprintf("\n\n[WARNING: OUTPUT TRUNCATED AT %d CHARS to protect LLM context limits. File is larger than safe threshold.]", MaxReturnChars)
+		nextOffset := startOffset + MaxReturnChars
+		warning := fmt.Sprintf("\n\n[PAGINATION REQUIRED: Call ingest_context again with start_offset: %d]", nextOffset)
 		return mcp.NewToolResultText(truncated + warning), nil
 	}
 
-	return mcp.NewToolResultText(content), nil
+	
+        // Log to ingestion history
+        if db := storage.GetDB(); db != nil {
+                queryStr := ""
+                if hasQuery {
+                        if q, ok := queryInterFace.(string); ok {
+                                queryStr = q
+                        }
+                }
+                db.Exec("INSERT INTO ingestion_history (target_path, query_filter) VALUES (?, ?)", targetPath, queryStr)
+        }
+
+        return mcp.NewToolResultText(content), nil
 }
+
 
 // extractQueryWindow finds the first instance of the query and returns a chunk of text around it
 func extractQueryWindow(content, query string) string {

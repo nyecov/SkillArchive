@@ -5,7 +5,7 @@ This document outlines the systematic approach to verifying the **Context Engine
 ---
 
 ## 📘 WHAT is being tested?
-The suite covers four critical architectural pillars across 15 automated test cases:
+The suite covers six critical architectural pillars across 17 automated test cases:
 
 1.  **Ingestion (Long-term Memory)**
     - **Path Traversal Defense**: Ensuring the server strictly blocks access to files outside the `WORKSPACE_ROOT`.
@@ -16,13 +16,13 @@ The suite covers four critical architectural pillars across 15 automated test ca
     - **Lock Competition**: Testing OS-level file locking and the 5-second "Overrule Heuristic."
 3.  **Ontology (Middle-term Memory)**
     - **DAG Cycle Rejection**: Preventing circular dependencies in hierarchical edges (`REQUIRES`, `OWNS`).
-    - **Transactional Integrity**: Ensuring a rejected edge does not corrupt the JSON state in `ontology.json`.
+    - **Transactional Integrity**: Ensuring a rejected edge does not corrupt the database state, utilizing SQLite's ACID guarantees.
 4.  **Diagnostics (Boot Sequence)**
-    - **Quarantine Logic**: Confirming that malformed or tampered files are moved to `.corrupted-[timestamp]` on boot.
-    - **UUID Provenance**: Ensuring every memory artifact maintains a unique, registered identity.
-5.  **Operational Guardrails (Singleton)**
-    - **Jidoka Halt**: Verifying that secondary server instances are blocked from booting.
-    - **Stale Takeover**: Confirming the engine safely recovers from crashes by seizing stale locks.
+    - **Corruption Detection**: Confirming that a corrupt database triggers the `PRAGMA integrity_check` failure and is handled via quarantine/reset logic.
+    - **UUID Registry Verification**: Ensuring every memory artifact maintains a unique identity within its respective table.
+5.  **Operational Guardrails (Concurrency)**
+    - **Swarm Orchestration**: Verifying that multiple engines can connect to the WAL-mode database simultaneously without "Database locked" errors.
+    - **Resilience**: Confirming the engine safely handles interruptions during database operations.
 6.  **Memory Maturation (Lifecycle)**
     - **Creation -> Upgrade -> Prune**: Verifying the explicit promotion of volatile scratchpad items into the permanent ontology graph, followed by a surgical pruning of the scratchpad.
     - **Downgrade (Reversion)**: Verifying the deletion of an ontology edge to revert an outdated architectural rule back into the volatile state for re-evaluation.
@@ -37,10 +37,10 @@ The suite is built for **Subprocess Isolation** and **Environmental Determinism*
 - **Protocol**: Real MCP Traffic. Tests use the `stdio_client` and `ClientSession` to send actual JSON-RPC payloads, treating the server as a true black box.
 - **Orchestration**: `pytest-asyncio` on Windows.
   - **Win32 Policy**: Uses `WindowsProactorEventLoopPolicy` for stable subprocess pipes.
-  - **Teardown Wrapper**: Specifically handles the benign `AnyIO` cancellation noise to ensure a clean exit status.
+  - **Teardown Wrapper**: Specifically handles the `AnyIO` cancellation noise to ensure a clean exit status across all async contexts.
 - **Forensics**: 
-  - `mcp_debug.log`: Records every call and response for offline inspection.
-  - `engine_diagnostics.log`: Captures the server's internal boot sequence results.
+  - `pytest_results.txt`: Comprehensive functional verification log.
+  - `engine_diagnostics.log`: Server boot sequence and SQLite integrity results.
 
 ---
 

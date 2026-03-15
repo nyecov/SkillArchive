@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"os"
 	"os/signal"
@@ -10,13 +11,22 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 	"github.com/nyecov/context-engine/internal/ingestion"
-	"github.com/nyecov/context-engine/internal/interview"
 	"github.com/nyecov/context-engine/internal/ontology"
 	"github.com/nyecov/context-engine/internal/pokayoke"
 	"github.com/nyecov/context-engine/internal/scratchpad"
+	"github.com/nyecov/context-engine/internal/webui"
 )
 
 func main() {
+	// Parse Flags
+	webEnabled := flag.Bool("web", true, "Enable the WebUI HTTP server")
+	webPort := flag.String("port", "6767", "Port for the WebUI HTTP server")
+	flag.Parse()
+
+	if *webEnabled {
+		webui.StartServer(*webPort)
+	}
+
 	// Initialize the MCP Server
 	s := server.NewMCPServer(
 		"Context Engine",
@@ -47,45 +57,17 @@ func main() {
 	// Register Tool: read_ontology_graph
 	registerReadOntologyGraphTool(s)
 
-	// Register Tool: append_interview_qa
-	registerAppendInterviewQATool(s)
-
-	// Register Tool: retrieve_interview_patterns
-	registerRetrieveInterviewPatternsTool(s)
-
-	// Register Tool: prune_interview_qa
-	registerPruneInterviewQATool(s)
-
 	// Run Poka-yoke Boot Diagnostics
 	if err := pokayoke.RunBootDiagnostics(); err != nil {
 		fmt.Fprintf(os.Stderr, "Boot Diagnostics Failed: %v\n", err)
 	}
 
-	// Structural Singleton Check (Jidoka Halt)
-	if err := pokayoke.AcquireSingletonLock(); err != nil {
-		fmt.Fprintf(os.Stderr, "FATAL ERROR: %v\n", err)
-		os.Exit(1)
-	}
-	defer pokayoke.ReleaseSingletonLock()
-
-	// Initialize the Heartbeat to prove we are alive and hold the lock.
-	// StartHeartbeat returns a channel that fires if the lock is lost.
-	heartbeatCtx, cancelHeartbeat := context.WithCancel(context.Background())
-	defer cancelHeartbeat()
-	heartbeatLost := pokayoke.StartHeartbeat(heartbeatCtx)
-
-	// Handle Graceful Shutdown from OS signals or heartbeat loss
+	// Handle Graceful Shutdown from OS signals
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
-		select {
-		case <-sigs:
-			fmt.Fprintf(os.Stderr, "\n[SHUTDOWN] Signal received. Canceling heartbeat and releasing singleton lock...\n")
-		case <-heartbeatLost:
-			fmt.Fprintf(os.Stderr, "\n[SHUTDOWN] Heartbeat lost. Initiating graceful shutdown to protect data integrity...\n")
-		}
-		cancelHeartbeat()
-		pokayoke.ReleaseSingletonLock()
+		<-sigs
+		fmt.Fprintf(os.Stderr, "\n[SHUTDOWN] Signal received. Initiating graceful shutdown...\n")
 		os.Exit(0)
 	}()
 
@@ -104,6 +86,7 @@ func registerIngestContextTool(s *server.MCPServer) {
 		mcp.WithDescription("Ingests a file safely. Truncates and chunks files exceeding 16k chars. Handles TOON, JSON, and Markdown."),
 		mcp.WithString("target_path", mcp.Required(), mcp.Description("Absolute/relative path to the file to ingest.")),
 		mcp.WithString("query", mcp.Description("(Optional) Specific keyword query to extract relevant chunks.")),
+		mcp.WithNumber("start_offset", mcp.Description("(Optional) Byte offset to start reading from for paginated file ingestion.")),
 	)
 
 	s.AddTool(tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -191,36 +174,5 @@ func registerReadOntologyGraphTool(s *server.MCPServer) {
 	})
 }
 
-func registerAppendInterviewQATool(s *server.MCPServer) {
-	tool := mcp.NewTool("append_interview_qa",
-		mcp.WithDescription("Appends a Socratic Q&A pair to the Interview Memory Bank using TOON format. MUST be used to log interview insights safely."),
-		mcp.WithString("toon_qa_pair", mcp.Required(), mcp.Description("The Q&A pair in strict TOON format, starting with [Q: ...] and ending with [A: ...].")),
-	)
 
-	s.AddTool(tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		return interview.HandleAppendInterviewQA(ctx, request)
-	})
-}
 
-func registerRetrieveInterviewPatternsTool(s *server.MCPServer) {
-	tool := mcp.NewTool("retrieve_interview_patterns",
-		mcp.WithDescription("Retrieves semantic chunks from the Interview Memory Bank. Uses a streaming parser to respect the 16k context window."),
-		mcp.WithString("query", mcp.Description("(Optional) Keyword or semantic string to filter the TOON blocks. If empty, retrieves the latest blocks.")),
-	)
-
-	s.AddTool(tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		return interview.HandleRetrieveInterviewPatterns(ctx, request)
-	})
-}
-
-func registerPruneInterviewQATool(s *server.MCPServer) {
-	tool := mcp.NewTool("prune_interview_qa",
-		mcp.WithDescription("Manually removes Q&A blocks from the Interview Memory Bank based on date or keyword. AT LEAST ONE parameter is required."),
-		mcp.WithString("before_date", mcp.Description("(Optional) Remove all entries older than this date. Format: RFC3339 (e.g. 2026-01-01T00:00:00Z).")),
-		mcp.WithString("query", mcp.Description("(Optional) Remove all entries matching this keyword or phrase.")),
-	)
-
-	s.AddTool(tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		return interview.HandlePruneInterviewQA(ctx, request)
-	})
-}
