@@ -52,7 +52,7 @@ This skill dictates how agents build, access, and maintain context. You **MUST**
 - **Action (Downgrade):** Use `delete_ontology_edge` to refactor broken graph logic or resolve Cycle Erors. Move the discarded concepts back to the scratchpad if re-evaluation is needed.
 - **Action (Semantic Fallback):** If `read_ontology_graph` fails due to exact match failure, fallback to `search_ontology_semantic` to discover the exact node name using fuzzy/keyword searching.
 - **Constraint:** Hierarchical edges (`REQUIRES`, `DEPENDS_ON`, `OWNS`) cannot create circular dependencies.
-- **Integrity:** The system uses an embedded SQLite database (`engine.db`) in WAL mode to ensure atomic writes and safe concurrency across Swarm agents.
+- **Integrity:** The system uses an embedded SQLite database (`engine.db`) in standard DELETE journal mode to ensure atomic writes and cross-OS locking compatibility when mounted into Docker volumes.
 
 ### 4. Token-Safe Ingestion
 - **Action:** Use `ingest_context` to safely retrieve file chunks. It automatically token-caps the return to ~16,000 characters to protect your context window.

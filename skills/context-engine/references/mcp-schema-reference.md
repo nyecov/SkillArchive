@@ -50,3 +50,8 @@ Queries the Knowledge Graph for an entity's dependencies.
 **Parameters:**
 - `target_entity` (string) [REQUIRED]: Entity node to query.
 
+### `search_ontology_semantic`
+Searches the Knowledge Graph for entities and relationships using fuzzy/semantic keyword matching. Use this when you forget the exact node name.
+**Parameters:**
+- `query` (string) [REQUIRED]: The search query (e.g., 'Redis cache', 'authentication').
+

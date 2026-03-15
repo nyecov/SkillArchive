@@ -37,9 +37,10 @@ func InitDB() (*sql.DB, error) {
 
 		dbPath := filepath.Join(memoryDir, "engine.db")
 
-		// Query string to enforce WAL mode, synchronous=NORMAL, and a busy_timeout
-		// to allow multiple Swarm agents to safely write without "database is locked" errors.
-		dsn := fmt.Sprintf("%s?_pragma=journal_mode(WAL)&_pragma=synchronous(NORMAL)&_pragma=busy_timeout(5000)", dbPath)
+		// Query string to enforce DELETE mode, synchronous=NORMAL, and a busy_timeout
+		// This prevents SQLITE_CANTOPEN errors when mounting Windows volumes into Docker containers
+		// because WAL mode requires POSIX shared memory files (.shm) which fail across OS barriers.
+		dsn := fmt.Sprintf("%s?_pragma=journal_mode(DELETE)&_pragma=synchronous(NORMAL)&_pragma=busy_timeout(5000)", dbPath)
 
 		d, err := sql.Open("sqlite", dsn)
 		if err != nil {
@@ -161,6 +162,34 @@ func createSchemas(d *sql.DB) error {
 	if err != nil {
 		return err
 	}
+
+	
+	// 3. Ingestion History Table
+	_, err = tx.Exec(`
+		CREATE TABLE IF NOT EXISTS ingestion_history (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			target_path TEXT NOT NULL,
+			query_filter TEXT,
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+		)
+	`)
+	if err != nil {
+		return err
+	}
+
+	
+        // 3. Ingestion History Table
+        _, err = tx.Exec(
+                CREATE TABLE IF NOT EXISTS ingestion_history (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        target_path TEXT NOT NULL,
+                        query_filter TEXT,
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+        )
+        if err != nil {
+                return err
+        }
 
 	return tx.Commit()
 }

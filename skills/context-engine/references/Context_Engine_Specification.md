@@ -169,6 +169,17 @@ Given a target entity, traverses the graph to return all established upstream an
 }
 ```
 
+### 4.9. `search_ontology_semantic`
+Searches the Knowledge Graph for entities and relationships using fuzzy/semantic keyword matching. Fallback for when exact node names are forgotten.
+```json
+{
+  "properties": {
+    "query": { "type": "string", "description": "The search query (e.g., 'Redis cache', 'authentication')." }
+  },
+  "required": ["query"]
+}
+```
+
 
 
 ## 6. Persistent Operations (Daemon Mode)

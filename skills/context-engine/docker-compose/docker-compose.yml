@@ -15,7 +15,7 @@ services:
     # ensuring the MCP server has read/write access to the actual project files 
     # and the specific .gemini/mem folder where state is persisted.
     volumes:
-      - ../../:/workspace
+      - ../../../:/workspace
 
     # Environment Variables
     environment:
@@ -41,7 +41,7 @@ services:
     image: context-engine-go:latest
     container_name: context-engine-daemon
     volumes:
-      - ../../:/workspace
+      - ../../../:/workspace
     environment:
       - WORKSPACE_ROOT=/workspace
       - MEMORY_DIR=/workspace/.gemini/mem

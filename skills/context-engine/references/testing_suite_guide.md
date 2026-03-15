@@ -17,6 +17,7 @@ The suite covers six critical architectural pillars across 17 automated test cas
 3.  **Ontology (Middle-term Memory)**
     - **DAG Cycle Rejection**: Preventing circular dependencies in hierarchical edges (`REQUIRES`, `OWNS`).
     - **Transactional Integrity**: Ensuring a rejected edge does not corrupt the database state, utilizing SQLite's ACID guarantees.
+    - **Semantic Traversal (Hybrid RAG)**: Verifying that fuzzy keyword searches (via SQLite FTS5) successfully retrieve exact graph nodes, and confirming malformed queries fail gracefully.
 4.  **Diagnostics (Boot Sequence)**
     - **Corruption Detection**: Confirming that a corrupt database triggers the `PRAGMA integrity_check` failure and is handled via quarantine/reset logic.
     - **UUID Registry Verification**: Ensuring every memory artifact maintains a unique identity within its respective table.

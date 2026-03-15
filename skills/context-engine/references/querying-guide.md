@@ -21,3 +21,4 @@ The Scratchpad state cannot grow infinitely.
 - **Hierarchical Edges:** `REQUIRES`, `DEPENDS_ON`, `OWNS`. These will fail if they create a cyclic loop (A -> B -> A).
 - **Non-Hierarchical Edges:** `REFERENCES`, `CONFLICTS_WITH`. Use these for bidirectional documentation loops or API cross-talk.
 - **Resolution:** If you trigger a Cycle Error legitimately, use `delete_ontology_edge` to destroy the outdated hierarchy rule creating the blockage before committing the new correct edge. The system utilizes `engine.db` for high-integrity storage with SQLite atomic WAL writes.
+- **Semantic Fallback:** If `read_ontology_graph` returns empty or you cannot recall an exact node name, use `search_ontology_semantic` with a fuzzy keyword query (e.g., "auth", "database") to discover the exact entity strings before attempting to traverse the graph.
