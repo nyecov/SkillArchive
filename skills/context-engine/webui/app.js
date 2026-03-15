@@ -99,34 +99,27 @@ function initGraph() {
     const options = {
         nodes: {
             shape: 'dot',
-            size: 16,
-            font: { color: '#ffffff', size: 12, face: 'Inter' },
+            size: 20,
+            color: { background: '#1c1f26', border: '#00d2ff', highlight: { background: '#2a2f3a', border: '#00ff88' } },
+            font: { color: '#ffffff', size: 14, face: 'Inter', strokeWidth: 3, strokeColor: '#0a0b0e' },
             borderWidth: 2,
             shadow: true
         },
         edges: {
             width: 2,
-            color: { inherit: 'from' },
             arrows: { to: { enabled: true, scaleFactor: 0.5 } },
-            smooth: { type: 'continuous' }
+            smooth: { type: 'continuous', forceDirection: 'none' }
         },
         physics: {
-            stabilization: true,
-            barnesHut: {
-                gravitationalConstant: -2000,
-                centralGravity: 0.3,
-                springLength: 95,
-                springConstant: 0.04,
-                damping: 0.09,
-                avoidOverlap: 0.1
-            }
-        },
-        groups: {
-            REQUIRES: { color: { background: '#00d2ff', border: '#00aed4' } },
-            IMPLEMENTS: { color: { background: '#00ff88', border: '#00cc6a' } },
-            DEPENDS_ON: { color: { background: '#9d50bb', border: '#7e3e96' } },
-            OWNS: { color: { background: '#ff9d00', border: '#cc7e00' } },
-            REFERENCES: { color: { background: '#666666', border: '#444444' } }
+            solver: 'forceAtlas2Based',
+            forceAtlas2Based: {
+                gravitationalConstant: -400,
+                centralGravity: 0.01,
+                springLength: 350,
+                springConstant: 0.05,
+                avoidOverlap: 1
+            },
+            stabilization: { iterations: 150 }
         }
     };
     network = new vis.Network(container, data, options);
@@ -147,13 +140,21 @@ async function loadGraph() {
 
         const updates_nodes = [];
         const updates_edges = [];
+        
+        const edgeColors = {
+            REQUIRES: '#00d2ff',
+            IMPLEMENTS: '#00ff88',
+            DEPENDS_ON: '#9d50bb',
+            OWNS: '#ff9d00',
+            REFERENCES: '#666666'
+        };
 
         data.forEach(edge => {
             const edgeId = `${edge.from}-${edge.to}-${edge.type}`;
             newEdgeIds.add(edgeId);
 
             if (!nodes.get(edge.from)) {
-                updates_nodes.push({ id: edge.from, label: edge.from, group: edge.type });
+                updates_nodes.push({ id: edge.from, label: edge.from });
             }
             newNodeIds.add(edge.from);
 
@@ -163,7 +164,15 @@ async function loadGraph() {
             newNodeIds.add(edge.to);
 
             if (!edges.get(edgeId)) {
-                updates_edges.push({ id: edgeId, from: edge.from, to: edge.to, label: edge.type });
+                const eColor = edgeColors[edge.type] || '#888888';
+                updates_edges.push({ 
+                    id: edgeId, 
+                    from: edge.from, 
+                    to: edge.to, 
+                    label: edge.type,
+                    color: { color: eColor },
+                    font: { color: eColor, size: 10, strokeWidth: 2, strokeColor: '#0a0b0e' }
+                });
             }
         });
 

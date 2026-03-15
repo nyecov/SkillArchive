@@ -163,33 +163,5 @@ func createSchemas(d *sql.DB) error {
 		return err
 	}
 
-	
-	// 3. Ingestion History Table
-	_, err = tx.Exec(`
-		CREATE TABLE IF NOT EXISTS ingestion_history (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			target_path TEXT NOT NULL,
-			query_filter TEXT,
-			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-		)
-	`)
-	if err != nil {
-		return err
-	}
-
-	
-        // 3. Ingestion History Table
-        _, err = tx.Exec(
-                CREATE TABLE IF NOT EXISTS ingestion_history (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        target_path TEXT NOT NULL,
-                        query_filter TEXT,
-                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-                )
-        )
-        if err != nil {
-                return err
-        }
-
 	return tx.Commit()
 }
