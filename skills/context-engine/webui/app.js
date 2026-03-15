@@ -2,9 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     init();
 });
 
-let network = null;
-let nodes = new vis.DataSet([]);
-let edges = new vis.DataSet([]);
+let Graph = null;
+let graphData = { nodes: [], links: [] };
 
 async function init() {
     updateStatus();
@@ -19,7 +18,9 @@ async function init() {
     setInterval(loadGraph, 10000);
 
     document.getElementById('reset-view').addEventListener('click', () => {
-        network.fit();
+        if (Graph) {
+            Graph.cameraPosition({ x: 0, y: 0, z: 250 }, { x: 0, y: 0, z: 0 }, 1000);
+        }
     });
 }
 
@@ -95,36 +96,36 @@ function renderIngestion(items) {
 
 function initGraph() {
     const container = document.getElementById('mynetwork');
-    const data = { nodes, edges };
-    const options = {
-        nodes: {
-            shape: 'dot',
-            size: 20,
-            color: { background: '#0055ff', border: '#00d2ff', highlight: { background: '#0044cc', border: '#00ff88' } },
-            font: { color: '#ffffff', size: 14, face: 'Inter', strokeWidth: 3, strokeColor: '#0a0b0e' },
-            borderWidth: 2,
-            shadow: true
-        },
-        edges: {
-            width: 2,
-            arrows: { to: { enabled: true, scaleFactor: 0.5 } },
-            smooth: { type: 'continuous', forceDirection: 'none' }
-        },
-        physics: {
-            solver: 'barnesHut',
-            barnesHut: {
-                gravitationalConstant: -2000,
-                centralGravity: 0.1,
-                springLength: 300,
-                springConstant: 0.04,
-                damping: 0.09,
-                avoidOverlap: 1
-            },
-            stabilization: { iterations: 150 }
-        }
-    };
-    network = new vis.Network(container, data, options);
+    Graph = ForceGraph3D()(container)
+        .width(container.clientWidth)
+        .height(container.clientHeight)
+        .backgroundColor('#0d0f14')
+        .nodeLabel('id')
+        .nodeColor(() => '#0055ff')
+        .nodeRelSize(6)
+        .nodeThreeObjectExtend(true)
+        .nodeThreeObject(node => {
+            // Add a text label to each node
+            const sprite = new SpriteText(node.id);
+            sprite.color = '#ffffff';
+            sprite.textHeight = 4;
+            // Position the text slightly below the node
+            sprite.position.y = -10;
+            return sprite;
+        })
+        .linkColor(link => link.color)
+        .linkWidth(1.5)
+        .linkDirectionalArrowLength(3.5)
+        .linkDirectionalArrowRelPos(1)
+        .linkLabel('type');
+
     loadGraph();
+    
+    // Auto-resize the graph when the window resizes
+    window.addEventListener('resize', () => {
+        Graph.width(container.clientWidth);
+        Graph.height(container.clientHeight);
+    });
 }
 
 async function loadGraph() {
@@ -134,14 +135,6 @@ async function loadGraph() {
 
         if (!data) return;
 
-        const currentNodes = nodes.getIds();
-        const currentEdges = edges.getIds();
-        const newNodeIds = new Set();
-        const newEdgeIds = new Set();
-
-        const updates_nodes = [];
-        const updates_edges = [];
-        
         const edgeColors = {
             REQUIRES: '#00d2ff',
             IMPLEMENTS: '#00ff88',
@@ -150,42 +143,25 @@ async function loadGraph() {
             REFERENCES: '#ff3366'
         };
 
+        const newNodesMap = new Map();
+        const newLinks = [];
+
         data.forEach(edge => {
-            const edgeId = `${edge.from}-${edge.to}-${edge.type}`;
-            newEdgeIds.add(edgeId);
+            if (!newNodesMap.has(edge.from)) newNodesMap.set(edge.from, { id: edge.from });
+            if (!newNodesMap.has(edge.to)) newNodesMap.set(edge.to, { id: edge.to });
 
-            if (!nodes.get(edge.from)) {
-                updates_nodes.push({ id: edge.from, label: edge.from });
-            }
-            newNodeIds.add(edge.from);
-
-            if (!nodes.get(edge.to)) {
-                updates_nodes.push({ id: edge.to, label: edge.to });
-            }
-            newNodeIds.add(edge.to);
-
-            if (!edges.get(edgeId)) {
-                const eColor = edgeColors[edge.type] || '#888888';
-                updates_edges.push({ 
-                    id: edgeId, 
-                    from: edge.from, 
-                    to: edge.to, 
-                    title: edge.type,
-                    color: { color: eColor }
-                });
-            }
+            newLinks.push({
+                source: edge.from,
+                target: edge.to,
+                type: edge.type,
+                color: edgeColors[edge.type] || '#888888'
+            });
         });
 
-        // Remove stale nodes/edges
-        const nodesToRemove = currentNodes.filter(id => !newNodeIds.has(id));
-        const edgesToRemove = currentEdges.filter(id => !newEdgeIds.has(id));
+        const newNodes = Array.from(newNodesMap.values());
 
-        if (nodesToRemove.length > 0) nodes.remove(nodesToRemove);
-        if (edgesToRemove.length > 0) edges.remove(edgesToRemove);
-
-        // Batch updates
-        if (updates_nodes.length > 0) nodes.update(updates_nodes);
-        if (updates_edges.length > 0) edges.update(updates_edges);
+        // Update the graph data
+        Graph.graphData({ nodes: newNodes, links: newLinks });
 
     } catch (err) {
         console.error('Failed to load graph:', err);
