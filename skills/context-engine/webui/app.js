@@ -111,12 +111,13 @@ function initGraph() {
             smooth: { type: 'continuous', forceDirection: 'none' }
         },
         physics: {
-            solver: 'forceAtlas2Based',
-            forceAtlas2Based: {
-                gravitationalConstant: -400,
-                centralGravity: 0.01,
-                springLength: 350,
-                springConstant: 0.05,
+            solver: 'barnesHut',
+            barnesHut: {
+                gravitationalConstant: -2000,
+                centralGravity: 0.1,
+                springLength: 300,
+                springConstant: 0.04,
+                damping: 0.09,
                 avoidOverlap: 1
             },
             stabilization: { iterations: 150 }
