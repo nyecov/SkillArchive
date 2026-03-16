@@ -99,15 +99,16 @@ function initGraph() {
     Graph = ForceGraph3D()(container)
         .backgroundColor('#0d0f14')
         .nodeLabel('id')
-        .nodeColor(() => '#0055ff')
-        .nodeRelSize(6)
-        .nodeThreeObjectExtend(true)
         .nodeThreeObject(node => {
             try {
                 const sprite = new SpriteText(node.id);
                 sprite.color = '#ffffff';
-                sprite.textHeight = 4;
-                sprite.position.y = -10;
+                sprite.backgroundColor = '#0055ff';
+                sprite.borderColor = '#00d2ff';
+                sprite.borderWidth = 1;
+                sprite.borderRadius = 4;
+                sprite.padding = 2;
+                sprite.textHeight = 6;
                 return sprite;
             } catch (e) {
                 console.error("SpriteText error:", e);
