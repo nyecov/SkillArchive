@@ -97,21 +97,22 @@ function renderIngestion(items) {
 function initGraph() {
     const container = document.getElementById('mynetwork');
     Graph = ForceGraph3D()(container)
-        .width(container.clientWidth)
-        .height(container.clientHeight)
         .backgroundColor('#0d0f14')
         .nodeLabel('id')
         .nodeColor(() => '#0055ff')
         .nodeRelSize(6)
         .nodeThreeObjectExtend(true)
         .nodeThreeObject(node => {
-            // Add a text label to each node
-            const sprite = new SpriteText(node.id);
-            sprite.color = '#ffffff';
-            sprite.textHeight = 4;
-            // Position the text slightly below the node
-            sprite.position.y = -10;
-            return sprite;
+            try {
+                const sprite = new SpriteText(node.id);
+                sprite.color = '#ffffff';
+                sprite.textHeight = 4;
+                sprite.position.y = -10;
+                return sprite;
+            } catch (e) {
+                console.error("SpriteText error:", e);
+                return null;
+            }
         })
         .linkColor(link => link.color)
         .linkWidth(1.5)
@@ -121,11 +122,17 @@ function initGraph() {
 
     loadGraph();
     
-    // Auto-resize the graph when the window resizes
-    window.addEventListener('resize', () => {
-        Graph.width(container.clientWidth);
-        Graph.height(container.clientHeight);
-    });
+    // Auto-resize the graph using ResizeObserver for flex layouts
+    new ResizeObserver(entries => {
+        for (let entry of entries) {
+            const width = entry.contentRect.width;
+            const height = entry.contentRect.height;
+            if (width > 0 && height > 0) {
+                Graph.width(width);
+                Graph.height(height);
+            }
+        }
+    }).observe(container);
 }
 
 async function loadGraph() {
