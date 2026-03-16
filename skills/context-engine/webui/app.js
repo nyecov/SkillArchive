@@ -150,12 +150,19 @@ async function loadGraph() {
             REFERENCES: '#ff3366'
         };
 
+        const { nodes: currentNodes, links: currentLinks } = Graph.graphData();
+        const existingNodes = new Map(currentNodes.map(n => [n.id, n]));
+
         const newNodesMap = new Map();
         const newLinks = [];
 
         data.forEach(edge => {
-            if (!newNodesMap.has(edge.from)) newNodesMap.set(edge.from, { id: edge.from });
-            if (!newNodesMap.has(edge.to)) newNodesMap.set(edge.to, { id: edge.to });
+            if (!newNodesMap.has(edge.from)) {
+                newNodesMap.set(edge.from, existingNodes.get(edge.from) || { id: edge.from });
+            }
+            if (!newNodesMap.has(edge.to)) {
+                newNodesMap.set(edge.to, existingNodes.get(edge.to) || { id: edge.to });
+            }
 
             newLinks.push({
                 source: edge.from,
@@ -164,6 +171,11 @@ async function loadGraph() {
                 color: edgeColors[edge.type] || '#888888'
             });
         });
+
+        // Avoid continuous simulation resets by checking if the graph size actually changed
+        if (currentNodes.length === newNodesMap.size && currentLinks.length === newLinks.length) {
+            return; 
+        }
 
         const newNodes = Array.from(newNodesMap.values());
 
