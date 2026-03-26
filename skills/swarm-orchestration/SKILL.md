@@ -43,6 +43,12 @@ Ensure that all agents in the "Swarm" share a consistent view of the "True North
 - **Constraint:** Prevent "State Drift" where sub-agents work against stale or conflicting requirements.
 - **Integration:** Aligns with **Hō-Ren-Sō** for continuous reporting and state sharing across the system.
 
+### 4. Concurrent Execution (Fan-Out / Fan-In)
+When a task can be parallelized for speed (e.g., analyzing multiple independent modules, refactoring many files), the Lead Agent MUST decouple the *Persona* from the *Compute Node* using the `generalist` sub-agent.
+- **Action (Fan-Out):** Issue multiple simultaneous tool calls to the `generalist` agent in a single turn. Assign a distinct, highly-specialized persona and a specific shard of the workload to each instance (e.g., Instance 1: "Role: Frontend Expert. Task: Analyze /ui", Instance 2: "Role: Database Architect. Task: Analyze /db").
+- **Action (Fan-In):** Receive all specialized outputs simultaneously on the next turn and synthesize them immediately.
+- **Constraint:** Never execute concurrent sub-agents if their tasks mutate the same files or have race-condition dependencies.
+
 ## Escalation & Halting
 
 - **Jidoka:** If a sub-agent produces output that fundamentally contradicts the project's **Anchors**, trigger a Jidoka halt and re-evaluate the delegation brief.
