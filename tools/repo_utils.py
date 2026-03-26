@@ -53,13 +53,13 @@ def get_frontmatter(file_path: Path) -> Optional[Dict[str, Any]]:
 
 def atomic_write(file_path: Path, content: str):
     """
-    Writes content to a file using an atomic write-and-rename pattern.
+    Writes content to a file using an atomic write-and-replace pattern.
     
     Args:
         file_path: The target Path to write to.
         content: The string content to write.
     """
-    temp_path = file_path.with_suffix(file_path.suffix + ".tmp")
+    temp_path = file_path.with_suffix(file_path.suffix + f".{uuid.uuid4().hex}.tmp")
     try:
         with open(temp_path, 'w', encoding='utf-8') as f:
             f.write(content)
@@ -67,14 +67,60 @@ def atomic_write(file_path: Path, content: str):
             f.flush()
             os.fsync(f.fileno())
         
-        # Atomic swap
-        if os.path.exists(file_path):
-            os.remove(file_path)
-        os.rename(temp_path, file_path)
+        # os.replace is atomic on Unix and handles overwrite on Windows (Python 3.3+)
+        os.replace(temp_path, file_path)
     except Exception as e:
         if temp_path.exists():
             temp_path.unlink()
         raise e
+
+class PipelineLock:
+    """
+    A simple file-based lock to prevent concurrent execution of management tools.
+    """
+    def __init__(self, lock_file: Path = Path("tools/.pipeline.lock")):
+        self.lock_file = lock_file
+        self.fd = None
+
+    def __enter__(self):
+        # We use a non-blocking check first
+        if self.lock_file.exists():
+            # Check if PID in lockfile is still running (very basic)
+            try:
+                pid = int(self.lock_file.read_text().strip())
+                if self._pid_exists(pid):
+                    raise RuntimeError(f"Lock active: Process {pid} is already running the management pipeline.")
+            except (ValueError, OSError):
+                pass # Stale lock or invalid content
+        
+        # Write current PID to lockfile
+        self.lock_file.write_text(str(os.getpid()))
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.lock_file.exists():
+            try:
+                pid = int(self.lock_file.read_text().strip())
+                if pid == os.getpid():
+                    self.lock_file.unlink()
+            except (ValueError, OSError):
+                pass
+
+    def _pid_exists(self, pid: int) -> bool:
+        if pid <= 0: return False
+        if os.name == 'nt':
+            # Windows PID check
+            import subprocess
+            output = subprocess.check_output(['tasklist', '/FI', f'PID eq {pid}'], encoding='utf-8')
+            return str(pid) in output
+        else:
+            # Unix PID check
+            try:
+                os.kill(pid, 0)
+            except OSError:
+                return False
+            else:
+                return True
 
 def is_valid_uuid4(val: str) -> bool:
     """Verifies if a string is a valid UUIDv4."""

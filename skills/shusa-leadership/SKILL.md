@@ -45,7 +45,10 @@ The Shusa bridges the gap between different domains (e.g., Frontend, Backend, De
 
 ## Escalation & Halting
 
-- **Jidoka:** If the technical vision is compromised or if a major architectural "Deadlock" occurs, trigger a Jidoka halt.
+- **Jidoka:** Trigger a Jidoka halt if:
+  - **Anchor Conflict:** A proposed change directly violates or modifies an entry in `ANCHOR.md` without an explicit user override.
+  - **Vision Drift:** The agent attempts to rewrite **>20% of a module** or introduces a new architectural pattern without a documented A3 Proposal.
+  - **Structural Paradox:** Contradictory architectural patterns are detected across **>2 sub-systems**.
 - **Hō-Ren-Sō:** Use the Sōdan (Consult) protocol to align with the user on major strategic pivots.
 
 ## Implementation Workflow

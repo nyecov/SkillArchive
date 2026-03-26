@@ -15,7 +15,7 @@ import sys
 import json
 import argparse
 from pathlib import Path
-from repo_utils import get_frontmatter, atomic_write
+from repo_utils import get_frontmatter, atomic_write, PipelineLock
 
 def get_all_skills():
     """Returns a dictionary mapping skill names to their UUIDs."""
@@ -122,9 +122,10 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     
-    if args.command == "enable":
-        enable_skill(args.name)
-    elif args.command == "disable":
-        disable_skill(args.name)
-    elif args.command == "list":
-        list_skills()
+    with PipelineLock():
+        if args.command == "enable":
+            enable_skill(args.name)
+        elif args.command == "disable":
+            disable_skill(args.name)
+        elif args.command == "list":
+            list_skills()

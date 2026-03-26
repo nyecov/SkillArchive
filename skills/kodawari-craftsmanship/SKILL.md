@@ -44,7 +44,10 @@ Ensure that new code blends seamlessly with the existing system's patterns and s
 
 ## Escalation & Halting
 
-- **Jidoka (Andon Cord):** If a task requires violating "Wa", or if the Boy Scout rule is attempted on a file with zero test coverage, autonomous "Shine" operations MUST be halted. Execute ONLY the primary user request.
+- **Jidoka (Andon Cord):** Autonomous "Shine" refactoring MUST be halted if:
+  - **Test Gap:** The target file has **zero existing unit tests** or unverifiable test coverage.
+  - **Pattern Collision:** A proposed change introduces a new design pattern or external library not already present in the module (e.g., mixing Class-based and Functional styles).
+  - **Complexity Spike:** A localized refactor increases the Cyclomatic Complexity of a single function by **> 5 points**.
 - **Hō-Ren-Sō (Legacy Batching):** When facing massive legacy code that wildly violates Wa (and lacks tests), invoke the Sōdan (Consult) protocol. Break the work into smaller chunks and interview the user case-by-case rather than attempting an autonomous massive rewrite.
 
 ## Implementation Workflow
