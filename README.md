@@ -37,6 +37,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 |-------|-------------|------|
 | **[Anchor](skills/architectural-anchoring/SKILL.md)** | Use when starting a project, making architectural decisions, or when AI-suggested changes conflict with established p... | `design` `architecture` |
 | **[Isolate](skills/root-cause-isolation/SKILL.md)** | Use when a bug is reported, unexpected behavior occurs, or a fix attempt has failed. Handles 5-step hypothesis-driven... | `debugging` |
+| **[PowerShell 7 Efficiency](skills/powershell-7-efficiency/SKILL.md)** | Use when writing or optimizing PowerShell 7 scripts. Mandates the use of modern features like pipeline chaining, para... | `engineering` `scripting` `automation` `performance` `cross-platform` |
 | **[Ship](skills/release-management/SKILL.md)** | Use when code is "feature complete" and approaching deployment, or when verifying production readiness. Handles stagi... | `engineering` `safety` `methodology` |
 | **[Test-Driven Development](skills/test-driven-development/SKILL.md)** | Use when implementing any feature or bugfix, before writing implementation code. Enforces the strict Red-Green-Refact... | `engineering` `testing` `methodology` |
 | **[Verification Before Completion](skills/completion-verification/SKILL.md)** | Use when about to claim work is complete, fixed, or passing, before committing or creating PRs. Requires running veri... | `safety` `engineering` `debugging` |
@@ -64,6 +65,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[Genchi Genbutsu](skills/genchi-genbutsu/SKILL.md)** | Use to "Go and See for Yourself." Mandates empirical verification of all hypotheses and findings through direct execu... | `methodology` `research` `testing` `lean` `TPS` |
 | **[Heijunka](skills/heijunka/SKILL.md)** | Use to level the workload and prevent token/context spikes (Muri).  Handles the decomposition of massive tasks into m... | `methodology` `optimization` `lean` `TPS` |
 | **[Hō-Ren-Sō](skills/ho-ren-so/SKILL.md)** | Use when reporting progress, broadcasting state changes, or escalating ambiguous or blocked decisions to a human oper... | `communication` `methodology` `lean` `TPS` |
+| **[Incident Management](skills/incident-management/SKILL.md)** | Use when creating, updating, resolving, or referencing incident reports. Handles the lifecycle of incidents (active/r... | `debugging` `cognition` `context` `research` |
 | **[Kaizen](skills/kaizen/SKILL.md)** | Use when a recurring error, structural bottleneck, or workflow inefficiency is identified (either manually or via Han... | `methodology` `optimization` `lean` `TPS` `kaizen` |
 | **[Kodawari Craftsmanship](skills/kodawari-craftsmanship/SKILL.md)** | Use during any code modification or creation task as an always-active operating principle. Mandates the relentless pu... | `design` `methodology` `lean` `TPS` |
 | **[Lean Foundations](skills/lean-foundations/SKILL.md)** | Foundational Lean principles for stabilizing workflows through the 3 Ms (Mura, Muri, Muda) and the 5S framework. Focu... | `methodology` `optimization` `lean` `TPS` |
@@ -91,6 +93,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[AI Agent Skill Import](workflows/ai-agent-skill-import.md)** | Procedure for synthesizing new agentic capabilities from an external repository into the local Skill Archive. |
 | **[Master Topic Refinement Workflow (with Context Engine)](workflows/master-topic-refinement-with-context-engine.md)** | A multi-phase refinement protocol enhanced by the Context Engine to ensure a topic, documentation, or codebase reache... |
 | **[Master Topic Refinement Workflow](workflows/master-topic-refinement.md)** | A multi-phase refinement protocol to ensure a topic, documentation, or codebase reaches the highest level of Lean qua... |
+| **[Parallel Processing Workflow (Map-Reduce)](workflows/parallel-processing.md)** | High-speed execution pattern via parallel Map-Reduce, delegating chunks of work to concurrent sub-agents or determini... |
 
 ## 🛠️ Tools Index
 
@@ -103,6 +106,7 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[docx-tools](tools/docx-tools)** | A Python automation script using `python-docx` to read and generate Word documents programmatically. |
 | **[git-worktree-setup](tools/git-worktree-setup)** | An automation bash script that streamlines the process of checking out a new feature branch in an isolated directory using Git Worktrees, followed by automated project setup. |
 | **[image-converter](tools/image-converter)** |  |
+| **[mcp-servers](tools/mcp-servers)** | The project is configured to use several Model Context Protocol (MCP) servers to extend the agent's capabilities with external tools, web interactions, and long-term memory. |
 | **[pdf-tools](tools/pdf-tools)** | A Python tool leveraging `PyMuPDF` (`fitz`) for fast, robust PDF manipulation. |
 | **[playwright-scaffold](tools/playwright-scaffold)** | A JavaScript automation script that injects a best-practice Playwright testing environment into any web project. |
 | **[xlsx-tools](tools/xlsx-tools)** | A Python script using `openpyxl` to extract data from Excel spreadsheets efficiently. |
