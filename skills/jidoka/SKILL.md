@@ -35,8 +35,8 @@ Stop the line immediately if the iteration loop becomes unproductive or a hard i
 - **Integration:** Binds to **Poka-yoke**; if any schema or deterministic interlock fails, the pipeline trips instantly.
 
 #### Reactive Halt Triggers:
-- **Budget Exhaustion:** The same bug persists after 3-5 failed attempts.
-- **Debt Compounding:** New bugs outpace bug fixes.
+- **Budget Exhaustion:** The exact same bug persists after **3 failed attempts**. (Maximum 3 attempts permitted).
+- **Debt Compounding:** New bugs outpace bug fixes (e.g., fixing one test breaks two others).
 - **Poka-yoke Breach:** A validation script explicitly fails.
 
 ### 2. The Proactive Tripwire (Layer 1)
@@ -45,9 +45,9 @@ To protect against catastrophic actions with zero latency, evaluate every propos
 - **Constraint:** If a file edit attempts to modify/delete >100 lines at once without tests, or if a shell command contains patterns like `rm -rf`, `DROP TABLE`, `truncate`, or targets critical system directories (e.g., `.git/`), the agent MUST stop execution and invoke Layer 2.
 
 ### 3. The Circuit Breaker (Layer 2 - Subagent)
-If the Layer 1 tripwire is hit, the agent does NOT proceed independently. It utilizes an isolated subagent to explicitly assess the risk.
-- **Action:** Launch the `browser_subagent` (or equivalent execution subagent) with the explicit task of evaluating the blast radius of the proposed command. 
-- **Constraint:** If the subagent confirms the action is high-risk without proper user consent, trigger the Andon Cord halt immediately. Do NOT run the command.
+If the Layer 1 tripwire is hit, the Lead Agent does NOT proceed independently. It utilizes an isolated subagent to explicitly assess the risk.
+- **Action:** Launch the `generalist` subagent (with the Persona: 'Security Reviewer') with the explicit task of evaluating the blast radius of the proposed command. 
+- **Constraint:** If the subagent confirms the action is high-risk without proper user consent, trigger the Andon Cord halt immediately. Do NOT run the command. Do not allow the subagent to execute the command itself.
 
 ### 4. Human Escalation (Hō-Ren-Sō)
 Transition from autonomous execution to human-in-the-loop 'Consultation' mode.
