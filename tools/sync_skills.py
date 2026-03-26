@@ -61,23 +61,7 @@ def sync_skills():
         log.error(f"Source skills directory not found at {source_dir.absolute()}")
         sys.exit(1)
 
-    # 1. Prepare Target Directory
-    if not target_dir.exists():
-        log.info(f"Creating missing target directory: {target_dir}")
-        target_dir.mkdir(parents=True, exist_ok=True)
-    else:
-        log.info(f"Cleaning existing links in {target_dir}...")
-        for item in os.listdir(target_dir):
-            item_path = target_dir / item
-            try:
-                if platform.system() == "Windows" and item_path.is_dir():
-                    subprocess.run(['cmd', '/c', 'rmdir', str(item_path)], check=True, capture_output=True)
-                else:
-                    item_path.unlink()
-            except Exception as e:
-                log.warning(f"Failed to clear {item}: {e}")
-
-    # 2. Load Config
+    # 1. Load Config
     discovery_mode = "dynamic"
     synced_skill_ids = []
     if config_file.exists():
@@ -89,7 +73,7 @@ def sync_skills():
         except Exception as e:
             log.warning(f"Could not read config file {config_file}: {e}")
 
-    # 3. Discover Skills
+    # 2. Discover Skills
     log.info(f"Discovering skills (Mode: {discovery_mode})...")
     active_skills = {} # id -> meta
     
@@ -110,12 +94,44 @@ def sync_skills():
                 'folder': skill_folder
             }
 
-    # 4. Link Active Skills
-    log.info(f"Linking {len(active_skills)} active skills...")
-    for sid, info in active_skills.items():
-        src = (source_dir / info['folder']).resolve()
-        dst = (target_dir / info['name']).resolve()
-        create_link(src, dst)
+    # 3. Diff-Based Sync (Calculate Delta)
+    if not target_dir.exists():
+        log.info(f"Creating missing target directory: {target_dir}")
+        target_dir.mkdir(parents=True, exist_ok=True)
+        existing_links = set()
+    else:
+        existing_links = set(os.listdir(target_dir))
+        existing_links.discard(".gemini") # Ignore internal structures if they exist
+
+    desired_links = {info['name'] for info in active_skills.values()}
+    
+    links_to_remove = existing_links - desired_links
+    links_to_create = desired_links - existing_links
+
+    # 4. Clean Stale Links
+    if links_to_remove:
+        log.info(f"Removing {len(links_to_remove)} stale skills...")
+        for item in links_to_remove:
+            item_path = target_dir / item
+            try:
+                if platform.system() == "Windows" and item_path.is_dir():
+                    subprocess.run(['cmd', '/c', 'rmdir', str(item_path)], check=True, capture_output=True)
+                else:
+                    item_path.unlink()
+                log.info(f"  [REMOVED] {item}")
+            except Exception as e:
+                log.warning(f"Failed to clear {item}: {e}")
+
+    # 5. Link Active Skills
+    if links_to_create:
+        log.info(f"Linking {len(links_to_create)} new skills...")
+        for sid, info in active_skills.items():
+            if info['name'] in links_to_create:
+                src = (source_dir / info['folder']).resolve()
+                dst = (target_dir / info['name']).resolve()
+                create_link(src, dst)
+    else:
+        log.info("All skills are already synchronized.")
 
     # 5. Update Config for Dynamic Discovery
     if discovery_mode == "dynamic" and config_file.exists():

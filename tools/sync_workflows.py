@@ -55,20 +55,7 @@ def sync_workflows():
         log.error(f"Source workflows directory not found at {source_dir.absolute()}")
         sys.exit(1)
 
-    # 1. Prepare Target Directory
-    if not target_dir.exists():
-        log.info(f"Creating missing target directory: {target_dir}")
-        target_dir.mkdir(parents=True, exist_ok=True)
-    else:
-        log.info(f"Cleaning existing links in {target_dir}...")
-        for item in os.listdir(target_dir):
-            item_path = target_dir / item
-            try:
-                item_path.unlink()
-            except Exception as e:
-                log.warning(f"Failed to clear {item}: {e}")
-
-    # 2. Load Config
+    # 1. Load Config
     discovery_mode = "dynamic"
     synced_workflow_ids = []
     if config_file.exists():
@@ -80,10 +67,10 @@ def sync_workflows():
         except Exception as e:
             log.warning(f"Could not read config file {config_file}: {e}")
 
-    # 3. Discover Workflows
+    # 2. Discover Workflows
     log.info(f"Discovering workflows (Mode: {discovery_mode})...")
     active_workflows = {} # id -> target_filename
-    workflow_links = [] # list of (source, target_filename)
+    workflow_links = {} # target_filename -> source_path
     
     for f in sorted(os.listdir(source_dir)):
         if f.endswith('.md'):
@@ -96,16 +83,45 @@ def sync_workflows():
                     continue
                 
                 target_filename = f"{data['name']}.md"
-                workflow_links.append((source_path, target_filename))
+                workflow_links[target_filename] = source_path
                 active_workflows[workflow_id] = target_filename
             else:
                 log.warning(f"  [SKIP] Invalid metadata in {f}")
 
-    # 4. Link Active Workflows
-    log.info(f"Linking {len(workflow_links)} active workflows...")
-    for src, target_filename in workflow_links:
-        dst = (target_dir / target_filename).resolve()
-        create_link(src.resolve(), dst)
+    # 3. Diff-Based Sync (Calculate Delta)
+    if not target_dir.exists():
+        log.info(f"Creating missing target directory: {target_dir}")
+        target_dir.mkdir(parents=True, exist_ok=True)
+        existing_links = set()
+    else:
+        existing_links = set(os.listdir(target_dir))
+        existing_links.discard(".gemini") # Ignore internal structures if they exist
+
+    desired_links = set(workflow_links.keys())
+    
+    links_to_remove = existing_links - desired_links
+    links_to_create = desired_links - existing_links
+
+    # 4. Clean Stale Links
+    if links_to_remove:
+        log.info(f"Removing {len(links_to_remove)} stale workflows...")
+        for item in links_to_remove:
+            item_path = target_dir / item
+            try:
+                item_path.unlink()
+                log.info(f"  [REMOVED] {item}")
+            except Exception as e:
+                log.warning(f"Failed to clear {item}: {e}")
+
+    # 5. Link Active Workflows
+    if links_to_create:
+        log.info(f"Linking {len(links_to_create)} new workflows...")
+        for target_filename in links_to_create:
+            src = workflow_links[target_filename]
+            dst = (target_dir / target_filename).resolve()
+            create_link(src.resolve(), dst)
+    else:
+        log.info("All workflows are already synchronized.")
 
     # 5. Update Config
     if discovery_mode == "dynamic" and config_file.exists():
