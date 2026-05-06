@@ -105,7 +105,7 @@ func HandleLogSessionFinding(ctx context.Context, request mcp.CallToolRequest) (
 	if err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Failed to build state: %v", err)), nil
 	}
-	
+
 	// Temporarily simulate the addition to check bounds
 	simulatedState := *currentState
 	simulatedState.Findings = append(simulatedState.Findings, SessionEntry{
@@ -113,7 +113,7 @@ func HandleLogSessionFinding(ctx context.Context, request mcp.CallToolRequest) (
 		Phase:     phase,
 		Finding:   findingText,
 	})
-	
+
 	bytes, _ := json.MarshalIndent(simulatedState, "", "  ")
 
 	if len(bytes) > HardLimitChars {
@@ -185,7 +185,7 @@ func HandleDeleteSessionFinding(ctx context.Context, request mcp.CallToolRequest
 	query := `DELETE FROM scratchpad_findings WHERE id = (
 		SELECT id FROM scratchpad_findings ORDER BY id ASC LIMIT 1 OFFSET ?
 	)`
-	
+
 	res, err := db.ExecContext(ctx, query, idx)
 	if err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("ToolError: Database delete failed: %v", err)), nil

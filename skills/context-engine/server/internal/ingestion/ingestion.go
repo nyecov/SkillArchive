@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
 	"github.com/nyecov/context-engine/internal/storage"
 
 	"github.com/mark3labs/mcp-go/mcp"
@@ -103,21 +104,19 @@ func HandleIngestContext(ctx context.Context, request mcp.CallToolRequest) (*mcp
 		return mcp.NewToolResultText(truncated + warning), nil
 	}
 
-	
-        // Log to ingestion history
-        if db := storage.GetDB(); db != nil {
-                queryStr := ""
-                if hasQuery {
-                        if q, ok := queryInterFace.(string); ok {
-                                queryStr = q
-                        }
-                }
-                db.Exec("INSERT INTO ingestion_history (target_path, query_filter) VALUES (?, ?)", targetPath, queryStr)
-        }
+	// Log to ingestion history
+	if db := storage.GetDB(); db != nil {
+		queryStr := ""
+		if hasQuery {
+			if q, ok := queryInterFace.(string); ok {
+				queryStr = q
+			}
+		}
+		db.Exec("INSERT INTO ingestion_history (target_path, query_filter) VALUES (?, ?)", targetPath, queryStr)
+	}
 
-        return mcp.NewToolResultText(content), nil
+	return mcp.NewToolResultText(content), nil
 }
-
 
 // extractQueryWindow finds the first instance of the query and returns a chunk of text around it
 func extractQueryWindow(content, query string) string {

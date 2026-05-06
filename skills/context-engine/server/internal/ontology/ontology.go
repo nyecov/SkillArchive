@@ -241,7 +241,7 @@ func HandleSearchOntologySemantic(ctx context.Context, request mcp.CallToolReque
 	ftsQuery := `SELECT source_entity, target_entity, edge_type 
 	             FROM ontology_fts 
 	             WHERE ontology_fts MATCH ? ORDER BY rank LIMIT 10;`
-	
+
 	rows, err := db.QueryContext(ctx, ftsQuery, query)
 	if err != nil {
 		// If query is malformed for FTS5 syntax, gracefully return an empty set or error text rather than crashing

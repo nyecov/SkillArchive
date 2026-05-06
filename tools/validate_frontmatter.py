@@ -91,7 +91,7 @@ def validate_and_repair():
             
             # Match frontmatter specifically to avoid replacing 'id:' elsewhere in the doc
             if re.search(r'^id:\s*.*$', content, flags=re.MULTILINE):
-                new_content = re.sub(r'^id:\s*.*$', f'id: {new_id}', content, count=1, flags=re.MULTILINE)
+                new_content = re.sub(r'^id:\s*.*$', f'id: {new_uid}', content, count=1, flags=re.MULTILINE)
             else:
                 new_content = content.replace("---\n", f"---\nid: {new_uid}\n", 1)
                 

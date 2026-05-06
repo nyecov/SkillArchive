@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	
+
 	"github.com/nyecov/context-engine/internal/storage"
 )
 
@@ -53,7 +53,6 @@ func securityMiddleware(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
-
 
 func handleScratchpad(w http.ResponseWriter, r *http.Request) {
 	db := storage.GetDB()
@@ -133,8 +132,6 @@ func handleStatus(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(map[string]string{"status": "online", "diagnostics": "PRAGMA integrity_check passed on boot"})
 }
-
-
 
 func handleGraph(w http.ResponseWriter, r *http.Request) {
 	db := storage.GetDB()

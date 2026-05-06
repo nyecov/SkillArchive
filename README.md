@@ -13,6 +13,17 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 
 ## 📋 Skill Index
 
+### 🗂️ Agile / SDLC
+
+| Skill | Description | Tags |
+|-------|-------------|------|
+| **[Agile Architecture](skills/architectural-anchoring/SKILL.md)** | Use when making architectural decisions, enforcing layer boundaries, or when AI-suggested changes conflict with established patterns. Mandates ANCHOR.md enforcement, ADR logs, and Clean Architecture layer rules. | `agile` `architecture` `clean-architecture` |
+| **[Agile Backlog](skills/agile-backlog/SKILL.md)** | Use when creating, editing, or reviewing Agile artifacts: Initiatives, Epics, Stories, Subtasks, Issues, Bugs. Enforces hierarchy and BDD acceptance criteria. | `agile` `backlog` `methodology` |
+| **[Agile Release Gate](skills/agile-release-gate/SKILL.md)** | Use when preparing final release sign-off. Governs the pre-release audit checklist, traceability verification, and Release Memo compilation. | `agile` `release` `engineering` |
+| **[Agile SDLC](skills/agile-sdlc/SKILL.md)** | Use when orchestrating the full SDLC across Agile, TDD, and testing stages. Governs Planning → Dev → CI → Verification → Regression → Release transitions. | `agile` `sdlc` `methodology` |
+| **[Agile Testing](skills/agile-testing/SKILL.md)** | Use when authoring Test Plans, Test Designs, or Test Executions. Handles UI, back-end, integration, and regression testing artifacts. | `agile` `testing` `methodology` |
+| **[Spec Mapping](skills/spec-mapping/SKILL.md)** | Use when mapping a spec document into the backlog as epics + stories with a coverage ledger. Anti-hallucination, append-only workflow with convergence gates. | `agile` `spec` `mapping` |
+
 ### 🏗️ Architecture
 
 | Skill | Description | Tags |
@@ -36,10 +47,12 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | Skill | Description | Tags |
 |-------|-------------|------|
 | **[Anchor](skills/architectural-anchoring/SKILL.md)** | Use when starting a project, making architectural decisions, or when AI-suggested changes conflict with established p... | `design` `architecture` |
-| **[Isolate](skills/root-cause-isolation/SKILL.md)** | Use when a bug is reported, unexpected behavior occurs, or a fix attempt has failed. Handles 5-step hypothesis-driven... | `debugging` |
+| **[Code Review](skills/code-review/SKILL.md)** | Use when performing a structured code review. Handles impact analysis, code quality audit, and regression confirmation. | `engineering` `code-review` `quality` |
+| **[Isolate (Root Cause Isolation)](skills/root-cause-isolation/SKILL.md)** | Use when a bug is reported, unexpected behavior occurs, or a fix attempt has failed. Handles 5-step hypothesis-driven debugging, binary search isolation, minimal reproduction, and tactical grep-powered discovery. | `debugging` `engineering` `search` |
 | **[PowerShell 7 Efficiency](skills/powershell-7-efficiency/SKILL.md)** | Use when writing or optimizing PowerShell 7 scripts. Mandates the use of modern features like pipeline chaining, para... | `engineering` `scripting` `automation` `performance` `cross-platform` |
+| **[Refactor Safely](skills/refactor-safely/SKILL.md)** | Use when planning or executing a refactor. Enforces impact analysis before edits and continuous test validation after each step. | `engineering` `refactoring` `safety` |
 | **[Ship](skills/release-management/SKILL.md)** | Use when code is "feature complete" and approaching deployment, or when verifying production readiness. Handles stagi... | `engineering` `safety` `methodology` |
-| **[Test-Driven Development](skills/test-driven-development/SKILL.md)** | Use when implementing any feature or bugfix, before writing implementation code. Enforces the strict Red-Green-Refact... | `engineering` `testing` `methodology` |
+| **[Test-Driven Development (TDD)](skills/test-driven-development/SKILL.md)** | Use when implementing any feature or bugfix, before writing implementation code. Enforces the strict Red-Green-Refact... | `engineering` `testing` `methodology` `git` |
 | **[Verification Before Completion](skills/completion-verification/SKILL.md)** | Use when about to claim work is complete, fixed, or passing, before committing or creating PRs. Requires running veri... | `safety` `engineering` `debugging` |
 
 ### 📌 Memory
@@ -83,6 +96,23 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[Red-Teaming](skills/red-teaming-tactics/SKILL.md)** | Adversarial stress-testing for security and logic.  Use to identify bypasses, edge-case failures, and "happy-path" bi... | `safety` `security` |
 | **[Secure](skills/security-enforcement/SKILL.md)** | Use when handling auth, user input, secrets, or API endpoints. Mandates trust-boundary audits. | `security` |
 
+## 🤖 Agent Index
+
+> Sub-agents for use with Claude Code's `/agents` system or the Anthropic Agent SDK. Copy into your project's `.claude/agents/` directory. All are naturalized — remove any remaining project-specific references before use.
+
+| Agent | Model | Role |
+|---|---|---|
+| **[Analyst](agents/analyst.md)** | sonnet | Spec mapping, gap analysis, citation integrity |
+| **[Architect](agents/architect.md)** | opus | Clean Architecture enforcement, interface contracts, ADR stewardship |
+| **[Developer](agents/developer.md)** | haiku | TDD execution, code implementation, subtask management |
+| **[DevOps](agents/devops.md)** | sonnet | CI/CD pipelines, Docker, environment parity, infrastructure backlog |
+| **[Product Owner](agents/product-owner.md)** | sonnet | Initiatives, Epics, Stories, BDD ACs, backlog prioritization |
+| **[Release Manager](agents/release-manager.md)** | opus | Final sign-off, release memo, traceability audit, gap closure |
+| **[Scrum Master](agents/scrum-master.md)** | sonnet | SDLC governance, traceability auditing, blocker resolution |
+| **[Security Lead](agents/security-lead.md)** | opus | Security review, input validation, safety gating, veto authority |
+| **[Tester](agents/tester.md)** | haiku | Test Plans, Test Designs, Test Executions, regression safety |
+| **[UX Designer](agents/ux-designer.md)** | sonnet | Design system, visual spec sync, accessibility, UI sign-off |
+
 ## 📋 Workflow Index
 
 | Workflow | Description |
@@ -111,3 +141,14 @@ A comprehensive library of AI agent skills and cognitive frameworks, structurall
 | **[playwright-scaffold](tools/playwright-scaffold)** | A JavaScript automation script that injects a best-practice Playwright testing environment into any web project. |
 | **[xlsx-tools](tools/xlsx-tools)** | A Python script using `openpyxl` to extract data from Excel spreadsheets efficiently. |
 | **[youtube-transcript](tools/youtube-transcript)** | A Python automation tool using `yt-dlp` to fetch transcriptions and subtitles for YouTube videos. |
+| **[agile-hierarchy-validator](tools/agile-hierarchy-validator)** | PowerShell: validates parentage hierarchy and link integrity across backlog and test artifacts. Enforces Initiative→Epic→Story→Subtask and TP→TS→TD→TX chains. |
+| **[agile-turn-commit](tools/agile-turn-commit)** | PowerShell: automates end-of-turn hierarchy validation, SDLC path staging, `[Phase] ID: Message` commit, and push. |
+| **[audit-go](tools/audit-go)** | Python: four standalone Go code-quality scripts — lint (golangci-lint), naming conventions, unused imports (go vet), and standards (error handling, docs). |
+| **[audit-python](tools/audit-python)** | Python: four standalone Python code-quality scripts — lint (pylint/ruff), naming conventions (AST), unused imports (AST), and standards (docstrings, function length). |
+| **[backlog-tools](tools/backlog-tools)** | PowerShell: New-Issue, Triage-Issues, Export-BacklogSummary, and Search-AllArtifacts for managing SDLC backlog artifacts. |
+| **[chaos-tester](tools/chaos-tester)** | PowerShell: generates a structured AI prompt for adversarial edge-case and chaos test scenarios for a given source file. |
+| **[git-hooks](tools/git-hooks)** | PowerShell: install-hooks.ps1 (pre-commit framework installer) and git-pre-commit.ps1 (Go auto-fixer shim for goimports + go mod tidy). |
+| **[spec-gap-tools](tools/spec-gap-tools)** | PowerShell: Find-SpecGaps.ps1 — lists spec files with no corresponding .map-spec ledger entry. |
+| **[tdd-phase-verifier](tools/tdd-phase-verifier)** | Python: lints a git commit range to enforce [Red]/[Green]/[Refactor] TDD commit-prefix conventions. Configurable story-ID pattern and test-file patterns. |
+| **[triage-validator](tools/triage-validator)** | Python: validates that bugs and issues have completed the mandatory triage review process. Auto-detects backlog root. |
+atory triage review process. Auto-detects backlog root. |

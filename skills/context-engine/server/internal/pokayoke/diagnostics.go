@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	DiagLogFile    = "engine_diagnostics.log"
+	DiagLogFile = "engine_diagnostics.log"
 )
 
 // RunBootDiagnostics performs an integrity check on the SQLite DB.

@@ -187,6 +187,3 @@ func registerSearchOntologySemanticTool(s *server.MCPServer) {
 		return ontology.HandleSearchOntologySemantic(ctx, request)
 	})
 }
-
-
-

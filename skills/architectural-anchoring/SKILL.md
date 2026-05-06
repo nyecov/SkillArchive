@@ -1,12 +1,15 @@
 ---
 id: 8dea8b48-658e-4d46-bd01-42deef7c3b1a
 name: architectural-anchoring
-version: 1.1.0
-description: Use when starting a project, making architectural decisions, or when AI-suggested changes conflict with established patterns. Mandates the creation and enforcement of the ANCHOR.md artifact.
+version: 1.2.0
+description: Use when making architectural decisions, enforcing layer boundaries, or when AI-suggested changes conflict with established patterns. Mandates ANCHOR.md enforcement, ADR logs, and Clean Architecture layer rules.
 category: engineering
 tags:
 - design
 - architecture
+- agile
+- clean-architecture
+- methodology
 references:
 - name: Crowd Control (Source Repo)
   url: https://github.com/newsbubbles/crowd_control
@@ -24,59 +27,72 @@ references:
   path: ../release-management/SKILL.md
 - name: Shisa Kanko (Master Workflow)
   path: ../shisa-kanko/SKILL.md
+- name: Refactor Safely
+  path: ../refactor-safely/SKILL.md
+- name: Code Review
+  path: ../code-review/SKILL.md
 - name: Anchor Template
   path: ./templates/anchor-template.md
 level: tactical
 ---
-# Anchor
+# Architecture & Anchoring
 
 *Drift is the default. Coherence requires intention.*
 
-An **anchor** is an explicit architectural decision that resists prompt pressure. Once anchored, the decision holds until deliberately changed. The AI will happily introduce a fourth state management approach if you let it — it's not malicious, it just doesn't remember the first three. This skill makes you the architectural memory the LLM lacks.
+This skill ensures the system maintains structural integrity by enforcing Clean Architecture, reviewing interface contracts, and anchoring decisions in the `ANCHOR.md` artifact and ADR (Architecture Decision Record) log.
+
+## Clean Architecture Layer Rules
+
+Dependencies point inward only: Infrastructure → Application → Domain. Never the reverse.
+
+| Layer | Allowed Imports | Forbidden Imports |
+|---|---|---|
+| Domain | Other domain packages only | Application, Infrastructure, DB drivers, HTTP, SDK |
+| Application | Domain interfaces | Infrastructure concretes, DB drivers |
+| Infrastructure | Domain interfaces, Application ports | Direct domain business logic |
 
 ## Core Mandates
 
 ### 1. Artifact Enforcement: The ANCHOR.md Reality
-Every project MUST possess a physical, authoritative `ANCHOR.md` document located at the project root.
-- **Action:** If it doesn't exist, create it. If it does exist, read it before proceeding.
+Every project MUST possess an authoritative `ANCHOR.md` document at the project root.
+- **Action:** If it doesn't exist, create it. If it does, read it before proceeding.
 - **Constraint:** NEVER proceed with a multi-pattern implementation or rely on conversational memory for architecture. 
-- **Integration:** The `ANCHOR.md` file serves as the strict "Ground Truth" for **Shisa Kanko** pointing.
 
-### 2. Drift Enforcement
-Catch and resist drift when the AI suggests patterns that contradict anchors.
-- **Action:** Compare every proposed architectural implementation against `ANCHOR.md`.
-- **Constraint:** Do not silently override anchors. Reject changes that introduce architectural rot.
+### 2. Interface-First Design & ADR Discipline
+- **Action:** Before any major feature, define or review interface contracts. Every approved architectural change must have an entry in the ADR log.
+- **Constraint:** No net-new cross-layer dependency may be introduced without an ADR entry. Intent decays without documentation.
+- **Integration:** Connects to **Nemawashi** — get consensus before structural changes.
 
-### 3. Deliberate Evolution
-Update anchors intentionally, not as a side effect of a feature implementation.
-- **Action:** When an anchor becomes a bottleneck, formally update the `ANCHOR.md` document and simultaneously refactor affected areas.
-- **Constraint:** Anchors MUST be updated globally or not at all to prevent "Hybrid Rot."
+### 3. Drift Enforcement
+Catch and resist drift when patterns are suggested that contradict anchors or Clean Architecture rules.
+- **Action:** Compare every proposed implementation against `ANCHOR.md` and the layer import rules.
+- **Constraint:** Reject changes that introduce architectural rot or "Hybrid Rot" (inconsistent patterns).
+
+### 4. Decisions Log (ADR) Integrity
+- **Action:** Entries must include: the decision, alternatives considered, rationale, and tradeoffs.
+- **Integration:** Feeds **Yokoten** — future teams learn from archived decisions.
+
+## Clean Architecture Review Checklist
+
+Walk this for every PR touching domain, application, or infrastructure layers:
+
+- [ ] No outward imports from Domain (no infrastructure or framework types in domain)
+- [ ] No business rules in Application (orchestration only, no domain logic)
+- [ ] Infrastructure implements Domain interfaces, not concretes
+- [ ] Interface segregation: consumers use >30% of a port's methods; split if not
+- [ ] No leaky types crossing layers (DB row types, HTTP request types, SDK structs)
+- [ ] Construction at the composition root edge, not inside Domain constructors
+- [ ] Errors carry domain meaning (infrastructure errors wrapped, not propagated raw)
 
 ## Escalation & Halting
 
-- **Jidoka:** If an implementation requires violating an anchor to function, trigger a Jidoka halt.
+- **Jidoka:** If an implementation requires violating an anchor or a checklist item to function, trigger a Jidoka halt.
 - **Hō-Ren-Sō:** Use Sōdan (Consult) if a proposed feature requires an architectural shift that contradicts `ANCHOR.md`.
-
-## Implementation Strategy
-
-### The ANCHOR.md Template
-When executing this skill to establish architecture, generate `ANCHOR.md` at the project root using the standard template:
-[Anchor Template](./templates/anchor-template.md)
 
 ## Execution Flow
 
 1. **Trigger:** Start of a project, architectural decision point, or prior to major feature implementation.
-2. **Execute:** Create `ANCHOR.md` using the template or audit the existing file.
-3. **Verify:** Check every proposed technical change specifically against the constraints documented in `ANCHOR.md`.
+2. **Execute:** Audit `ANCHOR.md` → Apply Clean Architecture checklist → Log decision in ADR.
+3. **Verify:** Check every change specifically against the constraints documented in `ANCHOR.md` and the layer rules.
 4. **Output:** An updated, authoritative `ANCHOR.md` artifact and a coherent implementation path.
-
-## Quick Reference
-
-```
-ANCHOR CHECKLIST:
-□ Does ANCHOR.md exist in the project root?
-□ Does this code change explicitly align with ANCHOR.md?
-□ Is the AI suggesting a pattern that contradicts ANCHOR.md?
-□ Are we evolving the anchor deliberately or allowing drift?
-```
 
